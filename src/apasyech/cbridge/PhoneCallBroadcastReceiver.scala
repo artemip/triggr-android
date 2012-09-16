@@ -18,33 +18,4 @@ class PhoneCallBroadcastReceiver extends BroadcastReceiver {
 	    phoneManager.listen(listener, PhoneStateListener.LISTEN_CALL_STATE)
 	  }
   }
-  
-  /*
-	protected AudioManager audioManager;// = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-    protected Context context;
-    private ITelephony telephonyService;
-    @Override
-     public void onReceive(Context context, Intent intent) {
-      audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-      this.context = context;
-      String action = intent.getAction();
-             if(action.equalsIgnoreCase("android.intent.action.PHONE_STATE")){
-              if (intent.getStringExtra(TelephonyManager.EXTRA_STATE).equals(
-                                  TelephonyManager.EXTRA_STATE_RINGING)) {
-                  //Incoming call 
-               doSomething(intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER));
-              }         
-             }
-             else {
-
-             Bundle bundle = intent.getExtras();
-             Object[] pdus = (Object[]) bundle.get("pdus");
-             SmsMessage message = SmsMessage.createFromPdu((byte[])pdus[0]);
-             if(!message.isEmail())
-                 doSomething(message.getOriginatingAddress());
-
-             }
-
-     }
-     */
 }
