@@ -15,4 +15,6 @@ gen/
 # Local configuration file (sdk path, etc)
 local.properties
 
+# Others
 proguard_*
+*.cache
