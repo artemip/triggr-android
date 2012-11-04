@@ -28,7 +28,7 @@ object Server {
 	  		.mkString("\n")
 	    } catch {
 	      case e: Exception => Log.e("Server communication error: ", e.toString())
-	      "Error"
+	      ""
 	    }
     }
   }
