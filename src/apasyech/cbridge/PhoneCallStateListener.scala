@@ -32,13 +32,13 @@ class PhoneCallStateListener extends PhoneStateListener {
         //Phone is ringing
         Log.d(PhoneCallStateListener.tag, "Receiving phone call: " + incomingNumber)
 
-        ServerTools.incomingCall()
+        ServerActor ! ServerActor.StartCall
       }
       case TelephonyManager.CALL_STATE_IDLE => {
         //Phone call ended
         Log.d(PhoneCallStateListener.tag, "Ended phone call: " + incomingNumber)
 
-        ServerTools.callEnded()
+        ServerActor ! ServerActor.EndCall
       }
       case _ => {
         Log.d(PhoneCallStateListener.tag, "callStateChanged: " + state)

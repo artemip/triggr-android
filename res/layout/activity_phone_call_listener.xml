@@ -1,15 +1,48 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:background="#FFFFFF">
+    android:layout_height="match_parent" >
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/cbridge_logo" />
+        android:scaleType="centerInside"
+        android:src="@drawable/cbridge_logo_dark" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:orientation="vertical"
+    	android:gravity="center_horizontal"
+        android:layout_marginTop="80dp"
+        android:padding="20dp">
+        
+	    <TextView
+	        android:id="@+id/ipPromptTextView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/ip_prompt"
+	        android:textSize="24dp"/>
+	
+	    <EditText
+	        android:id="@+id/ipTextBox"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="24dp"
+	        android:ems="10" />
+	
+	    <Button
+	        android:id="@+id/connectButton"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="20dp"
+	        android:onClick="connectToPC"
+	        android:text="Connect"/>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -10,28 +10,35 @@ import sun.nio.ch.Net
 import android.util.Log
 import android.os.Handler
 import scala.concurrent.ops._
+import android.view.View
+import android.widget.EditText
 
 class PhoneCallListenerActivity extends Activity {
-  var nsd : NetworkDiscoveryActor = null;
-  
+  var ipAddressTextBox : EditText = null
+
   override def onCreate( savedInstanceState : Bundle ) {
     super.onCreate( savedInstanceState )
     setContentView( R.layout.activity_phone_call_listener )
+    cBridgeApp.setActivity( this )
 
-    Log.d( "PhoneCallListenerActivity", "Starting discovery..." )
+    ipAddressTextBox = findViewById( R.id.ipTextBox ).asInstanceOf[EditText]
 
-    nsd = new NetworkDiscoveryActor( this.getApplicationContext() )
-    nsd.start
-    
-    nsd ! NetworkDiscoveryActor.StartDiscovery
-  }
-  
-  override def onStop() {
-    nsd ! NetworkDiscoveryActor.StopDiscovery
+    ipAddressTextBox.setText( cBridgeApp.getLastServerAddress().getOrElse( "" ) )
   }
 
   override def onCreateOptionsMenu( menu : Menu ) : Boolean = {
     getMenuInflater().inflate( R.menu.activity_phone_call_listener, menu )
     return true
+  }
+
+  def connectToPC( view : View ) {
+    val ipAndHost = ipAddressTextBox.getText().toString()
+    if ( cBridgeApp.getLastServerAddress().isEmpty ) cBridgeApp.setServerAddress( ipAndHost )
+
+    val hostAddress = "http://" + ipAndHost
+
+    ServerActor.start()
+    ServerActor ! ServerActor.SelectServer( hostAddress )
+    //ServerActor ! ServerActor.StartCall
   }
 }
