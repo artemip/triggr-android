@@ -70,7 +70,7 @@ object cBridgeApp {
     	setPreference( PREFS_SERVER_ADDRESS, server )
     }
     
-    def getLastServerAddress() : Option[String] = {
+    def getServerAddress() : Option[String] = {
       if(serverAddress.isEmpty) {
     	  serverAddress = getPreference(PREFS_SERVER_ADDRESS)
       }

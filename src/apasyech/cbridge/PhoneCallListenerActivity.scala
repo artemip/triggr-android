@@ -6,24 +6,22 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.view.Menu
 import android.view.MenuItem
-import sun.nio.ch.Net
 import android.util.Log
 import android.os.Handler
-import scala.concurrent.ops._
 import android.view.View
 import android.widget.EditText
 
 class PhoneCallListenerActivity extends Activity {
-  var ipAddressTextBox : EditText = null
+  var serverIdTextBox : EditText = null
 
   override def onCreate( savedInstanceState : Bundle ) {
     super.onCreate( savedInstanceState )
     setContentView( R.layout.activity_phone_call_listener )
     cBridgeApp.setActivity( this )
 
-    ipAddressTextBox = findViewById( R.id.ipTextBox ).asInstanceOf[EditText]
+    serverIdTextBox = findViewById( R.id.ipTextBox ).asInstanceOf[EditText]
 
-    ipAddressTextBox.setText( cBridgeApp.getLastServerAddress().getOrElse( "" ) )
+    serverIdTextBox.setText( cBridgeApp.getServerAddress().getOrElse( "" ) )
   }
 
   override def onCreateOptionsMenu( menu : Menu ) : Boolean = {
@@ -32,13 +30,24 @@ class PhoneCallListenerActivity extends Activity {
   }
 
   def connectToPC( view : View ) {
-    val ipAndHost = ipAddressTextBox.getText().toString()
-    if ( cBridgeApp.getLastServerAddress().isEmpty ) cBridgeApp.setServerAddress( ipAndHost )
+    val serverId = serverIdTextBox.getText().toString()
+    cBridgeApp.setServerAddress( serverId )
 
-    val hostAddress = "http://" + ipAndHost
-
-    ServerActor.start()
-    ServerActor ! ServerActor.SelectServer( hostAddress )
-    //ServerActor ! ServerActor.StartCall
+    ServerActor.start()  
   }
+  
+  def lowerVolume( view : View ) {
+    cBridgeApp.getServerAddress() match {
+      case Some(s) => ServerActor ! ServerActor.StartCall(s)
+      case None => 
+    }
+  }
+  
+  def raiseVolume( view : View ) {
+    cBridgeApp.getServerAddress() match {
+      case Some(s) => ServerActor ! ServerActor.EndCall(s)
+      case None => 
+    }
+  }
+  
 }

@@ -32,13 +32,20 @@ class PhoneCallStateListener extends PhoneStateListener {
         //Phone is ringing
         Log.d(PhoneCallStateListener.tag, "Receiving phone call: " + incomingNumber)
 
-        ServerActor ! ServerActor.StartCall
+        cBridgeApp.getServerAddress() match {
+          case Some(s) => ServerActor ! ServerActor.StartCall(s)
+          case None => Log.w(PhoneCallStateListener.tag, "ServerID not specified")
+        }
+        
       }
       case TelephonyManager.CALL_STATE_IDLE => {
         //Phone call ended
         Log.d(PhoneCallStateListener.tag, "Ended phone call: " + incomingNumber)
 
-        ServerActor ! ServerActor.EndCall
+        cBridgeApp.getServerAddress() match {
+          case Some(s) => ServerActor ! ServerActor.EndCall(s)
+          case None => Log.w(PhoneCallStateListener.tag, "ServerID not specified")
+        }
       }
       case _ => {
         Log.d(PhoneCallStateListener.tag, "callStateChanged: " + state)
