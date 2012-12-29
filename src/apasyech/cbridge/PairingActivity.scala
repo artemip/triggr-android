@@ -14,7 +14,7 @@ import android.content.ServiceConnection
 import android.content.ComponentName
 import android.os.IBinder
 
-class PhoneCallListenerActivity extends Activity {
+class PairingActivity extends Activity {
   var pairKeyTextBox : EditText = null
   
   override def onCreate( savedInstanceState : Bundle ) {
@@ -37,20 +37,7 @@ class PhoneCallListenerActivity extends Activity {
   def pairWithDevice( view : View ) {
     val pairingKey = pairKeyTextBox.getText().toString()
     ServerActor ! ServerActor.Pair(pairingKey)
-  }
-  
-  def lowerVolume( view : View ) {
-    Preferences.getPairedDeviceId() match {
-      case Some(s) => ServerActor ! ServerActor.IncomingCall(s)
-      case None => 
-    }
-  }
-  
-  def raiseVolume( view : View ) {
-    Preferences.getPairedDeviceId() match {
-      case Some(s) => ServerActor ! ServerActor.EndCall(s)
-      case None => 
-    }
-  }
-  
+    
+    pairKeyTextBox.setText("")
+  }  
 }

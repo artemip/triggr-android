@@ -3,5 +3,6 @@
     <string name="app_name">Triggr</string>
     <string name="menu_settings">Settings</string>
     <string name="pair_key_prompt">Pair Key:</string>
-
+	<string name="pair_instructions">Enter your computer\'s Pair Key below.</string>
+	<string name="pair_button_text">Pair</string>
 </resources>

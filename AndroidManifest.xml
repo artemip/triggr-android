@@ -17,10 +17,11 @@
         android:icon="@drawable/cbridge_icon_72"
         android:logo="@drawable/cbridge_icon_72"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Holo" >
+        android:theme="@style/CustomTheme" >
         <activity
             android:name=".PairingActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:windowBackground="@drawable/main_background">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
