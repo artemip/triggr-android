@@ -8,7 +8,8 @@
         android:targetSdkVersion="14" />
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 <!-- <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>  -->
     
 
@@ -18,7 +19,7 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo" >
         <activity
-            android:name=".PhoneCallListenerActivity"
+            android:name=".PairingActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,11 +27,28 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".PhoneCallBroadcastReceiver" >
+        <service 
+            android:name=".cBridgeService" 
+            android:label="cBridge Service"
+            android:exported="false">
+		    <intent-filter>
+		        <action android:name="apasyech.cbridge.cBridgeService" />
+		    </intent-filter>
+		</service>
+        
+        <receiver android:name=".PhoneCallBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
+		
+		<receiver
+		    android:name=".BootEventBroadcastReceiver"
+		    android:enabled="true"
+		    android:exported="true">
+		    <intent-filter>
+		        <action android:name="android.intent.action.BOOT_COMPLETED" />
+		    </intent-filter>
+		</receiver>
     </application>
-
 </manifest>

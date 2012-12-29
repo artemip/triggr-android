@@ -21,12 +21,12 @@
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>org.scala-ide.sdt.core.scalabuilder</name>
+			<name>com.restphone.androidproguardscala.Builder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>com.restphone.androidproguardscala.Builder</name>
+			<name>org.scala-ide.sdt.core.scalabuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>

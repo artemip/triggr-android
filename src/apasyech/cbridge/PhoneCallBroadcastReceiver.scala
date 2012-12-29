@@ -12,7 +12,7 @@ class PhoneCallBroadcastReceiver extends BroadcastReceiver {
     if (!PhoneCallStateListener.isListening) {
       val phoneManager = context.getSystemService(Context.TELEPHONY_SERVICE).asInstanceOf[TelephonyManager]
       val listener = PhoneCallStateListener()
-
+      
       phoneManager.listen(listener, PhoneStateListener.LISTEN_CALL_STATE)
     }
   }

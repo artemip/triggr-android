@@ -10,18 +10,19 @@ import android.util.Log
 import android.app.Activity
 import android.widget.Toast
 
-object cBridgeApp {
+object Preferences {
 	private val PREFS_FILE = "device_id.xml";
     private val PREFS_DEVICE_ID = "device_id";
-    private val PREFS_SERVER_ADDRESS = "server_address"
+    private val PREFS_PAIRED_DEVICE_ID = "connected_device_id"
 
-    private var activity : Option[Activity] = None 
-    private var serverAddress : Option[String] = None 
+    private var service : Option[cBridgeService] = None
+    private var activity : Option[Activity] = None
+    private var pairedDeviceId : Option[String] = None 
     
     @volatile private var uuid : Option[UUID] = None 
     
     private def setPreference(key : String, value : String) {
-      activity match {
+      service match {
         case Some(c) => {
           val prefs = c.getSharedPreferences( PREFS_FILE, 0)
           
@@ -35,7 +36,7 @@ object cBridgeApp {
     }
     
     private def getPreference(key : String) : Option[String] = {
-      activity match {
+      service match {
         case Some(c) => {
           val prefs = c.getSharedPreferences( PREFS_FILE, 0)          
           val p = prefs.getString( key, null )
@@ -49,42 +50,42 @@ object cBridgeApp {
       }
     }
     
-    def showToast(text : String, duration : Int) {
-      activity.get.runOnUiThread(new Runnable {
-        override def run() {
-        	Toast.makeText(activity.get, text, duration).show()
-        }
-      })
+    def setService( c : cBridgeService )  = {
+      service = Some(c)      
     }
     
-    def setActivity( c : Activity ) {
+    def getService() : Option[cBridgeService] = {
+      service
+    }
+    
+    def setMainActivity( c : Activity )  = {
       activity = Some(c)      
     }
     
-    def getActivity() : Activity = {
-      activity.get
+    def getMainActivity() : Option[Activity] = {
+      activity
     }
     
-    def setServerAddress(server : String) {
-    	serverAddress = Some(server)
-    	setPreference( PREFS_SERVER_ADDRESS, server )
+    def setPairedDeviceId(deviceId : String) {
+    	pairedDeviceId = Some(deviceId)
+    	setPreference( PREFS_PAIRED_DEVICE_ID, deviceId )
     }
     
-    def getServerAddress() : Option[String] = {
-      if(serverAddress.isEmpty) {
-    	  serverAddress = getPreference(PREFS_SERVER_ADDRESS)
+    def getPairedDeviceId() : Option[String] = {
+      if(pairedDeviceId.isEmpty) {
+    	  pairedDeviceId = getPreference(PREFS_PAIRED_DEVICE_ID)
       }
       
-      serverAddress      
+      pairedDeviceId      
     }
     
-	def getUUID() : UUID = {
+	def getDeviceId() : UUID = {
       uuid match {
         case Some(u) => {
         	u
         }
         case None => {
-          activity match {
+          service match {
             case Some(c) => {
             	val prefs = c.getSharedPreferences( PREFS_FILE, 0)
             	val id = prefs.getString( PREFS_DEVICE_ID, null )
@@ -123,4 +124,5 @@ object cBridgeApp {
         }
       }
 	}
+
 }

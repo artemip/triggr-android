@@ -26,26 +26,26 @@
         android:paddingTop="20dp" >
         
 	    <TextView
-	        android:id="@+id/ipPromptTextView"
+	        android:id="@+id/pairKeyPromptTextView"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/ip_prompt"
+	        android:text="@string/pair_key_prompt"
 	        android:textSize="24dp"/>
 	
 	    <EditText
-	        android:id="@+id/ipTextBox"
+	        android:id="@+id/pairKeyTextBox"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="24dp"
 	        android:ems="10" />
 	
 	    <Button
-	        android:id="@+id/connectButton"
+	        android:id="@+id/pairButton"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="20dp"
-	        android:onClick="connectToPC"
-	        android:text="Connect"/>
+	        android:onClick="pairWithDevice"
+	        android:text="Pair"/>
 
 	    <LinearLayout
 	        android:layout_width="match_parent"

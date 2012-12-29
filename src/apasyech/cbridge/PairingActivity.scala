@@ -10,18 +10,23 @@ import android.util.Log
 import android.os.Handler
 import android.view.View
 import android.widget.EditText
+import android.content.ServiceConnection
+import android.content.ComponentName
+import android.os.IBinder
 
 class PhoneCallListenerActivity extends Activity {
-  var serverIdTextBox : EditText = null
-
+  var pairKeyTextBox : EditText = null
+  
   override def onCreate( savedInstanceState : Bundle ) {
     super.onCreate( savedInstanceState )
     setContentView( R.layout.activity_phone_call_listener )
-    cBridgeApp.setActivity( this )
+    
+    Preferences.setMainActivity(this)
+    
+    var serviceIntent = new Intent("apasyech.cbridge.cBridgeService");
+    getApplicationContext().startService(serviceIntent);
 
-    serverIdTextBox = findViewById( R.id.ipTextBox ).asInstanceOf[EditText]
-
-    serverIdTextBox.setText( cBridgeApp.getServerAddress().getOrElse( "" ) )
+    pairKeyTextBox = findViewById( R.id.pairKeyTextBox ).asInstanceOf[EditText]
   }
 
   override def onCreateOptionsMenu( menu : Menu ) : Boolean = {
@@ -29,22 +34,20 @@ class PhoneCallListenerActivity extends Activity {
     return true
   }
 
-  def connectToPC( view : View ) {
-    val serverId = serverIdTextBox.getText().toString()
-    cBridgeApp.setServerAddress( serverId )
-
-    ServerActor.start()  
+  def pairWithDevice( view : View ) {
+    val pairingKey = pairKeyTextBox.getText().toString()
+    ServerActor ! ServerActor.Pair(pairingKey)
   }
   
   def lowerVolume( view : View ) {
-    cBridgeApp.getServerAddress() match {
-      case Some(s) => ServerActor ! ServerActor.StartCall(s)
+    Preferences.getPairedDeviceId() match {
+      case Some(s) => ServerActor ! ServerActor.IncomingCall(s)
       case None => 
     }
   }
   
   def raiseVolume( view : View ) {
-    cBridgeApp.getServerAddress() match {
+    Preferences.getPairedDeviceId() match {
       case Some(s) => ServerActor ! ServerActor.EndCall(s)
       case None => 
     }
