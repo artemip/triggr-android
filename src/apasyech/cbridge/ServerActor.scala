@@ -10,16 +10,16 @@ import scala.collection.mutable.ListBuffer
 import scala.actors.Actor
 import android.widget.Toast
 import java.io.DataOutputStream
-import java.util.concurrent._ 
+import java.util.concurrent._
 
-object HeartbeatGenerator {    
+object HeartbeatGenerator {
   private val scheduler = Executors.newSingleThreadScheduledExecutor()
-  
+
   private val callback = new Runnable {
-    def run = ServerActor ! ServerActor.Heartbeat 
+    def run = ServerActor ! ServerActor.Heartbeat
   }
-  
-  def start() = scheduler.scheduleAtFixedRate(callback, 0, 3, TimeUnit.MINUTES)
+
+  def start() = scheduler.scheduleAtFixedRate( callback, 0, 3, TimeUnit.MINUTES )
 }
 
 object ServerActor extends Actor {
@@ -27,7 +27,7 @@ object ServerActor extends Actor {
 
   case object Heartbeat
   case class Pair( pairingKey : String )
-  case class IncomingCall( deviceId : String )
+  case class IncomingCall( deviceId : String, number : String )
   case class OutgoingCall( deviceId : String )
   case class EndCall( deviceId : String )
 
@@ -41,10 +41,10 @@ object ServerActor extends Actor {
       receive {
         case Heartbeat => {
           Log.d( tag, "Sending heartbeat" )
-          
+
           requestActor ! HTTPRequestActor.PostRequest(
-        		  getFullURL( "heartbeat" ),
-        		  Map( "device_id" -> Preferences.getDeviceId().toString(), "paired_device_id" -> Preferences.getPairedDeviceId().getOrElse("")))
+            getFullURL( "heartbeat" ),
+            Map( "device_id" -> Preferences.getDeviceId().toString(), "paired_device_id" -> Preferences.getPairedDeviceId().getOrElse( "" ) ) )
         }
         case Pair( k ) => {
           Log.d( tag, "Pairing with new device using key " + k )
@@ -52,16 +52,16 @@ object ServerActor extends Actor {
           def handler( response : Option[String] ) {
             response match {
               case Some( s : String ) => {
-                Log.d( tag, "Verification returned OK" )
+                Log.d( tag, "Pairing request returned OK" )
                 Preferences.getService() match {
-                  case Some(s) => s.showToast("Pairing successful.", Toast.LENGTH_SHORT )
+                  case Some( s ) => s.showToast( "Pairing successful.", Toast.LENGTH_SHORT )
                   case None =>
                 }
                 Preferences.setPairedDeviceId( s )
               }
               case None => {
                 Preferences.getService() match {
-                  case Some(s) => s.showToast("Invalid pairing key.", Toast.LENGTH_LONG )
+                  case Some( s ) => s.showToast( "Invalid pairing key.", Toast.LENGTH_LONG )
                   case None =>
                 }
               }
@@ -73,7 +73,7 @@ object ServerActor extends Actor {
             Map( "device_id" -> Preferences.getDeviceId().toString(), "pairing_key" -> k ),
             handler )
         }
-        case IncomingCall( deviceId ) => {
+        case IncomingCall( deviceId, number ) => {
           def handler( response : Option[String] ) {
             response match {
               case Some( s : String ) => {
@@ -82,7 +82,7 @@ object ServerActor extends Actor {
               case None => {
                 Log.e( tag, "incoming_call method failed" )
                 Preferences.getService() match {
-                  case Some(s) => s.showToast("Connection failed.", Toast.LENGTH_LONG )
+                  case Some( s ) => s.showToast( "Connection failed.", Toast.LENGTH_LONG )
                   case None =>
                 }
               }
@@ -91,7 +91,7 @@ object ServerActor extends Actor {
 
           requestActor ! HTTPRequestActor.PostRequest(
             getFullURL( "events" ),
-            Map( "device_id" -> deviceId, "event" -> "incoming_call" ),
+            Map( "device_id" -> deviceId, "event" -> "incoming_call:".concat( number ) ),
             handler )
         }
         case OutgoingCall( deviceId ) => {
@@ -103,7 +103,7 @@ object ServerActor extends Actor {
               case None => {
                 Log.e( tag, "outgoing_call method failed" )
                 Preferences.getService() match {
-                  case Some(s) => s.showToast("Connection failed.", Toast.LENGTH_LONG )
+                  case Some( s ) => s.showToast( "Connection failed.", Toast.LENGTH_LONG )
                   case None =>
                 }
               }
@@ -124,7 +124,7 @@ object ServerActor extends Actor {
               case None => {
                 Log.e( tag, "end_call method failed" )
                 Preferences.getService() match {
-                  case Some(s) => s.showToast("Connection failed.", Toast.LENGTH_LONG )
+                  case Some( s ) => s.showToast( "Connection failed.", Toast.LENGTH_LONG )
                   case None =>
                 }
               }
@@ -208,14 +208,14 @@ private class HTTPRequestActor extends Actor {
             wr.close()
 
             var response : Option[String] = None
-            
+
             try {
               val responseStream = connection.getInputStream()
-              
-              response = Some(io.Source
-              .fromInputStream( responseStream )
-              .getLines
-              .mkString( "\n" ))
+
+              response = Some( io.Source
+                .fromInputStream( responseStream )
+                .getLines
+                .mkString( "\n" ) )
             } finally {
               connection.disconnect()
             }

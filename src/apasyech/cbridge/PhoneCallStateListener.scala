@@ -39,8 +39,8 @@ class PhoneCallStateListener extends PhoneStateListener {
         lastState = TelephonyManager.CALL_STATE_RINGING
 
         Preferences.getPairedDeviceId() match {
-          case Some(s) => ServerActor ! ServerActor.IncomingCall(s)
-          case None => Log.w(PhoneCallStateListener.tag, "ServerID not specified")
+          case Some(s) => ServerActor ! ServerActor.IncomingCall(s, incomingNumber)
+          case None => Log.w(PhoneCallStateListener.tag, "No paired device")
         }
       }
       case TelephonyManager.CALL_STATE_OFFHOOK => {
@@ -56,7 +56,7 @@ class PhoneCallStateListener extends PhoneStateListener {
         
         Preferences.getPairedDeviceId() match {
           case Some(s) => ServerActor ! ServerActor.OutgoingCall(s)
-          case None => Log.w(PhoneCallStateListener.tag, "ServerID not specified")
+          case None => Log.w(PhoneCallStateListener.tag, "No paired device")
         }
       }
       case TelephonyManager.CALL_STATE_IDLE => {
@@ -66,7 +66,7 @@ class PhoneCallStateListener extends PhoneStateListener {
 
         Preferences.getPairedDeviceId() match {
           case Some(s) => ServerActor ! ServerActor.EndCall(s)
-          case None => Log.w(PhoneCallStateListener.tag, "ServerID not specified")
+          case None => Log.w(PhoneCallStateListener.tag, "No paired device")
         }
       }
       case _ => {

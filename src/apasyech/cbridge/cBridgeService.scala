@@ -10,42 +10,42 @@ import android.os.Looper
 
 object cBridgeService {
   val tag = classOf[cBridgeService].getName()
-  
+
   //Return  an instance of the service (not doing IPC)
-  class cBridgeServiceBinder(service : cBridgeService) extends Binder {  
-	def getService() : cBridgeService = service
+  class cBridgeServiceBinder( service : cBridgeService ) extends Binder {
+    def getService() : cBridgeService = service
   }
 }
 
 class cBridgeService extends Service {
-  val binder = new cBridgeService.cBridgeServiceBinder(this)
+  val binder = new cBridgeService.cBridgeServiceBinder( this )
   var handler : Handler = null;
-  
+
   override def onCreate() {
-    Preferences.setService(this)
-    
+    Preferences.setService( this )
+
     ServerActor.start()
     HeartbeatGenerator.start()
   }
-  
-  override def onStartCommand(intent : Intent, flags : Int, startId : Int) : Int = {
-    Log.i(cBridgeService.tag, "Started service.")
-    handler = new Handler(Looper.getMainLooper())
+
+  override def onStartCommand( intent : Intent, flags : Int, startId : Int ) : Int = {
+    Log.i( cBridgeService.tag, "Started service." )
+    handler = new Handler( Looper.getMainLooper() )
     return Service.START_STICKY
   }
-  
-  override def onBind(intent : Intent) : IBinder = {
+
+  override def onBind( intent : Intent ) : IBinder = {
     binder
   }
-  
+
   //Show toast on UI thread
-  def showToast(text : String, duration : Int) {
+  def showToast( text : String, duration : Int ) {
     val ctx = getApplicationContext()
-    
-    handler.post(new Runnable() {
+
+    handler.post( new Runnable() {
       override def run() {
-        Toast.makeText(ctx, text, duration).show()
+        Toast.makeText( ctx, text, duration ).show()
       }
-    })
+    } )
   }
 }
