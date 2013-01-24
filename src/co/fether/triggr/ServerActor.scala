@@ -1,4 +1,4 @@
-package apasyech.cbridge
+package co.fether.triggr
 
 import android.util.Log
 import java.net._
@@ -23,7 +23,7 @@ object HeartbeatGenerator {
 }
 
 object ServerActor extends Actor {
-  val tag = "apasyech.cbridge.ServerActor"
+  val tag = "co.fether.triggr.ServerActor"
 
   case object Heartbeat
   case class Pair( pairingKey : String )
@@ -168,7 +168,7 @@ private class HTTPRequestActor extends Actor {
     loop {
       receive {
         case HTTPRequestActor.GetRequest( url, handler ) => {
-          Log.d( "apasyech.cbridge.RequestActor", "GET Request to " + url.toString() )
+          Log.d( "co.fether.triggr.RequestActor", "GET Request to " + url.toString() )
 
           try {
             val connection = url.openConnection
@@ -186,7 +186,7 @@ private class HTTPRequestActor extends Actor {
           }
         }
         case HTTPRequestActor.PostRequest( url, params, handler ) => {
-          Log.d( "apasyech.cbridge.RequestActor", "POST Request to " + url.toString() )
+          Log.d( "co.fether.triggr.RequestActor", "POST Request to " + url.toString() )
 
           try {
             val connection = url.openConnection.asInstanceOf[HttpURLConnection]

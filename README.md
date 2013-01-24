@@ -1,2 +1,2 @@
-cBridge-android
+Triggr-android
 ===============

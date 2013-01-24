@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-    android:src="@drawable/cbridge_background_image_360" 
+    android:src="@drawable/triggr_background_image_360" 
     android:filter="true"/>

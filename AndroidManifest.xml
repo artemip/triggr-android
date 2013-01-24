@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="apasyech.cbridge"
+    package="co.fether.triggr"
     android:versionCode="1"
     android:versionName="0.1" >
 
@@ -14,12 +14,12 @@
     
 
     <application
-        android:icon="@drawable/cbridge_icon_72"
-        android:logo="@drawable/cbridge_icon_72"
+        android:icon="@drawable/triggr_icon_72"
+        android:logo="@drawable/triggr_icon_72"
         android:label="@string/app_name"
         android:theme="@style/CustomTheme" >
         <activity
-            android:name=".PairingActivity"
+            android:name="co.fether.triggr.PairingActivity"
             android:label="@string/app_name"
             android:windowBackground="@drawable/main_background">
             <intent-filter>
@@ -29,11 +29,11 @@
         </activity>
 
         <service 
-            android:name=".cBridgeService" 
-            android:label="cBridge Service"
+            android:name="co.fether.triggr.TriggrService" 
+            android:label="Triggr Service"
             android:exported="false">
 		    <intent-filter>
-		        <action android:name="apasyech.cbridge.cBridgeService" />
+		        <action android:name="co.fether.triggr.TriggrService" />
 		    </intent-filter>
 		</service>
         
@@ -44,7 +44,7 @@
         </receiver>
 		
 		<receiver
-		    android:name=".BootEventBroadcastReceiver"
+		    android:name="co.fether.triggr.BootEventBroadcastReceiver"
 		    android:enabled="true"
 		    android:exported="true">
 		    <intent-filter>
