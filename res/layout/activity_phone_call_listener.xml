@@ -2,55 +2,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_background"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:paddingTop="160dp"
-    android:background="@drawable/main_background">
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingTop="114dp" >
 
+	<ImageView
+		android:id="@+id/imageView1"
+		android:layout_width="204dp"
+		android:layout_height="40dp"
+		android:src="@drawable/triggr_logo" />
+	    
     <LinearLayout
         style="@style/InfoContainer"
-        android:background="@drawable/infobox" >
-
+        android:background="@drawable/infobox" 
+        android:layout_width="312dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="114dp">
+       
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pair_instructions"
-            android:textSize="17dp" />
+            android:textSize="17dp"
+            android:textColor="#FFFFFF" />
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp" >
-
-        <TextView
-            android:id="@+id/pairKeyPromptTextView"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/pair_key_prompt"
-            android:textSize="24dp" 
-            android:gravity="bottom"/>
+        android:layout_marginTop="26dp" >
 
         <EditText
             android:id="@+id/pairKeyTextBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textNoSuggestions" />
+            android:layout_weight="6"
+            android:ems="6"
+            android:inputType="textNoSuggestions" 
+            android:layout_marginTop="34dp"/>
+        
+        <Button
+	        android:id="@+id/pairButton"
+	        style="@style/CustomButton"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="30dp"
+	        android:layout_weight="7"
+	        android:layout_marginLeft="12dp"
+	        android:background="@drawable/button_gradient"
+	        android:onClick="pairWithDevice"
+	        android:text="@string/pair_button_text" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/pairButton"
-        style="@style/CustomButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/button_gradient"
-        android:onClick="pairWithDevice"
-        android:text="@string/pair_button_text" />
 
 </LinearLayout>

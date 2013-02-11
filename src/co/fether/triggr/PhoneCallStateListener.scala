@@ -7,6 +7,10 @@ import android.util.Log
 import android.content.ServiceConnection
 import android.content.ComponentName
 import android.os.IBinder
+import android.net.Uri
+import android.provider.ContactsContract.PhoneLookup
+import android.content.ContentResolver
+import android.provider.ContactsContract
 
 object PhoneCallStateListener {
   private var tag = classOf[PhoneCallStateListener].getName
@@ -38,8 +42,27 @@ class PhoneCallStateListener extends PhoneStateListener {
         Log.d( PhoneCallStateListener.tag, "Receiving phone call: " + incomingNumber )
         lastState = TelephonyManager.CALL_STATE_RINGING
 
+        val uri = Uri.withAppendedPath( PhoneLookup.CONTENT_FILTER_URI, Uri.encode( incomingNumber ) )
+        var callerName = {
+          Preferences.getService() match {
+            case Some( s ) => {
+              val resolver = s.getContentResolver()
+              val cursor = resolver.query( uri, Array( "display_name" ), null, null, null )
+
+              if ( cursor.moveToFirst() ) {
+                cursor.getString( cursor.getColumnIndex( "display_name" ) );
+              } else {
+                "Unknown Caller"
+              }
+            }
+            case None => {
+              "Unknown Caller"
+            }
+          }
+        }
+        
         Preferences.getPairedDeviceId() match {
-          case Some( s ) => ServerActor ! ServerActor.IncomingCall( s, incomingNumber )
+          case Some( s ) => ServerActor ! ServerActor.IncomingCall( s, incomingNumber, callerName )
           case None => Log.w( PhoneCallStateListener.tag, "No paired device" )
         }
       }

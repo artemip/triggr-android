@@ -11,6 +11,7 @@ import scala.actors.Actor
 import android.widget.Toast
 import java.io.DataOutputStream
 import java.util.concurrent._
+import android.telephony.PhoneNumberUtils
 
 object HeartbeatGenerator {
   private val scheduler = Executors.newSingleThreadScheduledExecutor()
@@ -27,12 +28,12 @@ object ServerActor extends Actor {
 
   case object Heartbeat
   case class Pair( pairingKey : String )
-  case class IncomingCall( deviceId : String, number : String )
+  case class IncomingCall( deviceId : String, number : String, name : String )
   case class OutgoingCall( deviceId : String )
   case class EndCall( deviceId : String )
 
   private val requestActor = new HTTPRequestActor()
-  private var selectedServer : Option[String] = Some( "http://api.cbridgeapp.com:8000" )
+  private var selectedServer : Option[String] = Some( "http://api.triggrapp.com:8000" )
 
   def act() {
     requestActor.start()
@@ -73,7 +74,7 @@ object ServerActor extends Actor {
             Map( "device_id" -> Preferences.getDeviceId().toString(), "pairing_key" -> k ),
             handler )
         }
-        case IncomingCall( deviceId, number ) => {
+        case IncomingCall( deviceId, number, name) => {
           def handler( response : Option[String] ) {
             response match {
               case Some( s : String ) => {
@@ -91,7 +92,7 @@ object ServerActor extends Actor {
 
           requestActor ! HTTPRequestActor.PostRequest(
             getFullURL( "events" ),
-            Map( "device_id" -> deviceId, "event" -> "incoming_call:".concat( number ) ),
+            Map( "device_id" -> deviceId, "event" -> ("incoming_call:" concat PhoneNumberUtils.formatNumber( number ) concat "," concat name) ),
             handler )
         }
         case OutgoingCall( deviceId ) => {
