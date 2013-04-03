@@ -30,6 +30,26 @@ object PhoneCallStateListener {
   def isListening = {
     listener.isDefined
   }
+
+  private def getCallerName( number : String ) = {
+    val uri = Uri.withAppendedPath( PhoneLookup.CONTENT_FILTER_URI, Uri.encode( number ) )
+
+    Preferences.getService() match {
+      case Some( s ) => {
+        val resolver = s.getContentResolver()
+        val cursor = resolver.query( uri, Array( "display_name" ), null, null, null )
+
+        if ( cursor.moveToFirst() ) {
+          cursor.getString( cursor.getColumnIndex( "display_name" ) );
+        } else {
+          "Unknown Contact"
+        }
+      }
+      case None => {
+        "Unknown Contact"
+      }
+    }
+  }
 }
 
 class PhoneCallStateListener extends PhoneStateListener {
@@ -42,24 +62,7 @@ class PhoneCallStateListener extends PhoneStateListener {
         Log.d( PhoneCallStateListener.tag, "Receiving phone call: " + incomingNumber )
         lastState = TelephonyManager.CALL_STATE_RINGING
 
-        val uri = Uri.withAppendedPath( PhoneLookup.CONTENT_FILTER_URI, Uri.encode( incomingNumber ) )
-        var callerName = {
-          Preferences.getService() match {
-            case Some( s ) => {
-              val resolver = s.getContentResolver()
-              val cursor = resolver.query( uri, Array( "display_name" ), null, null, null )
-
-              if ( cursor.moveToFirst() ) {
-                cursor.getString( cursor.getColumnIndex( "display_name" ) );
-              } else {
-                "Unknown Caller"
-              }
-            }
-            case None => {
-              "Unknown Caller"
-            }
-          }
-        }
+        val callerName = PhoneCallStateListener.getCallerName(incomingNumber)
         
         Preferences.getPairedDeviceId() match {
           case Some( s ) => ServerActor ! ServerActor.IncomingCall( s, incomingNumber, callerName )
@@ -72,15 +75,20 @@ class PhoneCallStateListener extends PhoneStateListener {
           lastState = TelephonyManager.CALL_STATE_OFFHOOK
           return
         }
+        
+        val outgoingNumber = OutgoingCallReceiver.outgoingNumber.getOrElse("")
+        val callerName = PhoneCallStateListener.getCallerName(outgoingNumber)
 
         //Outgoing call
-        Log.d( PhoneCallStateListener.tag, "Outgoing phone call: " + incomingNumber )
+        Log.d( PhoneCallStateListener.tag, "Outgoing phone call: " + outgoingNumber )
         lastState = TelephonyManager.CALL_STATE_OFFHOOK
 
         Preferences.getPairedDeviceId() match {
-          case Some( s ) => ServerActor ! ServerActor.OutgoingCall( s )
+          case Some( s ) => ServerActor ! ServerActor.OutgoingCall( s, outgoingNumber, callerName )
           case None => Log.w( PhoneCallStateListener.tag, "No paired device" )
         }
+        
+        OutgoingCallReceiver.outgoingNumber = None
       }
       case TelephonyManager.CALL_STATE_IDLE => {
         //Phone call ended

@@ -13,10 +13,15 @@ import android.widget.EditText
 import android.content.ServiceConnection
 import android.content.ComponentName
 import android.os.IBinder
-import co.fether.triggr.R;
+import android.widget.LinearLayout
+import android.view.animation.AnimationUtils
+import android.widget.ViewSwitcher
 
 class PairingActivity extends Activity {
   var pairKeyTextBox : EditText = null
+  var connectView : LinearLayout = null
+  var disconnectView : LinearLayout = null
+  var viewSwitcher : ViewSwitcher = null
 
   override def onCreate( savedInstanceState : Bundle ) {
     super.onCreate( savedInstanceState )
@@ -28,17 +33,31 @@ class PairingActivity extends Activity {
     getApplicationContext().startService( serviceIntent );
 
     pairKeyTextBox = findViewById( R.id.pairKeyTextBox ).asInstanceOf[EditText]
+    connectView = findViewById(R.id.ConnectView).asInstanceOf[LinearLayout]
+    disconnectView = findViewById(R.id.DisconnectView).asInstanceOf[LinearLayout]
+    viewSwitcher = findViewById(R.id.viewSwitcher).asInstanceOf[ViewSwitcher]
+    
+    if (!Preferences.getPairedDeviceId().isEmpty) {
+    	viewSwitcher.showNext()
+    }
   }
 
   override def onCreateOptionsMenu( menu : Menu ) : Boolean = {
     getMenuInflater().inflate( R.menu.activity_phone_call_listener, menu )
     return true
   }
-
+  
   def pairWithDevice( view : View ) {
     val pairingKey = pairKeyTextBox.getText().toString()
     ServerActor ! ServerActor.Pair( pairingKey )
 
     pairKeyTextBox.setText( "" )
+  }
+  
+  def disconnectDevice( view : View ) {
+    ServerActor ! ServerActor.Disconnect
+    Preferences.setPairedDeviceId(None)
+    
+    viewSwitcher.showPrevious()
   }
 }

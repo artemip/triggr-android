@@ -27,9 +27,10 @@ object ServerActor extends Actor {
   val tag = "co.fether.triggr.ServerActor"
 
   case object Heartbeat
+  case object Disconnect
   case class Pair( pairingKey : String )
   case class IncomingCall( deviceId : String, number : String, name : String )
-  case class OutgoingCall( deviceId : String )
+  case class OutgoingCall( deviceId : String, number : String, name : String  )
   case class EndCall( deviceId : String )
 
   private val requestActor = new HTTPRequestActor()
@@ -47,6 +48,13 @@ object ServerActor extends Actor {
             getFullURL( "heartbeat" ),
             Map( "device_id" -> Preferences.getDeviceId().toString(), "paired_device_id" -> Preferences.getPairedDeviceId().getOrElse( "" ) ) )
         }
+        case Disconnect => {
+        Log.d( tag, "Disconnecting" )
+
+          requestActor ! HTTPRequestActor.PostRequest(
+            getFullURL( "disconnect" ),
+            Map( "device_id" -> Preferences.getDeviceId().toString(), "paired_device_id" -> Preferences.getPairedDeviceId().getOrElse( "" ) ) )  
+        }
         case Pair( k ) => {
           Log.d( tag, "Pairing with new device using key " + k )
 
@@ -58,7 +66,7 @@ object ServerActor extends Actor {
                   case Some( s ) => s.showToast( "Pairing successful.", Toast.LENGTH_SHORT )
                   case None =>
                 }
-                Preferences.setPairedDeviceId( s )
+                Preferences.setPairedDeviceId( Some(s) )
               }
               case None => {
                 Preferences.getService() match {
@@ -95,7 +103,7 @@ object ServerActor extends Actor {
             Map( "device_id" -> deviceId, "event" -> ("incoming_call:" concat PhoneNumberUtils.formatNumber( number ) concat "," concat name) ),
             handler )
         }
-        case OutgoingCall( deviceId ) => {
+        case OutgoingCall( deviceId, number, name ) => {
           def handler( response : Option[String] ) {
             response match {
               case Some( s : String ) => {
@@ -113,7 +121,7 @@ object ServerActor extends Actor {
 
           requestActor ! HTTPRequestActor.PostRequest(
             getFullURL( "events" ),
-            Map( "device_id" -> deviceId, "event" -> "outgoing_call" ),
+            Map( "device_id" -> deviceId, "event" -> ("outgoing_call:" concat PhoneNumberUtils.formatNumber( number ) concat "," concat name) ),
             handler )
         }
         case EndCall( deviceId ) => {

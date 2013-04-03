@@ -9,6 +9,8 @@ import java.util.UUID
 import android.util.Log
 import android.app.Activity
 import android.widget.Toast
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 
 object Preferences {
   private val PREFS_FILE = "device_id.xml";
@@ -31,6 +33,20 @@ object Preferences {
       }
       case None => {
         Log.e( "TriggrApp", "Attempt to set preference without providing AppContext" )
+      }
+    }
+  }
+  
+  private def removePreference (key : String ) {
+    service match {
+      case Some( c ) => {
+        val prefs = c.getSharedPreferences( PREFS_FILE, 0 )
+
+        // Remove the value from the prefs file
+        prefs.edit().remove( key ).commit()
+      }
+      case None => {
+        Log.e( "TriggrApp", "Attempt to remove preference without providing AppContext" )
       }
     }
   }
@@ -66,9 +82,25 @@ object Preferences {
     activity
   }
 
-  def setPairedDeviceId( deviceId : String ) {
-    pairedDeviceId = Some( deviceId )
-    setPreference( PREFS_PAIRED_DEVICE_ID, deviceId )
+  def setPairedDeviceId( deviceId : Option[String] ) {
+    pairedDeviceId = deviceId
+    deviceId match {
+      case Some(s) => {
+    	  setPreference( PREFS_PAIRED_DEVICE_ID, s )
+    	  activity match {
+    	    case Some(a : PairingActivity) => a.runOnUiThread(new Runnable() {
+		      override def run() {
+		        a.pairKeyTextBox.clearFocus()
+		        a.viewSwitcher.showNext()
+		        val imm = a.getSystemService(Context.INPUT_METHOD_SERVICE).asInstanceOf[InputMethodManager];
+		        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+		      }
+		    })
+    	    case _ =>
+    	  }
+      }
+      case None => removePreference( PREFS_PAIRED_DEVICE_ID )
+    }
   }
 
   def getPairedDeviceId() : Option[String] = {
