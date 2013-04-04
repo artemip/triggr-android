@@ -56,7 +56,6 @@ class PairingActivity extends Activity {
   
   def disconnectDevice( view : View ) {
     ServerActor ! ServerActor.Disconnect
-    Preferences.setPairedDeviceId(None)
     
     viewSwitcher.showPrevious()
   }

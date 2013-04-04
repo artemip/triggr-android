@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
-    android:paddingTop="114dp" >
+    android:paddingTop="74dp" >
 
 	<ImageView
 		android:id="@+id/imageView1"
@@ -21,18 +21,19 @@
         android:layout_height="wrap_content"
         android:inAnimation="@anim/fade_in"
         android:outAnimation="@anim/fade_out">
+        
 		<LinearLayout
 		    android:id="@+id/ConnectView"
-		    android:layout_width="wrap_content"
+		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content" 
 		    android:orientation="vertical">
 	
 			<LinearLayout
 		        style="@style/InfoContainer"
 		        android:background="@drawable/infobox" 
-		        android:layout_width="312dp"
+		        android:layout_width="match_parent"
 		        android:layout_height="68dp"
-		        android:layout_marginTop="114dp">
+		        android:layout_marginTop="140dp">
 		       
 		        <TextView
 		            android:layout_width="wrap_content"
@@ -46,7 +47,7 @@
 		    <LinearLayout
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
-		        android:layout_marginTop="26dp" >
+		        android:layout_marginTop="36dp" >
 		
 		        <EditText
 		            android:id="@+id/pairKeyTextBox"
@@ -73,16 +74,16 @@
 	
 		<LinearLayout
 		    android:id="@+id/DisconnectView"
-		    android:layout_width="wrap_content"
+		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:orientation="vertical"
 		    android:visibility="gone">
 		    
 		    <LinearLayout
 		        style="@style/InfoContainer"
-		        android:layout_width="312dp"
+		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
-		        android:layout_marginTop="64dp"
+		        android:layout_marginTop="44dp"
 		        android:layout_weight="0.38"
 		        android:paddingTop="30dp"
 		        android:paddingBottom="30dp"
@@ -90,7 +91,7 @@
 		        android:orientation="vertical">
 	
 		        <LinearLayout
-		            android:layout_width="wrap_content"
+		            android:layout_width="match_parent"
 		    		android:layout_height="wrap_content"
 		            android:orientation="horizontal"
 		            android:layout_marginBottom="35dp"
@@ -100,21 +101,23 @@
 			            android:id="@+id/imageView2"
 			            android:layout_width="wrap_content"
 			            android:layout_height="wrap_content"
+			            android:layout_weight="1"
 			            android:src="@drawable/computer" />
 		
 			        <ImageView
 			            android:id="@+id/imageView3"
 			            android:layout_width="wrap_content"
+			            android:layout_weight="1"
 			            android:layout_height="wrap_content"
 			            android:layout_marginTop="35dp"
-			            android:layout_marginRight="30dp"
-			            android:layout_marginLeft="25dp"
+			            
 			            android:src="@drawable/plus" />
 		
 			        <ImageView
 			            android:id="@+id/imageView4"
 			            android:layout_width="wrap_content"
 			            android:layout_height="wrap_content"
+			            android:layout_weight="1"
 			            android:layout_marginTop="5dp"
 			            android:src="@drawable/phone" />
 		        </LinearLayout>
@@ -123,7 +126,7 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:text="@string/paired_text"
-		            android:textSize="14dp"
+		            android:textSize="20dp"
 		            android:textColor="#FFFFFF" />
 		        
 		    </LinearLayout>

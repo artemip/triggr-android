@@ -17,7 +17,12 @@ object HeartbeatGenerator {
   private val scheduler = Executors.newSingleThreadScheduledExecutor()
 
   private val callback = new Runnable {
-    def run = ServerActor ! ServerActor.Heartbeat
+    def run = {
+      Preferences.getPairedDeviceId() match {
+        case Some(x) => ServerActor ! ServerActor.Heartbeat
+        case _ =>
+      }
+    }
   }
 
   def start() = scheduler.scheduleAtFixedRate( callback, 0, 3, TimeUnit.MINUTES )
@@ -53,7 +58,9 @@ object ServerActor extends Actor {
 
           requestActor ! HTTPRequestActor.PostRequest(
             getFullURL( "disconnect" ),
-            Map( "device_id" -> Preferences.getDeviceId().toString(), "paired_device_id" -> Preferences.getPairedDeviceId().getOrElse( "" ) ) )  
+            Map( "device_id" -> Preferences.getDeviceId().toString(), "paired_device_id" -> Preferences.getPairedDeviceId().getOrElse( "" ) ) )
+            
+          Preferences.setPairedDeviceId(None)
         }
         case Pair( k ) => {
           Log.d( tag, "Pairing with new device using key " + k )
