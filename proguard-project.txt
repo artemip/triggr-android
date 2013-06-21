@@ -45,7 +45,7 @@
 #(org.xml.sax.EntityResolver)Class.forName(variable).newInstance()
 
 -dontwarn **$$anonfun$*
--dontwarn co.fether.triggrtrial**
+-dontwarn co.fether.triggr**
 -dontwarn scala.beans.ScalaBeanInfo
 -dontwarn scala.collection.generic.GenTraversableFactory
 -dontwarn scala.collection.immutable.RedBlack$Empty
@@ -86,7 +86,7 @@
             SourceFile,LineNumberTable,Annotation,EnclosingMethod
 
 # line below is probably not needed now with the addition of the lines that follow it
--keep class co.fether.triggrtrial**
+-keep class co.fether.triggr**
 
 # these should hopefully make any specific changes for a new project no longer needed so you can just drop in the proguard file
 -keep public class * extends android.app.Activity

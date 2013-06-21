@@ -33,7 +33,7 @@
         </activity>
 
         <service 
-            android:name="co.fether.triggr.TriggrService" 
+            android:name="co.fether.triggr.TriggrService"
             android:label="Triggr Service"
             android:launchMode="singleTop"
             android:exported="false">
@@ -42,7 +42,7 @@
 		    </intent-filter>
 		</service>
         
-        <receiver android:name=".PhoneCallBroadcastReceiver">
+        <receiver android:name="co.fether.triggr.PhoneCallBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
