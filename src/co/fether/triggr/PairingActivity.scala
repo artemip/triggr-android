@@ -1,20 +1,12 @@
-package co.fether.triggr;
+package co.fether.triggr
 
 import android.os.Bundle
 import android.app.Activity
 import android.content.Intent
-import android.content.IntentFilter
 import android.view.Menu
-import android.view.MenuItem
-import android.util.Log
-import android.os.Handler
 import android.view.View
 import android.widget.EditText
-import android.content.ServiceConnection
-import android.content.ComponentName
-import android.os.IBinder
 import android.widget.LinearLayout
-import android.view.animation.AnimationUtils
 import android.widget.ViewSwitcher
 
 class PairingActivity extends Activity {
@@ -29,8 +21,8 @@ class PairingActivity extends Activity {
 
     Preferences.setMainActivity( this )
 
-    var serviceIntent = new Intent( "co.fether.triggr.TriggrService" );
-    getApplicationContext().startService( serviceIntent );
+    val serviceIntent = new Intent( "co.fether.triggr.TriggrService" )
+    getApplicationContext().startService( serviceIntent )
 
     pairKeyTextBox = findViewById( R.id.pairKeyTextBox ).asInstanceOf[EditText]
     connectView = findViewById(R.id.ConnectView).asInstanceOf[LinearLayout]
@@ -44,7 +36,7 @@ class PairingActivity extends Activity {
 
   override def onCreateOptionsMenu( menu : Menu ) : Boolean = {
     getMenuInflater().inflate( R.menu.activity_phone_call_listener, menu )
-    return true
+    true
   }
   
   def pairWithDevice( view : View ) {

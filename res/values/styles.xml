@@ -1,6 +1,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="CustomTheme" parent="android:Theme.Holo">
+    <style name="CustomTheme" parent="android:Theme">
     	<item name="android:windowBackground">@drawable/main_background</item>   
     	<item name="android:windowNoTitle">true</item> 
     </style>
@@ -28,4 +28,7 @@
 	    <item name="android:padding">12dp</item> 
     </style>
 
+    <style name="CodeInput">
+        <item name="android:layout_marginTop">29dp</item>
+    </style>
 </resources>

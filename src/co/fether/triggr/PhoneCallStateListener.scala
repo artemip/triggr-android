@@ -1,16 +1,9 @@
 package co.fether.triggr
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
-import android.os.AsyncTask
-import android.os.StrictMode
 import android.util.Log
-import android.content.ServiceConnection
-import android.content.ComponentName
-import android.os.IBinder
 import android.net.Uri
 import android.provider.ContactsContract.PhoneLookup
-import android.content.ContentResolver
-import android.provider.ContactsContract
 
 object PhoneCallStateListener {
   private var tag = classOf[PhoneCallStateListener].getName
@@ -40,7 +33,7 @@ object PhoneCallStateListener {
         val cursor = resolver.query( uri, Array( "display_name" ), null, null, null )
 
         if ( cursor.moveToFirst() ) {
-          cursor.getString( cursor.getColumnIndex( "display_name" ) );
+          cursor.getString( cursor.getColumnIndex( "display_name" ) )
         } else {
           "Unknown Contact"
         }

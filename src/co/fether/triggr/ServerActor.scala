@@ -2,11 +2,6 @@ package co.fether.triggr
 
 import android.util.Log
 import java.net._
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import android.os.AsyncTask
-import scala.concurrent.ops._
-import scala.collection.mutable.ListBuffer
 import scala.actors.Actor
 import android.widget.Toast
 import java.io.DataOutputStream

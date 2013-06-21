@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.telephony.TelephonyManager
 import android.telephony.PhoneStateListener
-import android.util.Log
 
 class PhoneCallBroadcastReceiver extends BroadcastReceiver {
   override def onReceive( context : Context, intent : Intent ) {

@@ -1,20 +1,17 @@
 package co.fether.triggr
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.provider.Settings.Secure
 import android.telephony.TelephonyManager
 import java.io.UnsupportedEncodingException
 import java.util.UUID
 import android.util.Log
 import android.app.Activity
-import android.widget.Toast
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 
 object Preferences {
-  private val PREFS_FILE = "device_id.xml";
-  private val PREFS_DEVICE_ID = "device_id";
+  private val PREFS_FILE = "device_id.xml"
+  private val PREFS_DEVICE_ID = "device_id"
   private val PREFS_PAIRED_DEVICE_ID = "connected_device_id"
 
   private var service : Option[TriggrService] = None
@@ -92,8 +89,8 @@ object Preferences {
 		      override def run() {
 		        a.pairKeyTextBox.clearFocus()
 		        a.viewSwitcher.showNext()
-		        val imm = a.getSystemService(Context.INPUT_METHOD_SERVICE).asInstanceOf[InputMethodManager];
-		        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+		        val imm = a.getSystemService(Context.INPUT_METHOD_SERVICE).asInstanceOf[InputMethodManager]
+		        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
 		      }
 		    })
     	    case _ =>
@@ -126,7 +123,7 @@ object Preferences {
               // Use the ids previously computed and stored in the prefs file
               uuid = Some( UUID.fromString( id ) )
             } else {
-              val androidId = Secure.getString( c.getContentResolver(), Secure.ANDROID_ID );
+              val androidId = Secure.getString( c.getContentResolver(), Secure.ANDROID_ID )
 
               // Use the Android ID unless it's broken, in which case fallback on deviceId,
               // unless it's not available, then fallback on a random number which we store
@@ -135,7 +132,7 @@ object Preferences {
                 if ( !"9774d56d682e549c".equals( androidId ) ) {
                   uuid = Some( UUID.nameUUIDFromBytes( androidId.getBytes( "utf8" ) ) )
                 } else {
-                  val deviceId = ( c.getSystemService( Context.TELEPHONY_SERVICE ).asInstanceOf[TelephonyManager] ).getDeviceId()
+                  val deviceId = c.getSystemService( Context.TELEPHONY_SERVICE ).asInstanceOf[TelephonyManager].getDeviceId()
 
                   uuid = Some( if ( deviceId != null ) UUID.nameUUIDFromBytes( deviceId.getBytes( "utf8" ) ) else UUID.randomUUID() )
                 }

@@ -1,12 +1,13 @@
 package co.fether.triggr
 import android.os.Binder
-import android.content.Intent
+import android.content.{Context, Intent}
 import android.util.Log
 import android.os.IBinder
 import android.widget.Toast
 import android.os.Handler
-import android.app.Service
+import android.app.{NotificationManager, PendingIntent, Service}
 import android.os.Looper
+import android.support.v4.app.NotificationCompat
 
 object TriggrService {
   val tag = classOf[TriggrService].getName()
@@ -19,7 +20,7 @@ object TriggrService {
 
 class TriggrService extends Service {
   val binder = new TriggrService.TriggrServiceBinder( this )
-  var handler : Handler = null;
+  var handler : Handler = null
 
   override def onCreate() {
     Preferences.setService( this )
@@ -31,7 +32,8 @@ class TriggrService extends Service {
   override def onStartCommand( intent : Intent, flags : Int, startId : Int ) : Int = {
     Log.i( TriggrService.tag, "Started service." )
     handler = new Handler( Looper.getMainLooper() )
-    return Service.START_STICKY
+
+    Service.START_STICKY
   }
 
   override def onBind( intent : Intent ) : IBinder = {
@@ -44,8 +46,25 @@ class TriggrService extends Service {
 
     handler.post( new Runnable() {
       override def run() {
-        Toast.makeText( ctx, text, duration ).show()
+        Toast.makeText( ctx, "Triggr: " + text, duration ).show()
       }
     } )
+  }
+
+  def createNotification( title : String, subtext : String ) {
+    val ctx = getApplicationContext()
+    val intent = new Intent(ctx, classOf[PairingActivity])
+    val pIntent = PendingIntent.getActivity(ctx, 0, intent, 0)
+
+    val notificationManager = ctx.getSystemService(Context.NOTIFICATION_SERVICE).asInstanceOf[NotificationManager]
+    val notification = new NotificationCompat.Builder(ctx)
+                            .setSmallIcon(R.drawable.triggr_icon_48_white)
+                            .setContentTitle(title)
+                            .setContentText(subtext)
+                            .setContentIntent(pIntent)
+                            .setAutoCancel(true)
+                            .build()
+
+    notificationManager.notify(0, notification)
   }
 }

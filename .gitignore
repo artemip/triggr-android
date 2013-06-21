@@ -18,3 +18,7 @@ local.properties
 # Others
 proguard_*
 *.cache
+
+.idea/
+out/
+*.iml

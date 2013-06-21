@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="co.fether.triggr"
-    android:versionCode="1"
-    android:versionName="0.1" >
+    android:versionCode="2"
+    android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="14" />
+        android:targetSdkVersion="10" />
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -24,7 +24,8 @@
             android:name="co.fether.triggr.PairingActivity"
             android:label="@string/app_name"
             android:windowBackground="@drawable/main_background"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -34,6 +35,7 @@
         <service 
             android:name="co.fether.triggr.TriggrService" 
             android:label="Triggr Service"
+            android:launchMode="singleTop"
             android:exported="false">
 		    <intent-filter>
 		        <action android:name="co.fether.triggr.TriggrService" />

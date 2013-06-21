@@ -50,13 +50,13 @@
 		        android:layout_marginTop="36dp" >
 		
 		        <EditText
+                    style="@style/CodeInput"
 		            android:id="@+id/pairKeyTextBox"
 		            android:layout_width="0dp"
 		            android:layout_height="wrap_content"
 		            android:layout_weight="6"
 		            android:ems="6"
-		            android:inputType="textNoSuggestions" 
-		            android:layout_marginTop="34dp"/>
+		            android:inputType="textNoSuggestions" />
 		        
 		        <Button
 			        android:id="@+id/pairButton"
