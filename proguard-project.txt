@@ -123,8 +123,3 @@
 -keepclassmembers class * extends com.actionbarsherlock.ActionBarSherlock {
     <init>(android.app.Activity, int);
 }
-
-## Workaround for "java.lang.NoSuchMethodError: scala.collection.immutable.StringLike.toString"
--keep class scala.collection.SeqLike {
-    public protected *;
-}

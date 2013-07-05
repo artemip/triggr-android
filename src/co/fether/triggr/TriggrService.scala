@@ -58,7 +58,7 @@ class TriggrService extends Service {
 
     val notificationManager = ctx.getSystemService(Context.NOTIFICATION_SERVICE).asInstanceOf[NotificationManager]
     val notification = new NotificationCompat.Builder(ctx)
-                            .setSmallIcon(R.drawable.triggr_icon_48_white)
+                            .setSmallIcon(R.drawable.notification_icon)
                             .setContentTitle(title)
                             .setContentText(subtext)
                             .setContentIntent(pIntent)
