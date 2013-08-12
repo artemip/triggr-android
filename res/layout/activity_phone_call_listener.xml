@@ -14,41 +14,41 @@
 		android:layout_width="204dp"
 		android:layout_height="40dp"
 		android:src="@drawable/title" />
-	
+
 	<ViewSwitcher
 	    android:id="@+id/viewSwitcher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inAnimation="@anim/fade_in"
         android:outAnimation="@anim/fade_out">
-        
+
 		<LinearLayout
 		    android:id="@+id/ConnectView"
 		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content" 
+		    android:layout_height="wrap_content"
 		    android:orientation="vertical">
-	
+
 			<LinearLayout
 		        style="@style/InfoContainer"
-		        android:background="@drawable/infobox" 
+		        android:background="@drawable/infobox"
 		        android:layout_width="match_parent"
 		        android:layout_height="68dp"
 		        android:layout_marginTop="140dp">
-		       
+
 		        <TextView
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:text="@string/pair_instructions"
 		            android:textSize="14dp"
 		            android:textColor="#FFFFFF" />
-		
+
 		    </LinearLayout>
-		
+
 		    <LinearLayout
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_marginTop="36dp" >
-		
+
 		        <EditText
                     style="@style/CodeInput"
 		            android:id="@+id/pairKeyTextBox"
@@ -57,7 +57,7 @@
 		            android:layout_weight="6"
 		            android:ems="6"
 		            android:inputType="textNoSuggestions" />
-		        
+
 		        <Button
 			        android:id="@+id/pairButton"
 			        style="@style/CustomButton"
@@ -69,16 +69,16 @@
 			        android:background="@drawable/button_gradient"
 			        android:onClick="pairWithDevice"
 			        android:text="@string/pair_button_text" />
-		    </LinearLayout>    
+		    </LinearLayout>
 		</LinearLayout>
-	
+
 		<LinearLayout
 		    android:id="@+id/DisconnectView"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:orientation="vertical"
 		    android:visibility="gone">
-		    
+
 		    <LinearLayout
 		        style="@style/InfoContainer"
 		        android:layout_width="match_parent"
@@ -87,50 +87,33 @@
 		        android:layout_weight="0.38"
 		        android:paddingTop="30dp"
 		        android:paddingBottom="30dp"
-		        android:background="@drawable/infobox" 
+		        android:background="@drawable/infobox"
 		        android:orientation="vertical">
-	
+
 		        <LinearLayout
 		            android:layout_width="match_parent"
 		    		android:layout_height="wrap_content"
 		            android:orientation="horizontal"
 		            android:layout_marginBottom="35dp"
 		            android:layout_marginTop="15dp">
-		            
-		            <ImageView
-			            android:id="@+id/imageView2"
-			            android:layout_width="wrap_content"
-			            android:layout_height="wrap_content"
-			            android:layout_weight="1"
-			            android:src="@drawable/computer" />
-		
-			        <ImageView
-			            android:id="@+id/imageView3"
-			            android:layout_width="wrap_content"
-			            android:layout_weight="1"
-			            android:layout_height="wrap_content"
-			            android:layout_marginTop="35dp"
-			            
-			            android:src="@drawable/plus" />
-		
-			        <ImageView
-			            android:id="@+id/imageView4"
-			            android:layout_width="wrap_content"
-			            android:layout_height="wrap_content"
-			            android:layout_weight="1"
-			            android:layout_marginTop="5dp"
-			            android:src="@drawable/phone" />
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/connected_graphic" />
 		        </LinearLayout>
-		        
-		        <TextView 
+
+		        <TextView
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:text="@string/paired_text"
 		            android:textSize="20dp"
 		            android:textColor="#FFFFFF" />
-		        
+
 		    </LinearLayout>
-	
+
 		    <Button
 		        android:id="@+id/disconnectButton"
 		        style="@style/CustomButton"
@@ -141,7 +124,7 @@
 		        android:onClick="disconnectDevice"
 		        android:text="@string/disconnect_button_text" />
 		</LinearLayout>
-		    
+
 	</ViewSwitcher>
-	
+
 </LinearLayout>

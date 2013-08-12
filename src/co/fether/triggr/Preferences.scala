@@ -20,46 +20,55 @@ object Preferences {
 
   @volatile private var uuid : Option[UUID] = None
 
-  private def setPreference( key : String, value : String ) {
+  private def getContext() : Option[Context] = {
     service match {
-      case Some( c ) => {
+      case Some( s ) => Some(s)
+      case None => {
+        activity match {
+          case Some( a ) => Some(a)
+          case None => {
+            Log.e( "TriggrApp", "Cannot retrieve app context from service or activity" )
+
+            None
+          }
+        }
+      }
+    }
+  }
+
+  private def setPreference( key : String, value : String ) {
+    getContext() match {
+      case Some(c) => {
         val prefs = c.getSharedPreferences( PREFS_FILE, 0 )
 
         // Write the value out to the prefs file
         prefs.edit().putString( key, value ).commit()
       }
-      case None => {
-        Log.e( "TriggrApp", "Attempt to set preference without providing AppContext" )
-      }
+      case None =>
     }
   }
-  
+
   private def removePreference (key : String ) {
-    service match {
+    getContext() match {
       case Some( c ) => {
         val prefs = c.getSharedPreferences( PREFS_FILE, 0 )
 
         // Remove the value from the prefs file
         prefs.edit().remove( key ).commit()
       }
-      case None => {
-        Log.e( "TriggrApp", "Attempt to remove preference without providing AppContext" )
-      }
+      case None =>
     }
   }
 
   private def getPreference( key : String ) : Option[String] = {
-    service match {
+    getContext() match {
       case Some( c ) => {
         val prefs = c.getSharedPreferences( PREFS_FILE, 0 )
         val p = prefs.getString( key, null )
 
         if ( p == null ) None else Some( p )
       }
-      case None => {
-        Log.e( "TriggrApp", "Attempt to get preference without providing AppContext" )
-        None
-      }
+      case None => None
     }
   }
 
