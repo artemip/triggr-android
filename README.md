@@ -1,2 +1,2 @@
-Triggr-android
+Triggr for Android
 ===============
