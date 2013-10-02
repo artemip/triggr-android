@@ -10,11 +10,11 @@ import android.os.Looper
 import android.support.v4.app.NotificationCompat
 
 object TriggrService {
-  val tag = classOf[TriggrService].getName()
+  val tag = classOf[TriggrService].getName
 
   //Return  an instance of the service (not doing IPC)
   class TriggrServiceBinder( service : TriggrService ) extends Binder {
-    def getService() : TriggrService = service
+    def getService : TriggrService = service
   }
 }
 
@@ -25,13 +25,12 @@ class TriggrService extends Service {
   override def onCreate() {
     Preferences.setService( this )
 
-    ServerActor.start()
-    HeartbeatGenerator.start()
+    EventActor.start()
   }
 
   override def onStartCommand( intent : Intent, flags : Int, startId : Int ) : Int = {
     Log.i( TriggrService.tag, "Started service." )
-    handler = new Handler( Looper.getMainLooper() )
+    handler = new Handler( Looper.getMainLooper )
 
     Service.START_STICKY
   }
@@ -40,19 +39,25 @@ class TriggrService extends Service {
     binder
   }
 
-  //Show toast on UI thread
+  /**
+   * Show toast on UI thread
+   * @param text message to show
+   * @param duration duration for which toast will remain on the screen
+   */
   def showToast( text : String, duration : Int ) {
-    val ctx = getApplicationContext()
+    val ctx = getApplicationContext
 
-    handler.post( new Runnable() {
-      override def run() {
-        Toast.makeText( ctx, "Triggr: " + text, duration ).show()
+    handler.post(
+      new Runnable() {
+        override def run() {
+          Toast.makeText( ctx, "Triggr: " + text, duration ).show()
+        }
       }
-    } )
+    )
   }
 
   def createNotification( title : String, subtext : String ) {
-    val ctx = getApplicationContext()
+    val ctx = getApplicationContext
     val intent = new Intent(ctx, classOf[PairingActivity])
     val pIntent = PendingIntent.getActivity(ctx, 0, intent, 0)
 

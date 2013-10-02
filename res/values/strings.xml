@@ -1,10 +1,12 @@
 <resources>
 
     <string name="app_name">Triggr</string>
-    <string name="menu_settings">Settings</string>
-    <string name="pair_key_prompt">Pair Key:</string>
-	<string name="pair_instructions">Enter your computer\'s Pair Key below.</string>
-	<string name="pair_button_text">Pair</string>
+    <string name="download_desktop_app_instructions">First, install the Windows application from:</string>
+    <string name="website_name">www.triggrapp.com</string>
+    <string name="confirm_desktop_app_download">I have installed the Windows app!</string>
+    <string name="pair_instructions">Enter the Pair Key that is displayed on the Windows app</string>
+	<string name="pair_button_text">Connect</string>
 	<string name="disconnect_button_text">Disconnect</string>
-	<string name="paired_text">Paired</string>
+    <string name="paired_text">Connected</string>
+    <string name="connected">Connected</string>
 </resources>

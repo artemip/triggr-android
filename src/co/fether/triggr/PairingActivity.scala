@@ -2,53 +2,66 @@ package co.fether.triggr
 
 import android.os.Bundle
 import android.app.Activity
-import android.content.Intent
-import android.view.Menu
+import android.content.{Context, Intent}
 import android.view.View
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.ViewSwitcher
+import android.widget._
+import android.view.inputmethod.InputMethodManager
+import android.text.Html
 
 class PairingActivity extends Activity {
   var pairKeyTextBox : EditText = null
-  var connectView : LinearLayout = null
-  var disconnectView : LinearLayout = null
-  var viewSwitcher : ViewSwitcher = null
+  var viewFlipper : ViewFlipper = null
 
   override def onCreate( savedInstanceState : Bundle ) {
     super.onCreate( savedInstanceState )
-    setContentView( R.layout.activity_phone_call_listener )
+    setContentView( R.layout.pairing_activity )
 
     Preferences.setMainActivity( this )
 
-    val serviceIntent = new Intent( "co.fether.triggr.TriggrService" )
+    val serviceIntent = new Intent( TriggrService.getClass.getName )
     getApplicationContext().startService( serviceIntent )
 
     pairKeyTextBox = findViewById( R.id.pairKeyTextBox ).asInstanceOf[EditText]
-    connectView = findViewById(R.id.ConnectView).asInstanceOf[LinearLayout]
-    disconnectView = findViewById(R.id.DisconnectView).asInstanceOf[LinearLayout]
-    viewSwitcher = findViewById(R.id.viewSwitcher).asInstanceOf[ViewSwitcher]
-    
-    if (!Preferences.getPairedDeviceId().isEmpty) {
-    	viewSwitcher.showNext()
+    viewFlipper = findViewById(R.id.viewFlipper).asInstanceOf[ViewFlipper]
+
+    pairKeyTextBox.setHint(Html.fromHtml("<span style=\"text-color: gray; text-align: center; font-size: 10px\">Pair Key</span>"))
+
+    if (!Preferences.getConnectedDeviceId().isEmpty) { // The phone is paired
+    	viewFlipper.setDisplayedChild(2)
+    } else if (Preferences.getWasPreviouslyPaired()){ // The phone was paired at some point. Skip instructions
+      viewFlipper.setDisplayedChild(1)
     }
   }
 
-  override def onCreateOptionsMenu( menu : Menu ) : Boolean = {
-    getMenuInflater().inflate( R.menu.activity_phone_call_listener, menu )
-    true
+  def showPairingView( view : View) {
+    viewFlipper.setInAnimation(this, R.anim.in_from_right)
+    viewFlipper.setOutAnimation(this, R.anim.out_to_left)
+    viewFlipper.showNext()
   }
   
   def pairWithDevice( view : View ) {
     val pairingKey = pairKeyTextBox.getText().toString()
-    ServerActor ! ServerActor.Pair( pairingKey )
+    EventActor ! EventActor.Connect( pairingKey )
 
     pairKeyTextBox.setText( "" )
   }
+
+  def showDisconnectView() {
+    pairKeyTextBox.clearFocus()
+    viewFlipper.setInAnimation(this, R.anim.in_from_right)
+    viewFlipper.setOutAnimation(this, R.anim.out_to_left)
+    viewFlipper.showNext()
+
+    // Hide keyboard
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE).asInstanceOf[InputMethodManager]
+    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+  }
   
   def disconnectDevice( view : View ) {
-    ServerActor ! ServerActor.Disconnect
-    
-    viewSwitcher.showPrevious()
+    EventActor ! EventActor.Disconnect
+
+    viewFlipper.setInAnimation(this, R.anim.in_from_left)
+    viewFlipper.setOutAnimation(this, R.anim.out_to_right)
+    viewFlipper.showPrevious()
   }
 }

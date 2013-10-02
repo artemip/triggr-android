@@ -1,10 +1,10 @@
 <component name="libraryTable">
   <library name="scala">
     <CLASSES>
-      <root url="jar://C:/Program Files (x86)/scala/lib/scala-actors.jar!/" />
-      <root url="jar://C:/Program Files (x86)/scala/lib/scala-compiler.jar!/" />
-      <root url="jar://C:/Program Files (x86)/scala/lib/scala-library.jar!/" />
-      <root url="jar://C:/Program Files (x86)/scala/lib/scala-reflect.jar!/" />
+      <root url="jar:///usr/local/opt/scala/idea/lib/scala-actors.jar!/" />
+      <root url="jar:///usr/local/opt/scala/idea/lib/scala-library.jar!/" />
+      <root url="jar:///usr/local/opt/scala/idea/lib/scala-reflect.jar!/" />
+      <root url="jar:///usr/local/opt/scala/idea/lib/scalap.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

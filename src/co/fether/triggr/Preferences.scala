@@ -10,13 +10,15 @@ import android.app.Activity
 import android.view.inputmethod.InputMethodManager
 
 object Preferences {
-  private val PREFS_FILE = "device_id.xml"
+  private val PREFS_FILE = "preferences.xml"
   private val PREFS_DEVICE_ID = "device_id"
-  private val PREFS_PAIRED_DEVICE_ID = "connected_device_id"
+  private val PREFS_CONNECTED_DEVICE_ID = "connected_device_id"
+  private val PREFS_WAS_PREVIOUSLY_PAIRED = "was_previously_paired"
 
   private var service : Option[TriggrService] = None
   private var activity : Option[Activity] = None
-  private var pairedDeviceId : Option[String] = None
+  private var connectedDeviceId : Option[String] = None
+  private var wasPreviouslyPaired : Option[Boolean] = None
 
   @volatile private var uuid : Option[UUID] = None
 
@@ -88,33 +90,44 @@ object Preferences {
     activity
   }
 
-  def setPairedDeviceId( deviceId : Option[String] ) {
-    pairedDeviceId = deviceId
+  def setConnectedDeviceId( deviceId : Option[String] ) {
+    connectedDeviceId = deviceId
     deviceId match {
       case Some(s) => {
-    	  setPreference( PREFS_PAIRED_DEVICE_ID, s )
+    	  setPreference( PREFS_CONNECTED_DEVICE_ID, s )
     	  activity match {
     	    case Some(a : PairingActivity) => a.runOnUiThread(new Runnable() {
 		      override def run() {
-		        a.pairKeyTextBox.clearFocus()
-		        a.viewSwitcher.showNext()
-		        val imm = a.getSystemService(Context.INPUT_METHOD_SERVICE).asInstanceOf[InputMethodManager]
-		        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+            a.showDisconnectView()
 		      }
 		    })
     	    case _ =>
     	  }
       }
-      case None => removePreference( PREFS_PAIRED_DEVICE_ID )
+      case None => removePreference( PREFS_CONNECTED_DEVICE_ID )
     }
   }
 
-  def getPairedDeviceId() : Option[String] = {
-    if ( pairedDeviceId.isEmpty ) {
-      pairedDeviceId = getPreference( PREFS_PAIRED_DEVICE_ID )
+  def getConnectedDeviceId() : Option[String] = {
+    if ( connectedDeviceId.isEmpty ) {
+      connectedDeviceId = getPreference( PREFS_CONNECTED_DEVICE_ID )
     }
 
-    pairedDeviceId
+    connectedDeviceId
+  }
+
+  def getWasPreviouslyPaired() : Boolean = {
+    if (wasPreviouslyPaired.isEmpty) {
+      wasPreviouslyPaired = Some(getPreference(PREFS_WAS_PREVIOUSLY_PAIRED).isDefined)
+    }
+
+    wasPreviouslyPaired.get
+  }
+
+  def setWasPreviouslyPaired( flag : Boolean ) = {
+    if (flag) setPreference( PREFS_WAS_PREVIOUSLY_PAIRED, "yes" )
+
+    wasPreviouslyPaired = Some(flag)
   }
 
   def getDeviceId() : UUID = {
