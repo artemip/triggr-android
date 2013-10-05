@@ -18,6 +18,7 @@ object EventActor extends Actor {
   case class Connect( pairingKey : String )
   case class IncomingCall( number : String, name : String )
   case class OutgoingCall( number : String, name : String )
+  case class SMSMessage( number : String, name : String, message : String )
   case object EndCall
 
   // Actor that performs HTTP requests

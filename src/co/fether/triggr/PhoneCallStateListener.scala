@@ -23,34 +23,6 @@ object PhoneCallStateListener {
   def isListening = {
     listener.isDefined
   }
-
-  /**
-   * Attempt to retrieve the name of a contact, given the phone number.
-   *
-   * @param number the phone number of the contact
-   * @return
-   */
-  private def getCallerName( number : String ) = {
-    val uri = Uri.withAppendedPath( PhoneLookup.CONTENT_FILTER_URI, Uri.encode( number ) )
-
-    val defaultCallerName = "Unknown Contact"
-
-    Preferences.getService() match {
-      case Some( s ) => {
-        val resolver = s.getContentResolver
-        val cursor = resolver.query( uri, Array( "display_name" ), null, null, null )
-
-        if ( cursor.moveToFirst() ) {
-          cursor.getString( cursor.getColumnIndex( "display_name" ) )
-        } else {
-          defaultCallerName
-        }
-      }
-      case None => {
-        defaultCallerName
-      }
-    }
-  }
 }
 
 /**
@@ -66,7 +38,7 @@ class PhoneCallStateListener extends PhoneStateListener {
         Log.d( PhoneCallStateListener.tag, "Receiving phone call: " + incomingNumber )
         lastState = TelephonyManager.CALL_STATE_RINGING
 
-        val callerName = PhoneCallStateListener.getCallerName(incomingNumber.trim).trim
+        val callerName = Util.getCallerName(incomingNumber.trim).trim
 
         EventActor ! EventActor.IncomingCall( incomingNumber.trim, callerName.trim )
       }
@@ -78,7 +50,7 @@ class PhoneCallStateListener extends PhoneStateListener {
         }
         
         val outgoingNumber = OutgoingCallReceiver.outgoingNumber.getOrElse("").trim
-        val callerName = PhoneCallStateListener.getCallerName(outgoingNumber)
+        val callerName = Util.getCallerName(outgoingNumber)
 
         //Outgoing call
         Log.d( PhoneCallStateListener.tag, "Outgoing phone call: " + outgoingNumber )
