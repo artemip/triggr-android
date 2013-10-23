@@ -1,12 +1,54 @@
 <resources>
 
+    <!-- InstructionsView -->
     <string name="app_name">Triggr</string>
-    <string name="download_desktop_app_instructions">First, install the Windows application from:</string>
+    <string name="welcome_text">Welcome</string>
+    <string name="download_desktop_app_instructions">Install the Triggr desktop app at</string>
     <string name="website_name">www.triggrapp.com</string>
-    <string name="confirm_desktop_app_download">I have installed the Windows app!</string>
-    <string name="pair_instructions">Enter the Pair Key that is displayed on the Windows app</string>
-	<string name="pair_button_text">Connect</string>
-	<string name="disconnect_button_text">Disconnect</string>
-    <string name="paired_text">Connected</string>
-    <string name="connected">Connected</string>
+    <string name="pairing_desktop_instructions">Show your desktop\'s Pair Key.</string>
+    <string name="pairing_mobile_instructions">Enter the Pair Key into the Triggr Android app.</string>
+    <string name="pairing_connect_instructions">Click "Connect".</string>
+    <string name="thanks_for_using">Thanks for using Triggr!</string>
+    <string name="feedback_instructions">We encourage your feedback.</string>
+    <string name="rate_instructions">Please rate us!</string>
+    <string name="get_started">GET STARTED</string>
+
+    <!-- PairingView -->
+    <string name="pairing_prompt">Enter the Pair Key displayed on the desktop app.</string>
+    <string name="connect_button_text">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="connected">Connected.</string>
+
+    <!-- Image Descriptions -->
+    <string name="leftArrowContentDesc">Left Nav Arrow</string>
+    <string name="rightArrowContentDesc">Right Nav Arrow</string>
+    <string name="laptopContentDesc">Laptop</string>
+    <string name="desktopAppContentDesc">Desktop App View</string>
+    <string name="mobileAppContentDesc">Mobile App View</string>
+
+
+    <!-- Settings -->
+    <string name="desktop_notifications_title">Desktop Notifications</string>
+
+    <string name="phone_call_notifications_pref_title">Phone Call</string>
+    <string name="phone_call_notifications_pref_desc">Incoming and outgoing phone calls.</string>
+
+    <string name="text_message_notifications_pref_title">Text Message</string>
+    <string name="text_message_notifications_pref_desc">Incoming text messages.</string>
+
+    <string name="whatsapp_notifications_pref_title">WhatsApp Message</string>
+    <string name="whatsapp_notifications_pref_desc">Incoming WhatsApp messages.</string>
+
+    <string name="snapchat_notifications_pref_title">SnapChat Message</string>
+    <string name="snapchat_notifications_pref_desc">Incoming SnapChat messages.</string>
+
+
+    <string name="reactions_title">Reactions</string>
+
+    <string name="smart_volume_pref_title">Smart Volume</string>
+    <string name="smart_volume_pref_desc">Automatically lower desktop volume for call events.</string>
+
+    <string name="noise_alert_pref_title">Noise Alerts</string>
+    <string name="noise_alert_pref_desc">Make a desktop noise when receiving a notification.</string>
+
 </resources>

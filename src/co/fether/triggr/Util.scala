@@ -3,6 +3,11 @@ package co.fether.triggr
 import android.util.Log
 import android.net.Uri
 import android.provider.ContactsContract.PhoneLookup
+import android.content.Context
+import android.view.{ViewGroup, View}
+import android.widget.TextView
+import android.graphics.Typeface
+import android.view.inputmethod.InputMethodManager
 
 object Util {
   val tag = Util.getClass.getName
@@ -42,5 +47,32 @@ object Util {
         defaultCallerName
       }
     }
+  }
+
+  def overrideFonts(context : Context, view : View, typeface : Typeface) {
+    if (view == null)
+      return
+
+    try {
+      view match {
+        case vg : ViewGroup => {
+          for(i <- 0 until vg.getChildCount) {
+            overrideFonts(context, vg.getChildAt(i), typeface)
+          }
+        }
+        case tv : TextView => {
+          tv.setTypeface(typeface)
+        }
+      }
+    } catch {
+      case e : Exception => {
+        //No-op
+      }
+    }
+  }
+
+  def hideKeyboard(context : Context) {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE).asInstanceOf[InputMethodManager]
+    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
   }
 }

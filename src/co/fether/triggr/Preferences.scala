@@ -95,14 +95,6 @@ object Preferences {
     deviceId match {
       case Some(s) => {
     	  setPreference( PREFS_CONNECTED_DEVICE_ID, s )
-    	  activity match {
-    	    case Some(a : PairingActivity) => a.runOnUiThread(new Runnable() {
-		      override def run() {
-            a.showDisconnectView()
-		      }
-		    })
-    	    case _ =>
-    	  }
       }
       case None => removePreference( PREFS_CONNECTED_DEVICE_ID )
     }
@@ -145,7 +137,7 @@ object Preferences {
               // Use the ids previously computed and stored in the prefs file
               uuid = Some( UUID.fromString( id ) )
             } else {
-              val androidId = Secure.getString( c.getContentResolver(), Secure.ANDROID_ID )
+              val androidId = Secure.getString( c.getContentResolver, Secure.ANDROID_ID )
 
               // Use the Android ID unless it's broken, in which case fallback on deviceId,
               // unless it's not available, then fallback on a random number which we store
@@ -154,7 +146,7 @@ object Preferences {
                 if ( !"9774d56d682e549c".equals( androidId ) ) {
                   uuid = Some( UUID.nameUUIDFromBytes( androidId.getBytes( "utf8" ) ) )
                 } else {
-                  val deviceId = c.getSystemService( Context.TELEPHONY_SERVICE ).asInstanceOf[TelephonyManager].getDeviceId()
+                  val deviceId = c.getSystemService( Context.TELEPHONY_SERVICE ).asInstanceOf[TelephonyManager].getDeviceId
 
                   uuid = Some( if ( deviceId != null ) UUID.nameUUIDFromBytes( deviceId.getBytes( "utf8" ) ) else UUID.randomUUID() )
                 }
@@ -163,7 +155,7 @@ object Preferences {
               }
 
               // Write the value out to the prefs file
-              prefs.edit().putString( PREFS_DEVICE_ID, uuid.get.toString() ).commit()
+              prefs.edit().putString( PREFS_DEVICE_ID, uuid.get.toString ).commit()
             }
           }
           case None => {

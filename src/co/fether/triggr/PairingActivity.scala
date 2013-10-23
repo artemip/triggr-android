@@ -7,10 +7,15 @@ import android.view.View
 import android.widget._
 import android.view.inputmethod.InputMethodManager
 import android.text.Html
+import android.graphics.Typeface
 
 class PairingActivity extends Activity {
-  var pairKeyTextBox : EditText = null
+  var pairKeyEditText : EditText = null
   var viewFlipper : ViewFlipper = null
+
+  var regularTypeFace : Typeface = null
+  var lightTypeFace : Typeface = null
+  var ultralightTypeFace : Typeface = null
 
   override def onCreate( savedInstanceState : Bundle ) {
     super.onCreate( savedInstanceState )
@@ -18,19 +23,19 @@ class PairingActivity extends Activity {
 
     Preferences.setMainActivity( this )
 
-    val serviceIntent = new Intent( TriggrService.getClass.getName )
-    getApplicationContext().startService( serviceIntent )
+    regularTypeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeue.ttf")
+    lightTypeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf")
+    ultralightTypeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueUltraLight.ttf")
 
-    pairKeyTextBox = findViewById( R.id.pairKeyTextBox ).asInstanceOf[EditText]
-    viewFlipper = findViewById(R.id.viewFlipper).asInstanceOf[ViewFlipper]
+    // Set fonts
+    Util.overrideFonts(this, findViewById(android.R.id.content), lightTypeFace)
 
-    pairKeyTextBox.setHint(Html.fromHtml("<span style=\"text-color: gray; text-align: center; font-size: 10px\">Pair Key</span>"))
+    findViewById(R.id.connectedTextView).asInstanceOf[TextView].setTypeface(ultralightTypeFace)
 
-    if (!Preferences.getConnectedDeviceId().isEmpty) { // The phone is paired
-    	viewFlipper.setDisplayedChild(2)
-    } else if (Preferences.getWasPreviouslyPaired()){ // The phone was paired at some point. Skip instructions
-      viewFlipper.setDisplayedChild(1)
-    }
+    //pairKeyEditText = findViewById(R.id.pairKeyTextBox).asInstanceOf[EditText]
+    viewFlipper = findViewById(R.id.pairingViewFlipper).asInstanceOf[ViewFlipper]
+
+    //pairKeyEditText.setHint(Html.fromHtml("<span style=\"text-color: gray; text-align: center; font-size: 10px\">Pair Key</span>"))
   }
 
   def showPairingView( view : View) {
@@ -38,23 +43,21 @@ class PairingActivity extends Activity {
     viewFlipper.setOutAnimation(this, R.anim.out_to_left)
     viewFlipper.showNext()
   }
-  
+
   def pairWithDevice( view : View ) {
-    val pairingKey = pairKeyTextBox.getText().toString()
+    val pairingKey = pairKeyEditText.getText().toString()
     EventActor ! EventActor.Connect( pairingKey )
 
-    pairKeyTextBox.setText( "" )
+    pairKeyEditText.setText( "" )
   }
 
   def showDisconnectView() {
-    pairKeyTextBox.clearFocus()
+    pairKeyEditText.clearFocus()
     viewFlipper.setInAnimation(this, R.anim.in_from_right)
     viewFlipper.setOutAnimation(this, R.anim.out_to_left)
     viewFlipper.showNext()
 
-    // Hide keyboard
-    val imm = getSystemService(Context.INPUT_METHOD_SERVICE).asInstanceOf[InputMethodManager]
-    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+    Util.hideKeyboard(this)
   }
   
   def disconnectDevice( view : View ) {
@@ -63,5 +66,19 @@ class PairingActivity extends Activity {
     viewFlipper.setInAnimation(this, R.anim.in_from_left)
     viewFlipper.setOutAnimation(this, R.anim.out_to_right)
     viewFlipper.showPrevious()
+  }
+
+  def goToStore( view : View ) {
+
+  }
+
+  def goToShare( view : View ) {
+
+  }
+
+  def goToSettings( view : View ) {
+    PairingActivity.this.startActivity(
+      new Intent(PairingActivity.this, classOf[SettingsActivity])
+    )
   }
 }

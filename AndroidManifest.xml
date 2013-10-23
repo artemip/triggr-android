@@ -19,9 +19,10 @@
         android:icon="@drawable/launcher_icon"
         android:logo="@drawable/launcher_icon"
         android:label="@string/app_name"
-        android:theme="@style/CustomTheme" >
+        android:theme="@style/CustomTheme">
+
         <activity
-            android:name="co.fether.triggr.PairingActivity"
+            android:name="co.fether.triggr.SplashScreenActivity"
             android:label="@string/app_name"
             android:windowBackground="@drawable/main_background"
             android:screenOrientation="portrait"
@@ -31,6 +32,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="co.fether.triggr.PairingActivity"
+            android:label="@string/app_name"
+            android:windowBackground="@drawable/main_background"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop" />
+        <activity
+            android:name="co.fether.triggr.InstructionsActivity"
+            android:label="@string/app_name"
+            android:windowBackground="@drawable/main_background"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop" />
+        <activity
+            android:name="co.fether.triggr.SettingsActivity"
+            android:label="@string/app_name"
+            android:windowBackground="@drawable/main_background"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop" />
 
         <service 
             android:name="co.fether.triggr.TriggrService"
@@ -63,7 +82,9 @@
 		    </intent-filter>
 		</receiver>
 		
-		<receiver android:name="co.fether.triggr.OutgoingCallReceiver" android:exported="true" android:enabled="true">
+		<receiver android:name="co.fether.triggr.OutgoingCallReceiver"
+                  android:exported="true"
+                  android:enabled="true">
 	        <intent-filter>
 	            <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
 	        </intent-filter>

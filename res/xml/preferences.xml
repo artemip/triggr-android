@@ -1,0 +1,40 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/desktop_notifications_title"
+        android:key="pref_key_notification_settings">
+        <SwitchPreference
+            android:key="pref_call_notifications"
+            android:title="@string/phone_call_notifications_pref_title"
+            android:summary="@string/phone_call_notifications_pref_desc"
+            android:defaultValue="true" />
+        <SwitchPreference
+            android:key="pref_sms_notifications"
+            android:title="@string/text_message_notifications_pref_title"
+            android:summary="@string/text_message_notifications_pref_desc"
+            android:defaultValue="false" />
+        <SwitchPreference
+            android:key="prefs_whatsapp_notifications"
+            android:title="@string/whatsapp_notifications_pref_title"
+            android:summary="@string/whatsapp_notifications_pref_desc"
+            android:defaultValue="false" />
+        <SwitchPreference
+            android:key="pref_snapchat_notifications"
+            android:title="@string/snapchat_notifications_pref_title"
+            android:summary="@string/snapchat_notifications_pref_desc"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/reactions_title"
+        android:key="pref_key_reaction_settings">
+        <SwitchPreference
+            android:key="pref_smart_volume"
+            android:title="@string/smart_volume_pref_title"
+            android:summary="@string/smart_volume_pref_desc"
+            android:defaultValue="true" />
+        <SwitchPreference
+            android:key="pref_noise_alert"
+            android:title="@string/noise_alert_pref_title"
+            android:summary="@string/noise_alert_pref_desc"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+</PreferenceScreen>

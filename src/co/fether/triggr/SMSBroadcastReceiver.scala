@@ -10,10 +10,10 @@ class SMSBroadcastReceiver extends BroadcastReceiver {
     val extras = intent.getExtras
 
     if( intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED") && extras != null) {
-      val smsExtras = extras.get( "pdus" )
+      val smsExtras = extras.get( "pdus" ).asInstanceOf[Array[Object]]
 
       for(e <- smsExtras) {
-        val msg = SmsMessage.createFromPdu(e)
+        val msg = SmsMessage.createFromPdu(e.asInstanceOf[Array[Byte]])
         val number = msg.getOriginatingAddress
         val name = Util.getCallerName(number.trim)
         val message = msg.getMessageBody

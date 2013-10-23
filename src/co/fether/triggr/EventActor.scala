@@ -3,54 +3,22 @@ package co.fether.triggr
 import android.util.Log
 import scala.actors.Actor
 import android.widget.Toast
-import android.telephony.PhoneNumberUtils
-import net.liftweb.json._
-import net.liftweb.json.Serialization.{read, write}
+import co.fether.triggr.json._
 
 object EventActor extends Actor {
   val tag = EventActor.getClass.getName
-
-  // For JSON serialization
-  implicit val formats = Serialization.formats(NoTypeHints)
 
   // Event case classes
   case object Disconnect
   case class Connect( pairingKey : String )
   case class IncomingCall( number : String, name : String )
   case class OutgoingCall( number : String, name : String )
+  case class MissedCall( number : String, name : String )
   case class SMSMessage( number : String, name : String, message : String )
   case object EndCall
 
   // Actor that performs HTTP requests
   private val requestActor = new HTTPRequestActor()
-
-  /* JSON Request and Response case classes */
-
-  /*
-   * 'event' : {
-   *   'sender_id' : sender_id,
-   *   'type' : type,
-   *   'notification' : {
-   *     'icon_uri' : icon_uri,
-   *     'title' : title,
-   *     'subtitle' : subtitle,
-   *     'description' : description
-   *   },
-   *   'handlers' : ['notify', 'lower_volume', 'restore_volume', 'alert_noise']
-   * }
-   */
-  private case class Event( sender_id : String = Preferences.getDeviceId().toString, `type` : String, notification : Notification, handlers : List[String] = List("none") )
-  private case class Notification( icon_uri : String, title : String, subtitle : String = "", description : String = "" )
-
-  /*
-   * 'server_response' : {
-   *   'status' : {"ok", "error"},
-   *   'message' : message,
-   *   'paired_device_id' : paired_device_id
-   * }
-   */
-  private case class ServerResponse( status : String, message : String, paired_device_id : String )
-
 
   /**
    * Default handler for server responses. Shows an error message for erronous responses
@@ -59,7 +27,7 @@ object EventActor extends Actor {
   private def defaultResponseHandler(response : Option[String]) {
     response match {
       case Some( json : String ) => {
-        val serverResponse = read[ServerResponse](json)
+        val serverResponse = new ServerResponse().deserialize(json)
 
         serverResponse.status match {
           case "error" => {
@@ -85,12 +53,22 @@ object EventActor extends Actor {
           def responseHandler( response : Option[String] ) {
             response match {
               case Some( json : String ) => {
-                val serverResponse = read[ServerResponse](json)
+                val serverResponse = new ServerResponse().deserialize(json)
 
                 serverResponse.status match {
                   case "ok" => {
                     Log.d( tag, "Connection successful." )
                     Preferences.setConnectedDeviceId( Some(serverResponse.paired_device_id) )
+
+                    Preferences.getMainActivity() match {
+                      case Some(a : PairingActivity) => a.runOnUiThread(new Runnable() {
+                        override def run() {
+                          a.showDisconnectView()
+                        }
+                      })
+                      case _ =>
+                    }
+
                   }
                   case "error" => {
                     Util.showToast( serverResponse.message, Toast.LENGTH_LONG )
@@ -104,24 +82,24 @@ object EventActor extends Actor {
             }
           }
 
-          val notification = Notification(
+          val notification = new Notification(
             icon_uri = "",
             title = "Connected"
           )
 
-          val eventDefinition = Event(
+          val eventDefinition = new Event(
             `type` = "connect",
             notification = notification,
             handlers = List("notify")
           )
 
           requestActor ! HTTPRequestActor.POSTRequest(
-            path = "/connect",
+            path = "connect",
             params =
               Map(
                 "device_id" -> Preferences.getDeviceId().toString,
                 "pairing_key" -> k,
-                "event" -> write(eventDefinition)
+                "event" -> eventDefinition.serialize()
               ),
             responseHandler = responseHandler
           )
@@ -133,23 +111,23 @@ object EventActor extends Actor {
           Preferences.getConnectedDeviceId() match {
             case Some( id ) => {
 
-              val notification = Notification(
+              val notification = new Notification(
                 icon_uri = "",
                 title = "Disconnected"
               )
 
-              val eventDefinition = Event(
+              val eventDefinition = new Event(
                 `type` = "disconnect",
                 notification = notification,
                 handlers = List("notify")
               )
 
               requestActor ! HTTPRequestActor.POSTRequest(
-                path = "/disconnect",
+                path = "disconnect",
                 params = Map(
                     "device_id" -> Preferences.getDeviceId().toString,
                     "paired_device_id" -> id,
-                    "event" -> write(eventDefinition)
+                    "event" -> eventDefinition.serialize()
                   ),
                 responseHandler = defaultResponseHandler
               )
@@ -165,25 +143,25 @@ object EventActor extends Actor {
         case IncomingCall( number, name) => {
           Preferences.getConnectedDeviceId() match {
             case Some( deviceID ) => {
-              val notification = Notification(
+              val notification = new Notification(
                 icon_uri = "",
                 title = "Incoming Call",
-                subtitle = name.trim,
-                description = PhoneNumberUtils.formatNumber( number ).trim
+                subtitle = name,
+                description = number
               )
 
-              val eventDefinition = Event(
+              val eventDefinition = new Event(
                 `type` = "incoming_call",
                 notification = notification,
                 handlers = List("notify", "lower_volume")
               )
 
               requestActor ! HTTPRequestActor.POSTRequest(
-                path = "/events",
+                path = "events",
                 params =
                   Map(
                   "device_id" -> deviceID,
-                  "event" -> write(eventDefinition)
+                  "event" -> eventDefinition.serialize()
                   ),
                 responseHandler = defaultResponseHandler
               )
@@ -196,24 +174,24 @@ object EventActor extends Actor {
         case OutgoingCall( number, name ) => {
           Preferences.getConnectedDeviceId() match {
             case Some( deviceID ) => {
-              val notification = Notification(
+              val notification = new Notification(
                 icon_uri = "",
                 title = "Outgoing Call",
-                subtitle = name.trim,
-                description = PhoneNumberUtils.formatNumber( number ).trim
+                subtitle = name,
+                description = number
               )
 
-              val eventDefinition = Event(
+              val eventDefinition = new Event(
                 `type` = "outgoing_call",
                 notification = notification,
                 handlers = List("notify", "lower_volume")
               )
 
               requestActor ! HTTPRequestActor.POSTRequest(
-                path = "/events",
+                path = "events",
                 params = Map(
                     "device_id" -> deviceID,
-                    "event" -> write(eventDefinition)
+                    "event" -> eventDefinition.serialize()
                   ),
                 responseHandler = defaultResponseHandler
               )
@@ -223,25 +201,55 @@ object EventActor extends Actor {
             }
           }
         }
+        case MissedCall( number, name ) => {
+          Preferences.getConnectedDeviceId() match {
+            case Some( deviceID ) => {
+              val notification = new Notification(
+                icon_uri = "",
+                title = "Missed Call",
+                subtitle = name,
+                description = number
+              )
+
+              val eventDefinition = new Event(
+                `type` = "missed_call",
+                notification = notification,
+                handlers = List("notify", "restore_volume")
+              )
+
+              requestActor ! HTTPRequestActor.POSTRequest(
+                path = "events",
+                params = Map(
+                  "device_id" -> deviceID,
+                  "event" -> eventDefinition.serialize()
+                ),
+                responseHandler = defaultResponseHandler
+              )
+            }
+            case None => {
+              Log.d( tag, "No connected devices detected. Ignoring MissedCall event..." )
+            }
+          }
+        }
         case EndCall => {
           Preferences.getConnectedDeviceId() match {
             case Some( deviceID ) => {
-              val notification = Notification(
+              val notification = new Notification(
                 icon_uri = "",
                 title = "Call Ended"
               )
 
-              val eventDefinition = Event(
+              val eventDefinition = new Event(
                 `type` = "end_call",
                 notification = notification,
                 handlers = List("notify", "restore_volume")
               )
 
               requestActor ! HTTPRequestActor.POSTRequest(
-                path = "/events",
+                path = "events",
                 params = Map(
                     "device_id" -> deviceID,
-                    "event" -> write(eventDefinition)
+                    "event" -> eventDefinition.serialize()
                   ),
                 responseHandler = defaultResponseHandler
               )
