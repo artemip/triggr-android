@@ -30,12 +30,32 @@ class PairingActivity extends Activity {
     // Set fonts
     Util.overrideFonts(this, findViewById(android.R.id.content), lightTypeFace)
 
-    findViewById(R.id.connectedTextView).asInstanceOf[TextView].setTypeface(ultralightTypeFace)
+    //findViewById(R.id.connectedTextView).asInstanceOf[TextView].setTypeface(ultralightTypeFace)
 
-    //pairKeyEditText = findViewById(R.id.pairKeyTextBox).asInstanceOf[EditText]
+    pairKeyEditText = findViewById(R.id.pairKeyTextBox).asInstanceOf[EditText]
     viewFlipper = findViewById(R.id.pairingViewFlipper).asInstanceOf[ViewFlipper]
 
-    //pairKeyEditText.setHint(Html.fromHtml("<span style=\"text-color: gray; text-align: center; font-size: 10px\">Pair Key</span>"))
+    pairKeyEditText.setHint(Html.fromHtml("<span style=\"text-color: gray; text-align: center; font-size: 10px\">Pair Key</span>"))
+  }
+
+  def testSms(view : View) {
+    EventActor ! EventActor.SMSMessage("555-555-5555", "Test User", "My ovaries have been feeling really sore. Do you have any idea if it was the chicken?")
+  }
+
+  def testIncomingCall(view : View) {
+    EventActor ! EventActor.IncomingCall("555-555-5555", "Test User")
+  }
+
+  def testOutgoingCall(view : View) {
+    EventActor ! EventActor.OutgoingCall("555-555-5555", "Test User")
+  }
+
+  def testEndCall(view : View) {
+    EventActor ! EventActor.EndCall
+  }
+
+  def testMissedCall(view : View) {
+    EventActor ! EventActor.MissedCall("1-10-555-555-5555", "Artem Pasyechnyk Ishlamabadarisha")
   }
 
   def showPairingView( view : View) {
@@ -59,7 +79,7 @@ class PairingActivity extends Activity {
 
     Util.hideKeyboard(this)
   }
-  
+
   def disconnectDevice( view : View ) {
     EventActor ! EventActor.Disconnect
 

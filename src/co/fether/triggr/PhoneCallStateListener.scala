@@ -73,7 +73,7 @@ class PhoneCallStateListener extends PhoneStateListener {
 
           val callerName = Util.getCallerName(incomingNumber)
 
-          EventActor ! EventActor.MissedCall(PhoneNumberUtils.formatNumber( incomingNumber )trim, callerName.trim)
+          EventActor ! EventActor.MissedCall(PhoneNumberUtils.formatNumber( incomingNumber ).trim, callerName.trim)
         } else {
           Log.d( PhoneCallStateListener.tag, "Ended phone call: " + incomingNumber )
           EventActor ! EventActor.EndCall

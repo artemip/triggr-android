@@ -127,3 +127,7 @@
 -dontwarn javax.**
 
 -dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry
+
+-keep class scala.collection.SeqLike {
+    public protected *;
+}

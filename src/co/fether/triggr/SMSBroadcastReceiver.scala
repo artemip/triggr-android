@@ -14,9 +14,9 @@ class SMSBroadcastReceiver extends BroadcastReceiver {
 
       for(e <- smsExtras) {
         val msg = SmsMessage.createFromPdu(e.asInstanceOf[Array[Byte]])
-        val number = msg.getOriginatingAddress
+        val number = msg.getOriginatingAddress.trim
         val name = Util.getCallerName(number.trim)
-        val message = msg.getMessageBody
+        val message = msg.getMessageBody.trim
 
         EventActor ! EventActor.SMSMessage(number, name, message)
       }

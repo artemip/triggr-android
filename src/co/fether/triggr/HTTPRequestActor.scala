@@ -83,7 +83,7 @@ private class HTTPRequestActor extends Actor {
             responseHandler( response )
           } catch {
             case e : Exception => {
-              Log.e( "Server communication error: ", e.toString )
+              Log.e(tag, "Server communication error: " + e.toString)
               responseHandler( None )
             }
           } finally {

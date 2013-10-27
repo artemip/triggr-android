@@ -20,6 +20,27 @@ object EventActor extends Actor {
   // Actor that performs HTTP requests
   private val requestActor = new HTTPRequestActor()
 
+  // Event Handlers
+  object EventHandlers {
+    val Notify = "notify"
+    val AlertNoise = "alert_noise"
+    val LowerVolume = "lower_volume"
+    val RestoreVolume = "restore_volume"
+    val EndPairMode = "end_pair_mode"
+  }
+
+  object EventIcons {
+    val iconURI = "http://www.triggrapp.com/desktop_resources/"
+
+    val Connect = iconURI + "icon_connect_10.26.13.png"
+    val Disconnect = iconURI + "icon_disconnect_10.26.13.png"
+    val IncomingCall = iconURI + "icon_callstart_10.26.13.png"
+    val OutgoingCall = iconURI + "icon_callstart_10.26.13.png"
+    val MissedCall = iconURI + "icon_missedcall_10.26.13.png"
+    val EndCall = iconURI + "icon_callend_10.26.13.png"
+    val SmsMessage = iconURI + "icon_message_10.26.13.png"
+  }
+
   /**
    * Default handler for server responses. Shows an error message for erronous responses
    * @param response response received from the server
@@ -33,6 +54,7 @@ object EventActor extends Actor {
           case "error" => {
             Util.showToast( serverResponse.message, Toast.LENGTH_LONG )
           }
+          case _ =>
         }
 
       }
@@ -83,14 +105,17 @@ object EventActor extends Actor {
           }
 
           val notification = new Notification(
-            icon_uri = "",
+            icon_uri = EventIcons.Connect,
             title = "Connected"
           )
 
           val eventDefinition = new Event(
             `type` = "connect",
             notification = notification,
-            handlers = List("notify")
+            handlers = List(
+              EventHandlers.Notify,
+              EventHandlers.EndPairMode
+            )
           )
 
           requestActor ! HTTPRequestActor.POSTRequest(
@@ -112,14 +137,16 @@ object EventActor extends Actor {
             case Some( id ) => {
 
               val notification = new Notification(
-                icon_uri = "",
+                icon_uri = EventIcons.Disconnect,
                 title = "Disconnected"
               )
 
               val eventDefinition = new Event(
                 `type` = "disconnect",
                 notification = notification,
-                handlers = List("notify")
+                handlers = List(
+                  EventHandlers.Notify
+                )
               )
 
               requestActor ! HTTPRequestActor.POSTRequest(
@@ -144,16 +171,18 @@ object EventActor extends Actor {
           Preferences.getConnectedDeviceId() match {
             case Some( deviceID ) => {
               val notification = new Notification(
-                icon_uri = "",
-                title = "Incoming Call",
-                subtitle = name,
-                description = number
+                icon_uri = EventIcons.IncomingCall,
+                title = name,
+                subtitle = number
               )
 
               val eventDefinition = new Event(
                 `type` = "incoming_call",
                 notification = notification,
-                handlers = List("notify", "lower_volume")
+                handlers = List(
+                  EventHandlers.Notify,
+                  EventHandlers.LowerVolume
+                )
               )
 
               requestActor ! HTTPRequestActor.POSTRequest(
@@ -175,16 +204,18 @@ object EventActor extends Actor {
           Preferences.getConnectedDeviceId() match {
             case Some( deviceID ) => {
               val notification = new Notification(
-                icon_uri = "",
-                title = "Outgoing Call",
-                subtitle = name,
-                description = number
+                icon_uri = EventIcons.OutgoingCall,
+                title = name,
+                subtitle = number
               )
 
               val eventDefinition = new Event(
                 `type` = "outgoing_call",
                 notification = notification,
-                handlers = List("notify", "lower_volume")
+                handlers = List(
+                  EventHandlers.Notify,
+                  EventHandlers.LowerVolume
+                )
               )
 
               requestActor ! HTTPRequestActor.POSTRequest(
@@ -205,7 +236,7 @@ object EventActor extends Actor {
           Preferences.getConnectedDeviceId() match {
             case Some( deviceID ) => {
               val notification = new Notification(
-                icon_uri = "",
+                icon_uri = EventIcons.MissedCall,
                 title = "Missed Call",
                 subtitle = name,
                 description = number
@@ -214,7 +245,10 @@ object EventActor extends Actor {
               val eventDefinition = new Event(
                 `type` = "missed_call",
                 notification = notification,
-                handlers = List("notify", "restore_volume")
+                handlers = List(
+                  EventHandlers.Notify,
+                  EventHandlers.RestoreVolume
+                )
               )
 
               requestActor ! HTTPRequestActor.POSTRequest(
@@ -235,14 +269,17 @@ object EventActor extends Actor {
           Preferences.getConnectedDeviceId() match {
             case Some( deviceID ) => {
               val notification = new Notification(
-                icon_uri = "",
+                icon_uri = EventIcons.EndCall,
                 title = "Call Ended"
               )
 
               val eventDefinition = new Event(
                 `type` = "end_call",
                 notification = notification,
-                handlers = List("notify", "restore_volume")
+                handlers = List(
+                  EventHandlers.Notify,
+                  EventHandlers.RestoreVolume
+                )
               )
 
               requestActor ! HTTPRequestActor.POSTRequest(
@@ -256,6 +293,39 @@ object EventActor extends Actor {
             }
             case None => {
               Log.d( tag, "No connected devices detected. Ignoring EndCall event..." )
+            }
+          }
+        }
+        case SMSMessage(number, name, message) => {
+          Preferences.getConnectedDeviceId() match {
+            case Some( deviceID ) => {
+              val notification = new Notification(
+                icon_uri = EventIcons.SmsMessage,
+                title = name,
+                subtitle = number,
+                description = message
+              )
+
+              val eventDefinition = new Event(
+                `type` = "sms_message",
+                notification = notification,
+                handlers = List(
+                  EventHandlers.Notify,
+                  EventHandlers.AlertNoise
+                )
+              )
+
+              requestActor ! HTTPRequestActor.POSTRequest(
+                path = "events",
+                params = Map(
+                  "device_id" -> deviceID,
+                  "event" -> eventDefinition.serialize()
+                ),
+                responseHandler = defaultResponseHandler
+              )
+            }
+            case None => {
+              Log.d( tag, "No connected devices detected. Ignoring SMSMassage event..." )
             }
           }
         }

@@ -54,17 +54,17 @@
                     style="@style/CodeInput"
                     android:id="@+id/pairKeyTextBox"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:layout_weight="6"
                     android:ems="6"
-                    android:inputType="textNoSuggestions" />
+                    android:inputType="textFilter" />
 
                 <Button
                     android:id="@+id/pairButton"
                     style="@style/CustomButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="26dp"
                     android:layout_weight="7"
                     android:layout_marginLeft="12dp"
                     android:background="@drawable/button_gradient"
@@ -80,7 +80,32 @@
             android:orientation="vertical"
             android:visibility="gone">
 
-            <LinearLayout
+            <Button
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:onClick="testSms"
+                android:text="TestSMS" />
+            <Button
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:onClick="testIncomingCall"
+                android:text="TestIncomingCall" />
+            <Button
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:onClick="testOutgoingCall"
+                android:text="TestOutgoingCall" />
+            <Button
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:onClick="testEndCall"
+                android:text="TestEndCall" />
+            <Button
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:onClick="testMissedCall"
+                android:text="TestMissedCall" />
+            <!--<LinearLayout
                 style="@style/InfoContainer"
                 android:layout_width="match_parent"
                 android:background="@drawable/infobox"
@@ -104,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_gradient"
                 android:onClick="disconnectDevice"
-                android:text="@string/disconnect" />
+                android:text="@string/disconnect" />-->
         </LinearLayout>
     </ViewFlipper>
     <LinearLayout
