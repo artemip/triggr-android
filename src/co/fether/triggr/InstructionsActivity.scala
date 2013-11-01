@@ -23,6 +23,8 @@ class InstructionsActivity extends Activity {
   var outToLeftAnim : Animation = null
   var outToRightAnim : Animation = null
 
+  var tutorialNavCircles : List[ImageView] = null
+
   var regularTypeFace : Typeface = null
   var lightTypeFace : Typeface = null
   var ultralightTypeFace : Typeface = null
@@ -44,6 +46,13 @@ class InstructionsActivity extends Activity {
     finishInstructionsButton = findViewById(R.id.finishInstructionsButton).asInstanceOf[Button]
     leftNavArrowImageView = findViewById(R.id.leftNavArrowImageView).asInstanceOf[ImageView]
     rightNavArrowImageView = findViewById(R.id.rightNavArrowImageView).asInstanceOf[ImageView]
+
+    tutorialNavCircles = List(
+      findViewById(R.id.tutorialCircle0).asInstanceOf[ImageView],
+      findViewById(R.id.tutorialCircle1).asInstanceOf[ImageView],
+      findViewById(R.id.tutorialCircle2).asInstanceOf[ImageView],
+      findViewById(R.id.tutorialCircle3).asInstanceOf[ImageView]
+    )
 
     viewFlipper.setInAnimation(this, android.R.anim.fade_in)
     viewFlipper.setOutAnimation(this, android.R.anim.fade_out)
@@ -115,6 +124,16 @@ class InstructionsActivity extends Activity {
     }
   }
 
+  private def setNavCircles() {
+    val selectedScreen = viewFlipper.getDisplayedChild
+
+    for(img <- tutorialNavCircles) {
+      img.setImageResource(R.drawable.tutorial_circle_hollow)
+    }
+
+    tutorialNavCircles(selectedScreen).setImageResource(R.drawable.tutorial_circle)
+  }
+
   def goBack(view : View) {
     if (activeAnimationCounter == 0 && viewFlipper.getDisplayedChild > 0) {
       viewFlipper.setInAnimation(inFromLeftAnim)
@@ -123,6 +142,8 @@ class InstructionsActivity extends Activity {
       viewFlipper.showPrevious()
 
       setNavButtonVisiblity()
+
+      setNavCircles()
     }
   }
 
@@ -134,6 +155,8 @@ class InstructionsActivity extends Activity {
       viewFlipper.showNext()
 
       setNavButtonVisiblity()
+
+      setNavCircles()
     }
   }
 }

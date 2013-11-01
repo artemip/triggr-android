@@ -20,7 +20,7 @@ class SplashScreenActivity extends Activity{
         // Skip instructions if user has paired before
         SplashScreenActivity.this.startActivity(
           new Intent(SplashScreenActivity.this,
-            if (!Preferences.getWasPreviouslyPaired())
+            if (Preferences.getWasPreviouslyPaired())
               classOf[PairingActivity]
             else
               classOf[InstructionsActivity]
