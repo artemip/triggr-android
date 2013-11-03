@@ -36,19 +36,23 @@
     <string name="text_message_notifications_pref_title">Text Message</string>
     <string name="text_message_notifications_pref_desc">Incoming text messages.</string>
 
-    <string name="whatsapp_notifications_pref_title">WhatsApp Message</string>
+    <string name="whatsapp_notifications_pref_title">WhatsApp</string>
     <string name="whatsapp_notifications_pref_desc">Incoming WhatsApp messages.</string>
 
-    <string name="snapchat_notifications_pref_title">SnapChat Message</string>
+    <string name="snapchat_notifications_pref_title">SnapChat</string>
     <string name="snapchat_notifications_pref_desc">Incoming SnapChat messages.</string>
 
 
     <string name="reactions_title">Reactions</string>
 
     <string name="smart_volume_pref_title">Smart Volume</string>
-    <string name="smart_volume_pref_desc">Automatically lower desktop volume for call events.</string>
+    <string name="smart_volume_pref_desc">Automatically lower computer volume during call events.</string>
 
     <string name="noise_alert_pref_title">Noise Alerts</string>
-    <string name="noise_alert_pref_desc">Make a desktop noise when receiving a notification.</string>
+    <string name="noise_alert_pref_desc">Make a noise on your computer when receiving a notification.</string>
+
+    <string name="purchase_notification_desc">Purchase for just </string>
+    <string name="purchase_notification_confirm_whatsapp">Purchase WhatsApp notifications for </string>
+    <string name="purchase_notification_confirm_snapchat">Purchase SnapChat notifications for </string>
 
 </resources>

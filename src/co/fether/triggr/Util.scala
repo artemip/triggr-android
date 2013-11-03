@@ -13,7 +13,7 @@ object Util {
   val tag = Util.getClass.getName
 
   def showToast(text : String, duration : Int) {
-    Preferences.getService() match {
+    Preferences.getService match {
       case Some( s ) => s.showToast(text, duration)
       case None => {
         Log.d( tag, "No Triggr service found. Unable to display Toasts" )
@@ -27,12 +27,12 @@ object Util {
    * @param number the phone number of the contact
    * @return
    */
-  def getCallerName( number : String ) = {
+  def getCallerName( number : String ) : String = {
     val uri = Uri.withAppendedPath( PhoneLookup.CONTENT_FILTER_URI, Uri.encode( number ) )
 
     val defaultCallerName = "Unknown Contact"
 
-    Preferences.getService() match {
+    Preferences.getService match {
       case Some( s ) => {
         val resolver = s.getContentResolver
         val cursor = resolver.query( uri, Array( "display_name" ), null, null, null )

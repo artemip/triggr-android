@@ -8,12 +8,19 @@ import java.util.UUID
 import android.util.Log
 import android.app.Activity
 import android.view.inputmethod.InputMethodManager
+import android.preference.PreferenceManager
 
 object Preferences {
-  private val PREFS_FILE = "preferences.xml"
-  private val PREFS_DEVICE_ID = "device_id"
-  private val PREFS_CONNECTED_DEVICE_ID = "connected_device_id"
-  private val PREFS_WAS_PREVIOUSLY_PAIRED = "was_previously_paired"
+  val PREF_FILE = "preferences.xml"
+  val PREF_DEVICE_ID = "device_id"
+  val PREF_CONNECTED_DEVICE_ID = "connected_device_id"
+  val PREF_WAS_PREVIOUSLY_PAIRED = "was_previously_paired"
+  val PREF_CALL_NOTIFICATIONS = "pref_call_notifications"
+  val PREF_SMS_NOTIFICATIONS = "pref_sms_notifications"
+  val PREF_WHATSAPP_NOTIFICATIONS = "pref_whatsapp_notifications"
+  val PREF_SNAPCHAT_NOTIFICATIONS = "pref_snapchat_notifications"
+  val PREF_SMART_VOLUME = "pref_smart_volume"
+  val PREF_NOISE_ALERT = "pref_noise_alert"
 
   private var service : Option[TriggrService] = None
   private var activity : Option[Activity] = None
@@ -22,7 +29,7 @@ object Preferences {
 
   @volatile private var uuid : Option[UUID] = None
 
-  private def getContext() : Option[Context] = {
+  private def getContext : Option[Context] = {
     service match {
       case Some( s ) => Some(s)
       case None => {
@@ -39,9 +46,9 @@ object Preferences {
   }
 
   private def setPreference( key : String, value : String ) {
-    getContext() match {
+    getContext match {
       case Some(c) => {
-        val prefs = c.getSharedPreferences( PREFS_FILE, 0 )
+        val prefs = c.getSharedPreferences( PREF_FILE, 0 )
 
         // Write the value out to the prefs file
         prefs.edit().putString( key, value ).commit()
@@ -51,9 +58,9 @@ object Preferences {
   }
 
   private def removePreference (key : String ) {
-    getContext() match {
+    getContext match {
       case Some( c ) => {
-        val prefs = c.getSharedPreferences( PREFS_FILE, 0 )
+        val prefs = c.getSharedPreferences( PREF_FILE, 0 )
 
         // Remove the value from the prefs file
         prefs.edit().remove( key ).commit()
@@ -63,14 +70,25 @@ object Preferences {
   }
 
   private def getPreference( key : String ) : Option[String] = {
-    getContext() match {
+    getContext match {
       case Some( c ) => {
-        val prefs = c.getSharedPreferences( PREFS_FILE, 0 )
-        val p = prefs.getString( key, null )
+        val prefs = c.getSharedPreferences( PREF_FILE, 0 )
+        val pref = prefs.getString( key, null )
 
-        if ( p == null ) None else Some( p )
+        if ( pref == null ) None else Some( pref )
       }
       case None => None
+    }
+  }
+
+  private def getSharedPreference( key : String ) : Option[String] = {
+    getContext match {
+      case Some(c) => {
+        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(c)
+        val pref = sharedPrefs.getString(key, null)
+
+        if ( pref == null ) None else Some( pref )
+      }
     }
   }
 
@@ -78,7 +96,7 @@ object Preferences {
     service = Some( c )
   }
 
-  def getService() : Option[TriggrService] = {
+  def getService : Option[TriggrService] = {
     service
   }
 
@@ -86,7 +104,7 @@ object Preferences {
     activity = Some( c )
   }
 
-  def getMainActivity() : Option[Activity] = {
+  def getMainActivity : Option[Activity] = {
     activity
   }
 
@@ -94,32 +112,69 @@ object Preferences {
     connectedDeviceId = deviceId
     deviceId match {
       case Some(s) => {
-    	  setPreference( PREFS_CONNECTED_DEVICE_ID, s )
+    	  setPreference( PREF_CONNECTED_DEVICE_ID, s )
       }
-      case None => removePreference( PREFS_CONNECTED_DEVICE_ID )
+      case None => removePreference( PREF_CONNECTED_DEVICE_ID )
     }
   }
 
-  def getConnectedDeviceId() : Option[String] = {
+  def getConnectedDeviceId : Option[String] = {
     if ( connectedDeviceId.isEmpty ) {
-      connectedDeviceId = getPreference( PREFS_CONNECTED_DEVICE_ID )
+      connectedDeviceId = getPreference( PREF_CONNECTED_DEVICE_ID )
     }
 
     connectedDeviceId
   }
 
-  def getWasPreviouslyPaired() : Boolean = {
+  def getWasPreviouslyPaired : Boolean = {
     if (wasPreviouslyPaired.isEmpty) {
-      wasPreviouslyPaired = Some(getPreference(PREFS_WAS_PREVIOUSLY_PAIRED).isDefined)
+      wasPreviouslyPaired = Some(getPreference(PREF_WAS_PREVIOUSLY_PAIRED).isDefined)
     }
 
     wasPreviouslyPaired.get
   }
 
   def setWasPreviouslyPaired( flag : Boolean ) = {
-    if (flag) setPreference( PREFS_WAS_PREVIOUSLY_PAIRED, "yes" )
+    if (flag) setPreference( PREF_WAS_PREVIOUSLY_PAIRED, "yes" )
 
     wasPreviouslyPaired = Some(flag)
+  }
+
+  def getPhoneCallNotificationsEnabled : Boolean = {
+    getSharedPreference(PREF_CALL_NOTIFICATIONS) match {
+      case Some(s) =>
+        s == "true"
+      case None => false
+    }
+  }
+  def getSMSNotificationsEnabled : Boolean = {
+    getSharedPreference(PREF_SMS_NOTIFICATIONS) match {
+      case Some(s) =>
+        s == "true"
+      case None => false
+    }
+  }
+  def getSmartVolumeEnabled : Boolean = {
+    getSharedPreference(PREF_SMART_VOLUME) match {
+      case Some(s) =>
+        s == "true"
+      case None => false
+    }
+  }
+  def getNoiseAlertEnabled : Boolean = {
+    getSharedPreference(PREF_NOISE_ALERT) match {
+      case Some(s) =>
+        s == "true"
+      case None => false
+    }
+  }
+
+  def getSnapChatNotificationsEnabled : Boolean = {
+    getSharedPreference(PREF_SNAPCHAT_NOTIFICATIONS) match {
+      case Some(s) =>
+      s == "true"
+      case None => false
+    }
   }
 
   def getDeviceId() : UUID = {
@@ -130,8 +185,8 @@ object Preferences {
       case None => {
         service match {
           case Some( c ) => {
-            val prefs = c.getSharedPreferences( PREFS_FILE, 0 )
-            val id = prefs.getString( PREFS_DEVICE_ID, null )
+            val prefs = c.getSharedPreferences( PREF_FILE, 0 )
+            val id = prefs.getString( PREF_DEVICE_ID, null )
             if ( id != null ) {
 
               // Use the ids previously computed and stored in the prefs file
@@ -155,7 +210,7 @@ object Preferences {
               }
 
               // Write the value out to the prefs file
-              prefs.edit().putString( PREFS_DEVICE_ID, uuid.get.toString ).commit()
+              prefs.edit().putString( PREF_DEVICE_ID, uuid.get.toString ).commit()
             }
           }
           case None => {

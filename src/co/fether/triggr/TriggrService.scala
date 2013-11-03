@@ -1,20 +1,64 @@
 package co.fether.triggr
-import android.os.Binder
-import android.content.{Context, Intent}
+import android.os._
+import android.content.{ComponentName, ServiceConnection, Context, Intent}
 import android.util.Log
-import android.os.IBinder
 import android.widget.Toast
-import android.os.Handler
 import android.app.{NotificationManager, PendingIntent, Service}
-import android.os.Looper
 import android.support.v4.app.NotificationCompat
+import com.android.vending.billing.IInAppBillingService
+import co.fether.triggr.json.InAppProductInfo
 
 object TriggrService {
   val tag = classOf[TriggrService].getName
 
+  val PROD_ID_WHATSAPP_NOTIFICATIONS = "whatsapp_notifications"
+  val PROD_ID_SNAPCHAT_NOTIFICATIONS = "snapchat_notifications"
+
   //Return  an instance of the service (not doing IPC)
   class TriggrServiceBinder( service : TriggrService ) extends Binder {
     def getService : TriggrService = service
+  }
+
+  private var billingService : IInAppBillingService = null
+  private var billingServiceConnection : ServiceConnection = null
+
+  def getProductInfo(productIds : List[String]) : List[InAppProductInfo] = {
+    val querySkus = new Bundle()
+    querySkus.putStringArray("ITEM_ID_LIST", productIds.toArray)
+
+    if (billingService != null) {
+      val skuDetails = billingService.getSkuDetails(3, "co.fether.triggr", "inapp", querySkus)
+
+      if(skuDetails.getInt("RESPONSE_CODE") == 0) {
+        skuDetails.getStringArray("DETAILS_LIST").toList.map(
+          x => new InAppProductInfo().deserialize(x)
+        )
+      }
+    }
+
+    List()
+  }
+
+  def getPurchasedProducts : List[String] = {
+    if(billingService != null) {
+      val purchasedItems = billingService.getPurchases(3, "co.fether.triggr", "inapp", null)
+
+      if(purchasedItems.getInt("RESPONSE_CODE") == 0) {
+        purchasedItems.getStringArray("INAPP_PURCHASE_ITEM_LIST").toList
+      }
+    }
+
+    List()
+  }
+
+  def getPurchaseIntent(productId : String) : Option[PendingIntent] = {
+    val buyIntentBundle = billingService.getBuyIntent(3, "co.fether.triggr", productId, "inapp", null)
+
+    if(buyIntentBundle.getInt("RESPONSE_CODE") == 0) {
+      Some(buyIntentBundle.getParcelable("BUY_INTENT"))
+    } else {
+      None
+    }
   }
 }
 
@@ -22,8 +66,25 @@ class TriggrService extends Service {
   val binder = new TriggrService.TriggrServiceBinder( this )
   var handler : Handler = null
 
+
   override def onCreate() {
     Preferences.setService( this )
+
+    TriggrService.billingServiceConnection = new ServiceConnection() {
+      def onServiceDisconnected(name: ComponentName) {
+        TriggrService.billingService = null
+      }
+
+      def onServiceConnected(name: ComponentName, service: IBinder) {
+        TriggrService.billingService = IInAppBillingService.Stub.asInterface(service)
+      }
+    }
+
+    bindService(
+      new Intent("com.android.vending.billing.InAppBillingService.BIND"),
+      TriggrService.billingServiceConnection,
+      Context.BIND_AUTO_CREATE
+    )
 
     EventActor.start()
   }
@@ -37,6 +98,13 @@ class TriggrService extends Service {
 
   override def onBind( intent : Intent ) : IBinder = {
     binder
+  }
+
+  override def onDestroy() {
+    super.onDestroy()
+    if (TriggrService.billingServiceConnection != null) {
+      unbindService(TriggrService.billingServiceConnection)
+    }
   }
 
   /**

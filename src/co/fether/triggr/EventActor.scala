@@ -82,7 +82,7 @@ object EventActor extends Actor {
                     Log.d( tag, "Connection successful." )
                     Preferences.setConnectedDeviceId( Some(serverResponse.paired_device_id) )
 
-                    Preferences.getMainActivity() match {
+                    Preferences.getMainActivity match {
                       case Some(a : PairingActivity) => a.runOnUiThread(new Runnable() {
                         override def run() {
                           a.showDisconnectView()
@@ -133,7 +133,7 @@ object EventActor extends Actor {
         case Disconnect => {
           Log.d( tag, "Disconnecting" )
 
-          Preferences.getConnectedDeviceId() match {
+          Preferences.getConnectedDeviceId match {
             case Some( id ) => {
 
               val notification = new Notification(
@@ -167,8 +167,8 @@ object EventActor extends Actor {
           Preferences.setConnectedDeviceId(None)
         }
 
-        case IncomingCall( number, name) => {
-          Preferences.getConnectedDeviceId() match {
+        case IncomingCall( number, name) if Preferences.getPhoneCallNotificationsEnabled => {
+          Preferences.getConnectedDeviceId match {
             case Some( deviceID ) => {
               val notification = new Notification(
                 icon_uri = EventIcons.IncomingCall,
@@ -180,10 +180,13 @@ object EventActor extends Actor {
                 `type` = "incoming_call",
                 notification = notification,
                 handlers = List(
-                  EventHandlers.Notify,
-                  EventHandlers.LowerVolume
+                  EventHandlers.Notify
                 )
               )
+
+              if (Preferences.getSmartVolumeEnabled) {
+                eventDefinition.handlers = EventHandlers.LowerVolume :: eventDefinition.handlers
+              }
 
               requestActor ! HTTPRequestActor.POSTRequest(
                 path = "events",
@@ -200,8 +203,8 @@ object EventActor extends Actor {
             }
           }
         }
-        case OutgoingCall( number, name ) => {
-          Preferences.getConnectedDeviceId() match {
+        case OutgoingCall( number, name ) if Preferences.getPhoneCallNotificationsEnabled => {
+          Preferences.getConnectedDeviceId match {
             case Some( deviceID ) => {
               val notification = new Notification(
                 icon_uri = EventIcons.OutgoingCall,
@@ -213,10 +216,13 @@ object EventActor extends Actor {
                 `type` = "outgoing_call",
                 notification = notification,
                 handlers = List(
-                  EventHandlers.Notify,
-                  EventHandlers.LowerVolume
+                  EventHandlers.Notify
                 )
               )
+
+              if(Preferences.getSmartVolumeEnabled) {
+                eventDefinition.handlers = EventHandlers.LowerVolume :: eventDefinition.handlers
+              }
 
               requestActor ! HTTPRequestActor.POSTRequest(
                 path = "events",
@@ -232,8 +238,8 @@ object EventActor extends Actor {
             }
           }
         }
-        case MissedCall( number, name ) => {
-          Preferences.getConnectedDeviceId() match {
+        case MissedCall( number, name ) if Preferences.getPhoneCallNotificationsEnabled => {
+          Preferences.getConnectedDeviceId match {
             case Some( deviceID ) => {
               val notification = new Notification(
                 icon_uri = EventIcons.MissedCall,
@@ -246,10 +252,13 @@ object EventActor extends Actor {
                 `type` = "missed_call",
                 notification = notification,
                 handlers = List(
-                  EventHandlers.Notify,
-                  EventHandlers.RestoreVolume
+                  EventHandlers.Notify
                 )
               )
+
+              if(Preferences.getSmartVolumeEnabled) {
+                eventDefinition.handlers = EventHandlers.RestoreVolume :: eventDefinition.handlers
+              }
 
               requestActor ! HTTPRequestActor.POSTRequest(
                 path = "events",
@@ -265,8 +274,8 @@ object EventActor extends Actor {
             }
           }
         }
-        case EndCall => {
-          Preferences.getConnectedDeviceId() match {
+        case EndCall if Preferences.getPhoneCallNotificationsEnabled => {
+          Preferences.getConnectedDeviceId match {
             case Some( deviceID ) => {
               val notification = new Notification(
                 icon_uri = EventIcons.EndCall,
@@ -277,10 +286,13 @@ object EventActor extends Actor {
                 `type` = "end_call",
                 notification = notification,
                 handlers = List(
-                  EventHandlers.Notify,
-                  EventHandlers.RestoreVolume
+                  EventHandlers.Notify
                 )
               )
+
+              if(Preferences.getSmartVolumeEnabled) {
+                eventDefinition.handlers = EventHandlers.RestoreVolume :: eventDefinition.handlers
+              }
 
               requestActor ! HTTPRequestActor.POSTRequest(
                 path = "events",
@@ -296,8 +308,8 @@ object EventActor extends Actor {
             }
           }
         }
-        case SMSMessage(number, name, message) => {
-          Preferences.getConnectedDeviceId() match {
+        case SMSMessage(number, name, message) if Preferences.getSMSNotificationsEnabled => {
+          Preferences.getConnectedDeviceId match {
             case Some( deviceID ) => {
               val notification = new Notification(
                 icon_uri = EventIcons.SmsMessage,
@@ -310,10 +322,13 @@ object EventActor extends Actor {
                 `type` = "sms_message",
                 notification = notification,
                 handlers = List(
-                  EventHandlers.Notify,
-                  EventHandlers.AlertNoise
+                  EventHandlers.Notify
                 )
               )
+
+              if(Preferences.getNoiseAlertEnabled) {
+                eventDefinition.handlers = EventHandlers.AlertNoise :: eventDefinition.handlers
+              }
 
               requestActor ! HTTPRequestActor.POSTRequest(
                 path = "events",
@@ -329,6 +344,7 @@ object EventActor extends Actor {
             }
           }
         }
+
       }
     }
   }

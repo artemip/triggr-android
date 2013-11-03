@@ -11,9 +11,9 @@
             android:key="pref_sms_notifications"
             android:title="@string/text_message_notifications_pref_title"
             android:summary="@string/text_message_notifications_pref_desc"
-            android:defaultValue="false" />
+            android:defaultValue="true" />
         <SwitchPreference
-            android:key="prefs_whatsapp_notifications"
+            android:key="pref_whatsapp_notifications"
             android:title="@string/whatsapp_notifications_pref_title"
             android:summary="@string/whatsapp_notifications_pref_desc"
             android:defaultValue="false" />
