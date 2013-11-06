@@ -81,14 +81,13 @@ object Preferences {
     }
   }
 
-  private def getSharedPreference( key : String ) : Option[String] = {
+  private def getBooleanSharedPreference( key : String ) : Boolean = {
     getContext match {
       case Some(c) => {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(c)
-        val pref = sharedPrefs.getString(key, null)
-
-        if ( pref == null ) None else Some( pref )
+        sharedPrefs.getBoolean(key, false)
       }
+      case None => false
     }
   }
 
@@ -141,40 +140,25 @@ object Preferences {
   }
 
   def getPhoneCallNotificationsEnabled : Boolean = {
-    getSharedPreference(PREF_CALL_NOTIFICATIONS) match {
-      case Some(s) =>
-        s == "true"
-      case None => false
-    }
+    getBooleanSharedPreference(PREF_CALL_NOTIFICATIONS)
   }
+
   def getSMSNotificationsEnabled : Boolean = {
-    getSharedPreference(PREF_SMS_NOTIFICATIONS) match {
-      case Some(s) =>
-        s == "true"
-      case None => false
-    }
+    getBooleanSharedPreference(PREF_SMS_NOTIFICATIONS)
   }
   def getSmartVolumeEnabled : Boolean = {
-    getSharedPreference(PREF_SMART_VOLUME) match {
-      case Some(s) =>
-        s == "true"
-      case None => false
-    }
+    getBooleanSharedPreference(PREF_SMART_VOLUME)
   }
   def getNoiseAlertEnabled : Boolean = {
-    getSharedPreference(PREF_NOISE_ALERT) match {
-      case Some(s) =>
-        s == "true"
-      case None => false
-    }
+    getBooleanSharedPreference(PREF_NOISE_ALERT)
+  }
+
+  def getWhatsAppNotificationsEnabled : Boolean = {
+    getBooleanSharedPreference(PREF_WHATSAPP_NOTIFICATIONS)
   }
 
   def getSnapChatNotificationsEnabled : Boolean = {
-    getSharedPreference(PREF_SNAPCHAT_NOTIFICATIONS) match {
-      case Some(s) =>
-      s == "true"
-      case None => false
-    }
+    getBooleanSharedPreference(PREF_SNAPCHAT_NOTIFICATIONS)
   }
 
   def getDeviceId() : UUID = {

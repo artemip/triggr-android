@@ -55,21 +55,17 @@ private class HTTPRequestActor extends Actor {
 
           try {
             val stringParams : String = HTTPRequestActor.mapToString( params )
-
+            Log.i(tag, stringParams)
             connection.setDoInput( true )
             connection.setDoOutput( true )
             connection.setInstanceFollowRedirects( false )
             connection.setRequestMethod( "POST" )
-            connection.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded" )
-            connection.setRequestProperty( "charset", "utf-8" )
+            connection.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded; charset=utf-8" )
             connection.setUseCaches( false )
 
-            connection.setRequestProperty( "Content-Length", Integer.toString( stringParams.getBytes.length ) )
-
-            val wr = new DataOutputStream( connection.getOutputStream )
-            wr.writeBytes( stringParams )
-            wr.flush()
-            wr.close()
+            connection.getOutputStream.write(stringParams.getBytes("UTF-8"))
+            connection.getOutputStream.flush()
+            connection.getOutputStream.close()
 
             val responseStream = connection.getInputStream
 

@@ -15,6 +15,8 @@ object EventActor extends Actor {
   case class OutgoingCall( number : String, name : String )
   case class MissedCall( number : String, name : String )
   case class SMSMessage( number : String, name : String, message : String )
+  case class WhatsAppMessage( name : String, message : String )
+  case class SnapChatMessage( name : String, message : String )
   case object EndCall
 
   // Actor that performs HTTP requests
@@ -39,6 +41,8 @@ object EventActor extends Actor {
     val MissedCall = iconURI + "icon_missedcall_10.26.13.png"
     val EndCall = iconURI + "icon_callend_10.26.13.png"
     val SmsMessage = iconURI + "icon_message_10.26.13.png"
+    val WhatsAppMessage = iconURI + "icon_whatsapp_10.26.13.png"
+    val SnapChatMessage = iconURI + "icon_snapchat_10.26.13.png"
   }
 
   /**
@@ -129,7 +133,6 @@ object EventActor extends Actor {
             responseHandler = responseHandler
           )
         }
-
         case Disconnect => {
           Log.d( tag, "Disconnecting" )
 
@@ -166,7 +169,6 @@ object EventActor extends Actor {
 
           Preferences.setConnectedDeviceId(None)
         }
-
         case IncomingCall( number, name) if Preferences.getPhoneCallNotificationsEnabled => {
           Preferences.getConnectedDeviceId match {
             case Some( deviceID ) => {
@@ -340,7 +342,79 @@ object EventActor extends Actor {
               )
             }
             case None => {
-              Log.d( tag, "No connected devices detected. Ignoring SMSMassage event..." )
+              Log.d( tag, "No connected devices detected. Ignoring SMSMessage event..." )
+            }
+          }
+        }
+        case WhatsAppMessage(name, message) if Preferences.getWhatsAppNotificationsEnabled => {
+          Preferences.getConnectedDeviceId match {
+            case Some( deviceID ) => {
+              val notification = new Notification(
+                icon_uri = EventIcons.WhatsAppMessage,
+                title = name,
+                subtitle = "",
+                description = message
+              )
+
+              val eventDefinition = new Event(
+                `type` = "whatsapp_message",
+                notification = notification,
+                handlers = List(
+                  EventHandlers.Notify
+                )
+              )
+
+              if(Preferences.getNoiseAlertEnabled) {
+                eventDefinition.handlers = EventHandlers.AlertNoise :: eventDefinition.handlers
+              }
+
+              requestActor ! HTTPRequestActor.POSTRequest(
+                path = "events",
+                params = Map(
+                  "device_id" -> deviceID,
+                  "event" -> eventDefinition.serialize()
+                ),
+                responseHandler = defaultResponseHandler
+              )
+            }
+            case None => {
+              Log.d( tag, "No connected devices detected. Ignoring WhatsAppMessage event..." )
+            }
+          }
+        }
+        case SnapChatMessage(name, message) if Preferences.getSnapChatNotificationsEnabled => {
+          Preferences.getConnectedDeviceId match {
+            case Some( deviceID ) => {
+              val notification = new Notification(
+                icon_uri = EventIcons.SnapChatMessage,
+                title = name,
+                subtitle = "",
+                description = message
+              )
+
+              val eventDefinition = new Event(
+                `type` = "snapchat_message",
+                notification = notification,
+                handlers = List(
+                  EventHandlers.Notify
+                )
+              )
+
+              if(Preferences.getNoiseAlertEnabled) {
+                eventDefinition.handlers = EventHandlers.AlertNoise :: eventDefinition.handlers
+              }
+
+              requestActor ! HTTPRequestActor.POSTRequest(
+                path = "events",
+                params = Map(
+                  "device_id" -> deviceID,
+                  "event" -> eventDefinition.serialize()
+                ),
+                responseHandler = defaultResponseHandler
+              )
+            }
+            case None => {
+              Log.d( tag, "No connected devices detected. Ignoring SnapChatMessage event..." )
             }
           }
         }

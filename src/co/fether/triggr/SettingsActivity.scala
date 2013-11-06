@@ -17,7 +17,7 @@ class SettingsActivity extends PreferenceActivity {
 
     whatsappPreference = findPreference(Preferences.PREF_WHATSAPP_NOTIFICATIONS).asInstanceOf[SwitchPreference]
     snapchatPreference = findPreference(Preferences.PREF_SNAPCHAT_NOTIFICATIONS).asInstanceOf[SwitchPreference]
-
+/*
     val allProducts =
       TriggrService.getProductInfo(
         List(TriggrService.PROD_ID_WHATSAPP_NOTIFICATIONS,
@@ -47,6 +47,7 @@ class SettingsActivity extends PreferenceActivity {
         }
       }
     }
+    */
   }
 
   private def enableWhatsappPurchasePreference(whatsappProduct : InAppProductInfo) {
