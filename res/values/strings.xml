@@ -62,4 +62,22 @@
     <string name="purchase_whatsapp_notifications_desktop_message">WhatsApp Notifications Purchased</string>
     <string name="purchase_snapchat_notifications_desktop_message">Snapchat Notifications Purchased</string>
 
+    <string name="enable_accessibility_service_title">Enable Accessibility</string>
+    <string name="enable_accessibility_service_message">To use advanced Triggr notifications, the Triggr accessibility service must be turned on. Press \'Ok\' to go to the Accessibility Settings</string>
+
+    <string name="ok_text">Ok</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="buy_text">Buy Now!</string>
+
+    <!-- Notifications -->
+    <string name="unknown_contact">Unknown Contact</string>
+    <string name="new_message">New Message</string>
+    <string name="connected_notification">Connected</string>
+    <string name="disconnected_notification">Disconnected</string>
+    <string name="missed_call_notification">Missed Call</string>
+    <string name="end_call_notification">Ended Call</string>
+    <string name="new_whatsapp_notification">New WhatsApp Message</string>
+    <string name="new_snapchat_notification">New SnapChat Message</string>
+
+
 </resources>

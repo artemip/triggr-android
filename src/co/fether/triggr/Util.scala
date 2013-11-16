@@ -21,6 +21,13 @@ object Util {
     }
   }
 
+  def getString(resId : Int) : String = {
+    Preferences.getService match {
+      case Some( s ) => s.getString(resId)
+      case None => ""
+    }
+  }
+
   /**
    * Attempt to retrieve the name of a contact, given the phone number.
    *
@@ -30,7 +37,7 @@ object Util {
   def getCallerName( number : String ) : String = {
     val uri = Uri.withAppendedPath( PhoneLookup.CONTENT_FILTER_URI, Uri.encode( number ) )
 
-    val defaultCallerName = "Unknown Contact"
+    val defaultCallerName = getString(R.string.unknown_contact)
 
     Preferences.getService match {
       case Some( s ) => {

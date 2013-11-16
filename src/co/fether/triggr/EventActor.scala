@@ -110,7 +110,7 @@ object EventActor extends Actor {
 
           val notification = new Notification(
             icon_uri = EventIcons.Connect,
-            title = "Connected"
+            title = Util.getString(R.string.connected_notification)
           )
 
           val eventDefinition = new Event(
@@ -141,7 +141,7 @@ object EventActor extends Actor {
 
               val notification = new Notification(
                 icon_uri = EventIcons.Disconnect,
-                title = "Disconnected"
+                title = Util.getString(R.string.disconnected_notification)
               )
 
               val eventDefinition = new Event(
@@ -251,7 +251,7 @@ object EventActor extends Actor {
 
               val notification = new Notification(
                 icon_uri = EventIcons.MissedCall,
-                title = "Missed Call",
+                title = Util.getString(R.string.missed_call_notification),
                 subtitle = name,
                 description = number
               )
@@ -289,7 +289,7 @@ object EventActor extends Actor {
 
               val notification = new Notification(
                 icon_uri = EventIcons.EndCall,
-                title = "Call Ended"
+                title = Util.getString(R.string.end_call_notification)
               )
 
               val eventDefinition = new Event(

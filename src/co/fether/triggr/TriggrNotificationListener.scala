@@ -8,8 +8,13 @@ import android.util.Log
 import java.util
 import co.fether.triggr.EventActor.{SnapchatMessage, WhatsAppMessage}
 import android.telephony.PhoneNumberUtils
+import android.content.Context
+import android.provider.Settings
+import android.provider.Settings.SettingNotFoundException
+import android.text.TextUtils
 
 class TriggrNotificationListener extends AccessibilityService {
+  val tag = getClass.getCanonicalName
 
   case class NotificationEvent(title : String, description : String)
 
@@ -28,7 +33,7 @@ class TriggrNotificationListener extends AccessibilityService {
 
         notification match {
           case Some(n) => EventActor ! WhatsAppMessage(PhoneNumberUtils.formatNumber(n.title), n.description)
-          case None => EventActor ! WhatsAppMessage("New WhatsApp Message", "")
+          case None => EventActor ! WhatsAppMessage(Util.getString(R.string.new_whatsapp_notification), "")
         }
       }
       case "com.snapchat.android" => {
@@ -36,7 +41,7 @@ class TriggrNotificationListener extends AccessibilityService {
 
         notification match {
           case Some(n) => EventActor ! SnapchatMessage(n.title, n.description)
-          case None => EventActor ! SnapchatMessage("New SnapChat Message", "")
+          case None => EventActor ! SnapchatMessage(Util.getString(R.string.new_snapchat_notification), "")
         }
       }
       case _ =>
@@ -97,14 +102,14 @@ class TriggrNotificationListener extends AccessibilityService {
           }
         }
 
-        val title = text.get(16908310).getOrElse("Unknown Contact").trim
-        val desc = text.get(16908358).getOrElse("New Message")
+        val title = text.get(16908310).getOrElse(Util.getString(R.string.unknown_contact)).trim
+        val desc = text.get(16908358).getOrElse(Util.getString(R.string.unknown_contact)).trim
 
         Some(NotificationEvent(title, desc))
     } catch {
       case e : Exception => {
         val trace = Log.getStackTraceString(e)
-        Log.e("TriggrNotificationListener", trace)
+        Log.e(getClass.getCanonicalName, trace)
 
         None
        }
