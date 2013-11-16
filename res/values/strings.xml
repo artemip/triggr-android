@@ -63,7 +63,7 @@
     <string name="purchase_snapchat_notifications_desktop_message">Snapchat Notifications Purchased</string>
 
     <string name="enable_accessibility_service_title">Enable Accessibility</string>
-    <string name="enable_accessibility_service_message">To use advanced Triggr notifications, the Triggr accessibility service must be turned on. Press \'Ok\' to go to the Accessibility Settings</string>
+    <string name="enable_accessibility_service_message">To use advanced notifications, the Triggr accessibility service must be turned on. Press \'Ok\' to go to the Accessibility Settings.</string>
 
     <string name="ok_text">Ok</string>
     <string name="cancel_text">Cancel</string>

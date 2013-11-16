@@ -32,6 +32,8 @@ class SettingsActivity extends PreferenceActivity {
       snapchatPreference = findPreference(Preferences.PREF_SNAPCHAT_NOTIFICATIONS).asInstanceOf[CheckBoxPreference]
     }
 
+    var advancedNotificationsEnabled = true
+
     val allProducts =
       TriggrService.getProductInfo(
         List(TriggrService.PROD_ID_WHATSAPP_NOTIFICATIONS,
@@ -41,6 +43,7 @@ class SettingsActivity extends PreferenceActivity {
     purchasedProducts.find(pid => pid == TriggrService.PROD_ID_WHATSAPP_NOTIFICATIONS) match {
       case Some(_) => {
         enableWhatsappPreference()
+        advancedNotificationsEnabled = true
       }
       case None => {
         // User has not purchased WhatsApp notifications
@@ -58,6 +61,7 @@ class SettingsActivity extends PreferenceActivity {
     purchasedProducts.find(pid => pid == TriggrService.PROD_ID_SNAPCHAT_NOTIFICATIONS) match {
       case Some(_) =>
         enableSnapchatPreference()
+        advancedNotificationsEnabled = true
       case None => {
         // User has not purchased SnapChat notifications
         allProducts.find(p => p.productId == TriggrService.PROD_ID_SNAPCHAT_NOTIFICATIONS) match {
@@ -70,6 +74,9 @@ class SettingsActivity extends PreferenceActivity {
         }
       }
     }
+
+    if(advancedNotificationsEnabled)
+      verifyAccessibilityServiceEnabled()
   }
 
   private def enableWhatsappPurchasePreference(whatsappProduct : InAppProductInfo) {
@@ -99,13 +106,8 @@ class SettingsActivity extends PreferenceActivity {
 
   private def enableWhatsappPreference() {
     whatsappPreference.setEnabled(true)
-    if(Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
-      whatsappPreference.asInstanceOf[SwitchPreference].setChecked(true)
-    else
-      whatsappPreference.asInstanceOf[CheckBoxPreference].setChecked(true)
     whatsappPreference.setSummary(R.string.whatsapp_notifications_pref_desc)
     whatsappPreference.setOnPreferenceChangeListener(null)
-    verifyAccessibilityServiceEnabled()
   }
 
   private def disableWhatsappPurchasePreference() {
@@ -143,13 +145,8 @@ class SettingsActivity extends PreferenceActivity {
 
   private def enableSnapchatPreference() {
     snapchatPreference.setEnabled(true)
-    if(Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
-      snapchatPreference.asInstanceOf[SwitchPreference].setChecked(true)
-    else
-      snapchatPreference.asInstanceOf[CheckBoxPreference].setChecked(true)
     snapchatPreference.setSummary(R.string.whatsapp_notifications_pref_desc)
     snapchatPreference.setOnPreferenceChangeListener(null)
-    verifyAccessibilityServiceEnabled()
   }
 
   private def disableSnapchatPurchasePreference() {
@@ -178,12 +175,12 @@ class SettingsActivity extends PreferenceActivity {
   }
 
   private def isAccessibilityServiceEnabled : Boolean = {
-    val serviceName = classOf[TriggrNotificationListener].getCanonicalName
+    val serviceName = classOf[TriggrNotificationListener].getPackage.getName + "/" + classOf[TriggrNotificationListener].getCanonicalName
     val context = this
 
     val accessibilityEnabled = {
       try {
-        Settings.Secure.getInt(context.getApplicationContext.getContentResolver, Settings.Secure.ACCESSIBILITY_ENABLED) > 0
+        Settings.Secure.getInt(context.getApplicationContext.getContentResolver, Settings.Secure.ACCESSIBILITY_ENABLED)
       } catch {
         case e: SettingNotFoundException => {
           Log.d(tag, "Could not find accessibility setting: " + e.getMessage)
@@ -220,23 +217,45 @@ class SettingsActivity extends PreferenceActivity {
 
   override def onActivityResult(requestCode : Int, resultCode : Int, data : Intent) {
     Log.d(tag, "Received activity result code: " + resultCode)
-    Log.d(tag, "Received activity result data: " + data.getDataString)
 
     if(resultCode == Activity.RESULT_OK) {
+      Log.d(tag, "Received activity result data: " + data.getDataString)
+
       // Purchase made
       val purchaseInfo = new InAppPurchaseInfo().deserialize(data.getStringExtra("INAPP_PURCHASE_DATA"))
       Log.d("co.fether.triggr.SettingsActivity", "Purchase Info: " + purchaseInfo)
       Log.d("co.fether.triggr.SettingsActivity", "Purchase Info: " + purchaseInfo.productId)
+
+      var advancedNotificationsEnabled = false
       purchaseInfo.productId match {
         case TriggrService.PROD_ID_WHATSAPP_NOTIFICATIONS => {
+          advancedNotificationsEnabled = true
+
           enableWhatsappPreference()
+
+          if(Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
+            whatsappPreference.asInstanceOf[SwitchPreference].setChecked(true)
+          else
+            whatsappPreference.asInstanceOf[CheckBoxPreference].setChecked(true)
+
           EventActor ! EventActor.WhatsAppMessage(getString(R.string.purchase_whatsapp_notifications_desktop_message), "")
         }
         case TriggrService.PROD_ID_SNAPCHAT_NOTIFICATIONS => {
+          advancedNotificationsEnabled = true
+
           enableSnapchatPreference()
+
+          if(Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
+            snapchatPreference.asInstanceOf[SwitchPreference].setChecked(true)
+          else
+            snapchatPreference.asInstanceOf[CheckBoxPreference].setChecked(true)
+
           EventActor ! EventActor.SnapchatMessage(getString(R.string.purchase_snapchat_notifications_desktop_message), "")
         }
       }
+
+      if(advancedNotificationsEnabled)
+        verifyAccessibilityServiceEnabled()
     }
   }
 }
