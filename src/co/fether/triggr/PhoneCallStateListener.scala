@@ -5,7 +5,7 @@ import android.net.Uri
 import android.provider.ContactsContract.PhoneLookup
 
 object PhoneCallStateListener {
-  private val tag = PhoneCallStateListener.getClass.getName
+  private val tag = PhoneCallStateListener.getClass.getCanonicalName
   private var listener : Option[PhoneCallStateListener] = None
 
   def apply() : PhoneCallStateListener =

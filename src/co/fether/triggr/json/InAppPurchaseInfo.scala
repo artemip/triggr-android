@@ -8,7 +8,7 @@ class InAppPurchaseInfo(
                          var packageName : String = "",
                          var productId : String = "",
                          var purchaseTime : String = "",
-                         var purchaseStart : String = "",
+                         var purchaseState : String = "",
                          var developerPayload : String = "",
                          var purchaseToken : String = "") extends JsonObject {
 
@@ -18,7 +18,7 @@ class InAppPurchaseInfo(
         ("packageName" -> this.packageName) ~
         ("productId" -> this.productId) ~
         ("purchaseTime" -> this.purchaseTime) ~
-        ("purchaseStart" -> this.purchaseStart) ~
+        ("purchaseState" -> this.purchaseState) ~
         ("developerPayload" -> this.developerPayload) ~
         ("purchaseToken" -> this.purchaseToken)
 
@@ -28,13 +28,13 @@ class InAppPurchaseInfo(
   def deserialize( json : String ) = {
     val parsedJSON = parse(json)
 
-    this.orderId = (parsedJSON \ "orderId").extract[String]
-    this.packageName -> (parsedJSON \ "packageName").extract[String]
-    this.productId -> (parsedJSON \ "productId").extract[String]
-    this.purchaseTime -> (parsedJSON \ "purchaseStart").extract[String]
-    this.purchaseStart -> (parsedJSON \ "packageName").extract[String]
-    this.developerPayload -> (parsedJSON \ "developerPayload").extract[String]
-    this.purchaseToken -> (parsedJSON \ "purchaseToken").extract[String]
+    this.orderId = (parsedJSON \ "orderId").extractOrElse[String]("")
+    this.packageName -> (parsedJSON \ "packageName").extractOrElse[String]("")
+    this.productId -> (parsedJSON \ "productId").extractOrElse[String]("")
+    this.purchaseTime -> (parsedJSON \ "purchaseTime").extractOrElse[String]("")
+    this.purchaseState -> (parsedJSON \ "purchaseState").extractOrElse[String]("")
+    this.developerPayload -> (parsedJSON \ "developerPayload").extractOrElse[String]("")
+    this.purchaseToken -> (parsedJSON \ "purchaseToken").extractOrElse[String]("")
 
     this
   }

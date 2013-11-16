@@ -6,7 +6,7 @@ import android.app.Notification
 import scala.collection.mutable
 import android.util.Log
 import java.util
-import co.fether.triggr.EventActor.{SnapChatMessage, WhatsAppMessage}
+import co.fether.triggr.EventActor.{SnapchatMessage, WhatsAppMessage}
 import android.telephony.PhoneNumberUtils
 
 class TriggrNotificationListener extends AccessibilityService {
@@ -35,8 +35,8 @@ class TriggrNotificationListener extends AccessibilityService {
         val notification = getNotificationEvent(event)
 
         notification match {
-          case Some(n) => EventActor ! SnapChatMessage(n.title, n.description)
-          case None => EventActor ! SnapChatMessage("New SnapChat Message", "")
+          case Some(n) => EventActor ! SnapchatMessage(n.title, n.description)
+          case None => EventActor ! SnapchatMessage("New SnapChat Message", "")
         }
       }
       case _ =>

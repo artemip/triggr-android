@@ -8,6 +8,7 @@ import android.widget._
 import android.view.inputmethod.InputMethodManager
 import android.text.Html
 import android.graphics.Typeface
+import android.net.Uri
 
 class PairingActivity extends Activity {
   var pairKeyEditText : EditText = null
@@ -89,11 +90,22 @@ class PairingActivity extends Activity {
   }
 
   def goToStore( view : View ) {
+    val appName = "co.fether.triggr"
 
+    try {
+      startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+appName)))
+    } catch {
+      case _ : android.content.ActivityNotFoundException => startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id="+appName)))
+      case _ : Exception =>
+    }
   }
 
   def goToShare( view : View ) {
-
+    val intent = new Intent(Intent.ACTION_SEND)
+    intent.setType("text/plain")
+    intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.full_website_url))
+    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.sharing_desc))
+    startActivity(Intent.createChooser(intent, "Share Triggr"))
   }
 
   def goToSettings( view : View ) {

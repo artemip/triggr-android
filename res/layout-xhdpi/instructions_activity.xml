@@ -29,11 +29,11 @@
                   android:orientation="vertical">
         <TextView
                 android:id="@+id/welcomeTextView"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="35dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/welcome_text"
-                android:textSize="55dp"
+                android:textSize="45dp"
                 android:gravity="center"
                 android:textColor="#BEBEBE" />
         <LinearLayout
@@ -142,7 +142,8 @@
                         android:id="@+id/shareView"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:layout_marginTop="40dp">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -151,15 +152,14 @@
                         android:gravity="center"
                         android:textColor="#FFFFFF" />
                     <ImageView
-                        android:id="@+id/mobileAppImageView"
+                        android:id="@+id/shareAppImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginBottom="50dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/instructions_enterkey"
-                        android:contentDescription="@string/mobileAppContentDesc"
-                        android:visibility="invisible"/>
+                        android:src="@drawable/instructions_sharebig"
+                        android:visibility="invisible" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

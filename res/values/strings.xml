@@ -19,6 +19,10 @@
     <string name="disconnect">Disconnect</string>
     <string name="connected">Connected.</string>
 
+    <!-- Sharing -->
+    <string name="full_website_url">http://www.triggrapp.com</string>
+    <string name="sharing_desc">Check out Triggr!</string>
+
     <!-- Image Descriptions -->
     <string name="leftArrowContentDesc">Left Nav Arrow</string>
     <string name="rightArrowContentDesc">Right Nav Arrow</string>
@@ -51,8 +55,11 @@
     <string name="noise_alert_pref_title">Noise Alerts</string>
     <string name="noise_alert_pref_desc">Make a noise on your computer when receiving a notification.</string>
 
-    <string name="purchase_notification_desc">Purchase for just </string>
-    <string name="purchase_notification_confirm_whatsapp">Purchase WhatsApp notifications for </string>
-    <string name="purchase_notification_confirm_snapchat">Purchase SnapChat notifications for </string>
+    <string name="purchase_notification_desc">Purchase for just</string>
+    <string name="purchase_notification_confirm_whatsapp">Purchase WhatsApp notifications for</string>
+    <string name="purchase_notification_confirm_snapchat">Purchase SnapChat notifications for</string>
+
+    <string name="purchase_whatsapp_notifications_desktop_message">WhatsApp Notifications Purchased</string>
+    <string name="purchase_snapchat_notifications_desktop_message">Snapchat Notifications Purchased</string>
 
 </resources>

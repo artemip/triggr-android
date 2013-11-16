@@ -31,10 +31,10 @@ class Event(var sender_id : String = Preferences.getDeviceId().toString, var `ty
   def deserialize(json: String) = {
     val parsedJSON = parse(json)
 
-    this.sender_id = (parsedJSON \ "sender_id").extract[String]
-    this.`type` = (parsedJSON \ "type").extract[String]
+    this.sender_id = (parsedJSON \ "sender_id").extractOrElse[String]("")
+    this.`type` = (parsedJSON \ "type").extractOrElse[String]("")
     this.notification = new Notification().deserialize(compact(render(parsedJSON \ "notification")))
-    this.handlers = (parsedJSON \ "handlers").extract[List[String]]
+    this.handlers = (parsedJSON \ "handlers").extractOrElse[List[String]](List("none"))
 
     this
   }
