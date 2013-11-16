@@ -23,9 +23,9 @@ class ServerResponse ( var status : String = "", var message : String = "", var 
   def deserialize( json : String ) = {
     val parsedJSON = parse(json)
 
-    this.status = (parsedJSON \ "status").extractOrElse[String]("")
-    this.message = (parsedJSON \ "message").extractOrElse[String]("")
-    this.paired_device_id = (parsedJSON \ "paired_device_id").extractOrElse[String]("")
+    this.status = (parsedJSON \ "status").extract[String]
+    this.message = (parsedJSON \ "message").extract[String]
+    this.paired_device_id = (parsedJSON \ "paired_device_id").extract[String]
 
     this
   }

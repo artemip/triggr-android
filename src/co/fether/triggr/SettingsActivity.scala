@@ -218,12 +218,12 @@ class SettingsActivity extends PreferenceActivity {
   override def onActivityResult(requestCode : Int, resultCode : Int, data : Intent) {
     Log.d(tag, "Received activity result code: " + resultCode)
 
-    if(resultCode == Activity.RESULT_OK) {
-      Log.d(tag, "Received activity result data: " + data.getDataString)
+    if(resultCode == Activity.RESULT_OK && requestCode == 1001) {
+      Log.d(tag, "Received activity result data: " + data.getStringExtra("INAPP_PURCHASE_DATA"))
 
       // Purchase made
       val purchaseInfo = new InAppPurchaseInfo().deserialize(data.getStringExtra("INAPP_PURCHASE_DATA"))
-      Log.d("co.fether.triggr.SettingsActivity", "Purchase Info: " + purchaseInfo)
+      Log.d("co.fether.triggr.SettingsActivity", "Purchase Info: " + purchaseInfo.serialize())
       Log.d("co.fether.triggr.SettingsActivity", "Purchase Info: " + purchaseInfo.productId)
 
       var advancedNotificationsEnabled = false
