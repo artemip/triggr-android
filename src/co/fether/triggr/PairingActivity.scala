@@ -31,7 +31,7 @@ class PairingActivity extends Activity {
     // Set fonts
     Util.overrideFonts(this, findViewById(android.R.id.content), lightTypeFace)
 
-    //findViewById(R.id.connectedTextView).asInstanceOf[TextView].setTypeface(ultralightTypeFace)
+    findViewById(R.id.connectedTextView).asInstanceOf[TextView].setTypeface(ultralightTypeFace)
 
     pairKeyEditText = findViewById(R.id.pairKeyTextBox).asInstanceOf[EditText]
     viewFlipper = findViewById(R.id.pairingViewFlipper).asInstanceOf[ViewFlipper]
