@@ -16,7 +16,7 @@ object Preferences {
   val PREF_CONNECTED_DEVICE_ID = "connected_device_id"
   val PREF_WAS_PREVIOUSLY_PAIRED = "was_previously_paired"
   val PREF_INSTALLATION_DATE = "installation_date"
-  var NUM_TRIAL_DAYS = -1
+  var NUM_TRIAL_DAYS = 10
 
   val PREF_CALL_NOTIFICATIONS = "pref_call_notifications"
   val PREF_SMS_NOTIFICATIONS = "pref_sms_notifications"
