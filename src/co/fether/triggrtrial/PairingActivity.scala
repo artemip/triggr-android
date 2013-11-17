@@ -1,4 +1,4 @@
-package co.fether.triggr
+package co.fether.triggrtrial
 
 import android.os.Bundle
 import android.app.Activity
@@ -31,7 +31,7 @@ class PairingActivity extends Activity {
     // Set fonts
     Util.overrideFonts(this, findViewById(android.R.id.content), lightTypeFace)
 
-    //findViewById(R.id.connectedTextView).asInstanceOf[TextView].setTypeface(ultralightTypeFace)
+    findViewById(R.id.connectedTextView).asInstanceOf[TextView].setTypeface(ultralightTypeFace)
 
     pairKeyEditText = findViewById(R.id.pairKeyTextBox).asInstanceOf[EditText]
     viewFlipper = findViewById(R.id.pairingViewFlipper).asInstanceOf[ViewFlipper]
@@ -101,6 +101,8 @@ class PairingActivity extends Activity {
   }
 
   def goToShare( view : View ) {
+    Preferences.NUM_TRIAL_DAYS = 30
+
     val intent = new Intent(Intent.ACTION_SEND)
     intent.setType("text/plain")
     intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.full_website_url))

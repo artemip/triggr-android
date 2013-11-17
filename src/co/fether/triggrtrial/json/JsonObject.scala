@@ -1,4 +1,4 @@
-package co.fether.triggr.json
+package co.fether.triggrtrial.json
 
 import net.liftweb.json.{NoTypeHints, Serialization}
 

@@ -1,4 +1,4 @@
-package co.fether.triggr
+package co.fether.triggrtrial
 import android.content.BroadcastReceiver
 import android.content.Intent
 import android.content.Context

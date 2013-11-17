@@ -1,4 +1,4 @@
-package co.fether.triggr
+package co.fether.triggrtrial
 
 import android.os.Bundle
 import android.app.Activity
@@ -158,5 +158,15 @@ class InstructionsActivity extends Activity {
 
       setNavCircles()
     }
+  }
+
+  def goToShare( view : View ) {
+    Preferences.NUM_TRIAL_DAYS = 30
+
+    val intent = new Intent(Intent.ACTION_SEND)
+    intent.setType("text/plain")
+    intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.full_website_url))
+    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.sharing_desc))
+    startActivity(Intent.createChooser(intent, "Share Triggr"))
   }
 }

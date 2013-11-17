@@ -1,4 +1,4 @@
-package co.fether.triggr
+package co.fether.triggrtrial
 
 import android.content.Context
 import android.provider.Settings.Secure
@@ -7,14 +7,17 @@ import java.io.UnsupportedEncodingException
 import java.util.UUID
 import android.util.Log
 import android.app.Activity
-import android.view.inputmethod.InputMethodManager
 import android.preference.PreferenceManager
+import java.util.Date
 
 object Preferences {
   val PREF_FILE = "preferences.xml"
   val PREF_DEVICE_ID = "device_id"
   val PREF_CONNECTED_DEVICE_ID = "connected_device_id"
   val PREF_WAS_PREVIOUSLY_PAIRED = "was_previously_paired"
+  val PREF_INSTALLATION_DATE = "installation_date"
+  var NUM_TRIAL_DAYS = -1
+
   val PREF_CALL_NOTIFICATIONS = "pref_call_notifications"
   val PREF_SMS_NOTIFICATIONS = "pref_sms_notifications"
   val PREF_WHATSAPP_NOTIFICATIONS = "pref_whatsapp_notifications"
@@ -159,6 +162,29 @@ object Preferences {
 
   def getSnapChatNotificationsEnabled : Boolean = {
     getBooleanSharedPreference(PREF_SNAPCHAT_NOTIFICATIONS)
+  }
+
+  def getInstalledDate : Long = {
+    getContext match {
+      case Some( c ) => {
+        c.getPackageManager()
+          .getPackageInfo("co.fether.triggrtrial", 0)
+          .firstInstallTime
+      }
+      case None => Long.MinValue
+    }
+  }
+
+  def isTrialActive : Boolean = {
+    val DAY_IN_MS = 1000 * 60 * 60 * 24
+
+    val now  = new Date()
+    val diffInDays = (now.getTime - getInstalledDate) / DAY_IN_MS
+    val active = diffInDays < NUM_TRIAL_DAYS
+
+    Log.i( "TriggrApp", "Application has been installed for " + diffInDays + " days. Status: " + ( if (active) "Active" else "Inactive" ))
+
+    active
   }
 
   def getDeviceId() : UUID = {

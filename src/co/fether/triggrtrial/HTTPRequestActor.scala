@@ -1,4 +1,4 @@
-package co.fether.triggr
+package co.fether.triggrtrial
 
 import android.util.Log
 import java.net._

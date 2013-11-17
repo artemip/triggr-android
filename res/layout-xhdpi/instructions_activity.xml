@@ -143,7 +143,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_marginTop="40dp">
+                        android:layout_marginTop="20dp">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -155,11 +155,11 @@
                         android:id="@+id/shareAppImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"
-                        android:layout_marginBottom="50dp"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginBottom="40dp"
                         android:layout_gravity="center"
                         android:src="@drawable/instructions_sharebig"
-                        android:visibility="invisible" />
+                        android:onClick="goToShare" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

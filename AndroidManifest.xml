@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="co.fether.triggr"
-    android:versionCode="10"
+    package="co.fether.triggrtrial"
+    android:versionCode="2"
     android:versionName="2.0" >
 
     <uses-sdk
@@ -15,7 +15,6 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
-    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
         android:icon="@drawable/launcher_icon"
@@ -24,7 +23,7 @@
         android:theme="@style/CustomTheme">
 
         <activity
-            android:name="co.fether.triggr.SplashScreenActivity"
+            android:name="co.fether.triggrtrial.SplashScreenActivity"
             android:label="@string/app_name"
             android:windowBackground="@drawable/main_background"
             android:screenOrientation="portrait"
@@ -35,26 +34,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="co.fether.triggr.PairingActivity"
+            android:name="co.fether.triggrtrial.PairingActivity"
             android:label="@string/app_name"
             android:windowBackground="@drawable/main_background"
             android:screenOrientation="portrait"
             android:launchMode="singleTop" />
         <activity
-            android:name="co.fether.triggr.InstructionsActivity"
+            android:name="co.fether.triggrtrial.InstructionsActivity"
             android:label="@string/app_name"
             android:windowBackground="@drawable/main_background"
             android:screenOrientation="portrait"
             android:launchMode="singleTop" />
         <activity
-            android:name="co.fether.triggr.SettingsActivity"
+            android:name="co.fether.triggrtrial.SettingsActivity"
             android:label="@string/app_name"
             android:windowBackground="@drawable/main_background"
             android:screenOrientation="portrait"
             android:launchMode="singleTop" />
 
         <service 
-            android:name="co.fether.triggr.TriggrService"
+            android:name="co.fether.triggrtrial.TriggrService"
             android:label="Triggr Service"
             android:launchMode="singleTop"
             android:exported="false">
@@ -63,7 +62,7 @@
 		    </intent-filter>
 		</service>
 
-        <service android:name="co.fether.triggr.TriggrNotificationListener"
+        <service android:name="co.fether.triggrtrial.TriggrNotificationListener"
                  android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
@@ -73,20 +72,20 @@
                 android:resource="@xml/accessibilityservice" />
         </service>
         
-        <receiver android:name="co.fether.triggr.PhoneCallBroadcastReceiver">
+        <receiver android:name="co.fether.triggrtrial.PhoneCallBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name="co.fether.triggr.SMSBroadcastReceiver">
+        <receiver android:name="co.fether.triggrtrial.SMSBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 		
 		<receiver
-		    android:name="co.fether.triggr.BootEventBroadcastReceiver"
+		    android:name="co.fether.triggrtrial.BootEventBroadcastReceiver"
 		    android:enabled="true"
 		    android:exported="true">
 		    <intent-filter>
@@ -94,7 +93,7 @@
 		    </intent-filter>
 		</receiver>
 		
-		<receiver android:name="co.fether.triggr.OutgoingCallReceiver"
+		<receiver android:name="co.fether.triggrtrial.OutgoingCallReceiver"
                   android:exported="true"
                   android:enabled="true">
 	        <intent-filter>

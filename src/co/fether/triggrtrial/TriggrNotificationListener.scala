@@ -1,4 +1,4 @@
-package co.fether.triggr
+package co.fether.triggrtrial
 
 import android.accessibilityservice.{AccessibilityServiceInfo, AccessibilityService}
 import android.view.accessibility.AccessibilityEvent
@@ -6,12 +6,8 @@ import android.app.Notification
 import scala.collection.mutable
 import android.util.Log
 import java.util
-import co.fether.triggr.EventActor.{SnapchatMessage, WhatsAppMessage}
+import co.fether.triggrtrial.EventActor.{SnapchatMessage, WhatsAppMessage}
 import android.telephony.PhoneNumberUtils
-import android.content.Context
-import android.provider.Settings
-import android.provider.Settings.SettingNotFoundException
-import android.text.TextUtils
 
 class TriggrNotificationListener extends AccessibilityService {
   val tag = getClass.getCanonicalName
@@ -50,62 +46,65 @@ class TriggrNotificationListener extends AccessibilityService {
 
   private def getNotificationEvent(event : AccessibilityEvent) : Option[NotificationEvent] = {
     val notification = event.getParcelableData.asInstanceOf[Notification]
-      val views = notification.contentView
-      val secretClass = views.getClass
 
-      try {
-        val text = mutable.Map.empty[Integer, String]
+    if (notification == null) return None
 
-        val outerFields = secretClass.getDeclaredFields.toList
-        val outerFieldIndices = 0 until outerFields.length
+    val views = notification.contentView
+    val secretClass = views.getClass
 
-        for (i <- outerFieldIndices if outerFields(i).getName.equals("mActions")) {
-          outerFields(i).setAccessible(true)
-          val actions = outerFields(i).get(views).asInstanceOf[util.ArrayList[Object]].toArray.toList
+    try {
+      val text = mutable.Map.empty[Integer, String]
 
-          for (action <- actions) {
-            val innerFields = action.getClass.getDeclaredFields
-            val innerFieldViewIds = action.getClass.getSuperclass.getDeclaredFields
+      val outerFields = secretClass.getDeclaredFields.toList
+      val outerFieldIndices = 0 until outerFields.length
 
-            var value : Object = null
-            var `type` : Int = -1
-            var viewId : Int = -1
+      for (i <- outerFieldIndices if outerFields(i).getName.equals("mActions")) {
+        outerFields(i).setAccessible(true)
+        val actions = outerFields(i).get(views).asInstanceOf[util.ArrayList[Object]].toArray.toList
 
-            for(field <- innerFields) {
-              field.setAccessible(true)
+        for (action <- actions) {
+          val innerFields = action.getClass.getDeclaredFields
+          val innerFieldViewIds = action.getClass.getSuperclass.getDeclaredFields
 
-              field.getName match {
-                case "value" => {
-                  value = field.get(action)
-                }
-                case "type" => {
-                  `type` = field.getInt(action)
-                }
-                case _ =>
+          var value : Object = null
+          var `type` : Int = -1
+          var viewId : Int = -1
+
+          for(field <- innerFields) {
+            field.setAccessible(true)
+
+            field.getName match {
+              case "value" => {
+                value = field.get(action)
               }
-            }
-
-            for(field <- innerFieldViewIds) {
-              field.setAccessible(true)
-
-              field.getName match {
-                case "viewId" => {
-                  viewId = field.getInt(action)
-                }
-                case _ =>
+              case "type" => {
+                `type` = field.getInt(action)
               }
-            }
-
-            if(`type` == 9 || `type` == 10) {
-              text.put(viewId, value.toString)
+              case _ =>
             }
           }
+
+          for(field <- innerFieldViewIds) {
+            field.setAccessible(true)
+
+            field.getName match {
+              case "viewId" => {
+                viewId = field.getInt(action)
+              }
+              case _ =>
+            }
+          }
+
+          if(`type` == 9 || `type` == 10) {
+            text.put(viewId, value.toString)
+          }
         }
+      }
 
-        val title = text.get(16908310).getOrElse(Util.getString(R.string.unknown_contact)).trim
-        val desc = text.get(16908358).getOrElse(Util.getString(R.string.unknown_contact)).trim
+      val title = text.get(16908310).getOrElse(Util.getString(R.string.unknown_contact)).trim
+      val desc = text.get(16908358).getOrElse(Util.getString(R.string.unknown_contact)).trim
 
-        Some(NotificationEvent(title, desc))
+      Some(NotificationEvent(title, desc))
     } catch {
       case e : Exception => {
         val trace = Log.getStackTraceString(e)

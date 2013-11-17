@@ -138,7 +138,7 @@
         android:layout_height="fill_parent"
         android:orientation="horizontal">
 
-        <!--<ImageView
+        <ImageView
             android:id="@+id/storeImageView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -146,12 +146,12 @@
             android:src="@drawable/main_buy"
             android:layout_gravity="bottom"
             android:contentDescription=""
-            android:onClick="goToStore"/> -->
+            android:onClick="goToStore"/>
         <ImageView
             android:id="@+id/shareImageView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:src="@drawable/main_share"
             android:layout_gravity="bottom"
             android:contentDescription=""
@@ -160,7 +160,7 @@
             android:id="@+id/settingsImageView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:src="@drawable/main_settings"
             android:layout_gravity="bottom"
             android:contentDescription=""

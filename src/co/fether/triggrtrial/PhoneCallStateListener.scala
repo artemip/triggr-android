@@ -1,4 +1,4 @@
-package co.fether.triggr
+package co.fether.triggrtrial
 import android.telephony.{PhoneNumberUtils, PhoneStateListener, TelephonyManager}
 import android.util.Log
 import android.net.Uri

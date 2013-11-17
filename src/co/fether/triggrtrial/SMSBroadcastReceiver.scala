@@ -1,4 +1,4 @@
-package co.fether.triggr
+package co.fether.triggrtrial
 
 import android.content.{BroadcastReceiver, Context, Intent}
 import android.telephony.SmsMessage

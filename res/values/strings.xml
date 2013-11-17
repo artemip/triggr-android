@@ -8,7 +8,7 @@
     <string name="pairing_desktop_instructions">Show your desktop\'s Pair Key.</string>
     <string name="pairing_mobile_instructions">Enter the Pair Key into the Triggr Android app.</string>
     <string name="pairing_connect_instructions">Click "Connect".</string>
-    <string name="thanks_for_using">Thanks for using Triggr!</string>
+    <string name="thanks_for_using">Thanks for using Triggr! Please share the app to extend the trial to 30 days!</string>
     <string name="feedback_instructions">We encourage your feedback.</string>
     <string name="rate_instructions">Please rate us!</string>
     <string name="get_started">GET STARTED</string>
@@ -65,7 +65,7 @@
     <string name="enable_accessibility_service_title">Enable Accessibility</string>
     <string name="enable_accessibility_service_message">To use advanced notifications, the Triggr accessibility service must be turned on. Press \'Ok\' to go to the Accessibility Settings.</string>
 
-    <string name="ok_text">Ok</string>
+    <string name="ok_text">OK</string>
     <string name="cancel_text">Cancel</string>
     <string name="buy_text">Buy Now!</string>
 
@@ -79,5 +79,8 @@
     <string name="new_whatsapp_notification">New WhatsApp Message</string>
     <string name="new_snapchat_notification">New SnapChat Message</string>
 
+    <!-- Trial -->
+    <string name="alerts_unavailable">Trial Expired</string>
+    <string name="buy_full_version">Click here to buy the full version</string>
 
 </resources>

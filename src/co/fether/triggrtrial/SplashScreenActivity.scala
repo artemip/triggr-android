@@ -1,4 +1,4 @@
-package co.fether.triggr
+package co.fether.triggrtrial
 
 import android.app.Activity
 import android.os.{Handler, Bundle}

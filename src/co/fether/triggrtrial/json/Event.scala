@@ -1,6 +1,6 @@
-package co.fether.triggr.json
+package co.fether.triggrtrial.json
 
-import co.fether.triggr.Preferences
+import co.fether.triggrtrial.Preferences
 import net.liftweb.json._
 import net.liftweb.json.JsonDSL._
 

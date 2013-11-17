@@ -1,9 +1,11 @@
-package co.fether.triggr
+package co.fether.triggrtrial
 
 import android.util.Log
 import scala.actors.Actor
 import android.widget.Toast
-import co.fether.triggr.json._
+import co.fether.triggrtrial.json._
+import android.content.Intent
+import android.net.Uri
 
 object EventActor extends Actor {
   private val tag = EventActor.getClass.getCanonicalName
@@ -73,6 +75,15 @@ object EventActor extends Actor {
 
     loop {
       receive {
+        case _ if !Preferences.isTrialActive => {
+          Preferences.getService match {
+            case Some(service) => {
+              val intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=co.fether.triggr"))
+              service.createNotification(Util.getString(R.string.alerts_unavailable), Util.getString(R.string.buy_full_version), intent)
+            }
+            case _ =>
+          }
+        }
         case Connect( k ) => {
           Log.d( tag, "Connecting to new device using key " + k )
 
@@ -432,7 +443,7 @@ object EventActor extends Actor {
             }
           }
         }
-
+        case _ => Log.d(tag, "Cannot react to message type. Ignoring...")
       }
     }
   }
