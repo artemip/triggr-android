@@ -8,21 +8,21 @@ import co.fether.triggr.json._
 class JsonParsingTest extends JUnitSuite {
   @Test def InAppPurchaseInfoParsingTest() {
     val jsonString = "{" +
-      "\"orderId\":\"12999763169054705758.1331621945138764\"," +
+      "\"orderId\":\"12999763169054705758.1375942134516811\"," +
       "\"packageName\":\"co.fether.triggr\"," +
       "\"productId\":\"notifications_whatsapp\"," +
-      "\"purchaseTime\":1384585858114," +
+      "\"purchaseTime\":1384654360852," +
       "\"purchaseState\":0," +
-      "\"purchaseToken\":\"ydjnvlhrjyrmfafeojjtixbu.AO-J1OyV5RssR1zZJs_ZqJAp_j8Q2SnLVevFCBQSiMrZTcZ_n4T5w4a88Qd1Hmq49A9a6BlVVKcjOnnonfKZF0Ug1UfLMkXOfWNTdkSFooclTBY-p2j_mVhVu9W_X83AgA_DfnD5fMcU\"" +
+      "\"purchaseToken\":\"xpsgbqhpqxlwilgfxbskmavg.AO-J1OyLh3JClt1hcqpSpHKQTyREo1CVJJzqxG1C5hI-03EzipT6CKE08CAH-jvRVtZOqMurGMydMC_O4OW0tKOER31FpyCPXRi5SFJzo-3hXpI4f1XdgFqW9Si7N0tpJ3cYz2N3cMTQ\"" +
       "}"
 
     val purchaseInfo = new InAppPurchaseInfo().deserialize(jsonString)
 
-    assertEquals("12999763169054705758.1331621945138764", purchaseInfo.orderId)
+    assertEquals("12999763169054705758.1375942134516811", purchaseInfo.orderId)
     assertEquals("co.fether.triggr", purchaseInfo.packageName)
     assertEquals("notifications_whatsapp", purchaseInfo.productId)
-    assertEquals("1384585858114", purchaseInfo.purchaseTime)
+    assertEquals("1384654360852", purchaseInfo.purchaseTime)
     assertEquals("0", purchaseInfo.purchaseState)
-    assertEquals("ydjnvlhrjyrmfafeojjtixbu.AO-J1OyV5RssR1zZJs_ZqJAp_j8Q2SnLVevFCBQSiMrZTcZ_n4T5w4a88Qd1Hmq49A9a6BlVVKcjOnnonfKZF0Ug1UfLMkXOfWNTdkSFooclTBY-p2j_mVhVu9W_X83AgA_DfnD5fMcU", purchaseInfo.purchaseToken)
+    assertEquals("xpsgbqhpqxlwilgfxbskmavg.AO-J1OyLh3JClt1hcqpSpHKQTyREo1CVJJzqxG1C5hI-03EzipT6CKE08CAH-jvRVtZOqMurGMydMC_O4OW0tKOER31FpyCPXRi5SFJzo-3hXpI4f1XdgFqW9Si7N0tpJ3cYz2N3cMTQ", purchaseInfo.purchaseToken)
   }
 }

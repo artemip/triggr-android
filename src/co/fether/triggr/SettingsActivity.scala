@@ -22,7 +22,6 @@ class SettingsActivity extends PreferenceActivity {
     super.onCreate(savedInstanceState)
 
     if(Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
-
       addPreferencesFromResource(R.xml.preferences)
       whatsappPreference = findPreference(Preferences.PREF_WHATSAPP_NOTIFICATIONS).asInstanceOf[SwitchPreference]
       snapchatPreference = findPreference(Preferences.PREF_SNAPCHAT_NOTIFICATIONS).asInstanceOf[SwitchPreference]
@@ -38,6 +37,7 @@ class SettingsActivity extends PreferenceActivity {
       TriggrService.getProductInfo(
         List(TriggrService.PROD_ID_WHATSAPP_NOTIFICATIONS,
           TriggrService.PROD_ID_SNAPCHAT_NOTIFICATIONS))
+
     val purchasedProducts = TriggrService.getPurchasedProducts
 
     purchasedProducts.find(pid => pid == TriggrService.PROD_ID_WHATSAPP_NOTIFICATIONS) match {
@@ -75,11 +75,15 @@ class SettingsActivity extends PreferenceActivity {
       }
     }
 
+    Log.d(tag, "Advanced notifications are " + (if (advancedNotificationsEnabled) "enabled" else "disabled"))
+
     if(advancedNotificationsEnabled)
       verifyAccessibilityServiceEnabled()
   }
 
   private def enableWhatsappPurchasePreference(whatsappProduct : InAppProductInfo) {
+    Log.d(tag, "WhatsApp notifications not purchased. Enabling purchase preference")
+
     whatsappPreference.setSummary(getString(R.string.purchase_notification_desc) + " " + whatsappProduct.price + "!")
     whatsappPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener {
       def onPreferenceChange(p1: Preference, p2: scala.Any): Boolean = {
@@ -105,12 +109,16 @@ class SettingsActivity extends PreferenceActivity {
   }
 
   private def enableWhatsappPreference() {
+    Log.d(tag, "WhatsApp notifications purchased. Enabling preference")
+
     whatsappPreference.setEnabled(true)
     whatsappPreference.setSummary(R.string.whatsapp_notifications_pref_desc)
     whatsappPreference.setOnPreferenceChangeListener(null)
   }
 
   private def disableWhatsappPurchasePreference() {
+    Log.d(tag, "Disabling WhatsApp purchase preference")
+
     whatsappPreference.setEnabled(false)
     if(Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
       whatsappPreference.asInstanceOf[SwitchPreference].setChecked(false)
@@ -119,6 +127,8 @@ class SettingsActivity extends PreferenceActivity {
   }
 
   private def enableSnapchatPurchasePreference(snapchatProduct : InAppProductInfo) {
+    Log.d(tag, "SnapChat notifications not purchased. Enabling purchase preference")
+
     snapchatPreference.setSummary(getString(R.string.purchase_notification_desc) + " " + snapchatProduct.price + "!")
     snapchatPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener {
       def onPreferenceChange(p1: Preference, p2: scala.Any): Boolean = {
@@ -144,12 +154,14 @@ class SettingsActivity extends PreferenceActivity {
   }
 
   private def enableSnapchatPreference() {
+    Log.d(tag, "SnapChat notifications purchased. Enabling preference")
     snapchatPreference.setEnabled(true)
     snapchatPreference.setSummary(R.string.whatsapp_notifications_pref_desc)
     snapchatPreference.setOnPreferenceChangeListener(null)
   }
 
   private def disableSnapchatPurchasePreference() {
+    Log.d(tag, "Disabling SnapChat purchase preference")
     snapchatPreference.setEnabled(false)
     if(Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
       snapchatPreference.asInstanceOf[SwitchPreference].setChecked(false)
@@ -219,12 +231,14 @@ class SettingsActivity extends PreferenceActivity {
     Log.d(tag, "Received activity result code: " + resultCode)
 
     if(resultCode == Activity.RESULT_OK && requestCode == 1001) {
-      Log.d(tag, "Received activity result data: " + data.getStringExtra("INAPP_PURCHASE_DATA"))
+      val inappPurchaseData = data.getStringExtra("INAPP_PURCHASE_DATA")
+      Log.d(tag, "Received activity result data: " + inappPurchaseData)
 
       // Purchase made
-      val purchaseInfo = new InAppPurchaseInfo().deserialize(data.getStringExtra("INAPP_PURCHASE_DATA"))
-      Log.d("co.fether.triggr.SettingsActivity", "Purchase Info: " + purchaseInfo.serialize())
-      Log.d("co.fether.triggr.SettingsActivity", "Purchase Info: " + purchaseInfo.productId)
+      val purchaseInfo = new InAppPurchaseInfo().deserialize(inappPurchaseData)
+
+      Log.d("co.fether.triggr.SettingsActivity", "Received Purchase Info: " + inappPurchaseData)
+      Log.d("co.fether.triggr.SettingsActivity", "De-serialized Purchase Info: " + purchaseInfo.serialize())
 
       var advancedNotificationsEnabled = false
       purchaseInfo.productId match {
