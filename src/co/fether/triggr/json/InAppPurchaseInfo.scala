@@ -12,6 +12,8 @@ class InAppPurchaseInfo(
                          var developerPayload : String = "",
                          var purchaseToken : String = "") extends JsonObject {
 
+  implicit override val formats = Serialization.formats(NoTypeHints)
+
   def serialize() = {
     val jsonMap =
       ("orderId" -> this.orderId) ~
@@ -29,12 +31,12 @@ class InAppPurchaseInfo(
     val parsedJSON = parse(json)
 
     this.orderId = (parsedJSON \ "orderId").extract[String]
-    this.packageName -> (parsedJSON \ "packageName").extract[String]
-    this.productId -> (parsedJSON \ "productId").extract[String]
-    this.purchaseTime -> (parsedJSON \ "purchaseTime").extract[String]
-    this.purchaseState -> (parsedJSON \ "purchaseState").extract[String]
-    this.developerPayload -> (parsedJSON \ "developerPayload").extractOrElse[String]("")
-    this.purchaseToken -> (parsedJSON \ "purchaseToken").extract[String]
+    this.packageName = (parsedJSON \ "packageName").extract[String]
+    this.productId = (parsedJSON \ "productId").extract[String]
+    this.purchaseTime = (parsedJSON \ "purchaseTime").extract[String]
+    this.purchaseState = (parsedJSON \ "purchaseState").extract[String]
+    this.developerPayload = (parsedJSON \ "developerPayload").extractOrElse[String]("")
+    this.purchaseToken = (parsedJSON \ "purchaseToken").extract[String]
 
     this
   }
