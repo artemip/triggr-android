@@ -96,6 +96,7 @@ object EventActor extends Actor {
                   case "ok" => {
                     Log.d( tag, "Connection successful." )
                     Preferences.setConnectedDeviceId( Some(serverResponse.paired_device_id) )
+                    Preferences.setWasPreviouslyPaired( flag=true )
 
                     Preferences.getMainActivity match {
                       case Some(a : PairingActivity) => a.runOnUiThread(new Runnable() {

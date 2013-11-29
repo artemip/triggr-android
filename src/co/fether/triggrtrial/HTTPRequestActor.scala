@@ -76,6 +76,8 @@ private class HTTPRequestActor extends Actor {
                 .mkString( "\n" )
             )
 
+            Log.d(tag, "Received response: " + response.getOrElse("None"))
+
             responseHandler( response )
           } catch {
             case e : Exception => {

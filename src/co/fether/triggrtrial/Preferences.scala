@@ -138,6 +138,7 @@ object Preferences {
 
   def setWasPreviouslyPaired( flag : Boolean ) = {
     if (flag) setPreference( PREF_WAS_PREVIOUSLY_PAIRED, "yes" )
+    else removePreference( PREF_WAS_PREVIOUSLY_PAIRED )
 
     wasPreviouslyPaired = Some(flag)
   }
