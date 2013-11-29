@@ -30,13 +30,13 @@ class InAppPurchaseInfo(
   def deserialize( json : String ) = {
     val parsedJSON = parse(json)
 
-    this.orderId = (parsedJSON \ "orderId").extract[String]
-    this.packageName = (parsedJSON \ "packageName").extract[String]
-    this.productId = (parsedJSON \ "productId").extract[String]
-    this.purchaseTime = (parsedJSON \ "purchaseTime").extract[String]
-    this.purchaseState = (parsedJSON \ "purchaseState").extract[String]
-    this.developerPayload = (parsedJSON \ "developerPayload").extractOrElse[String]("")
-    this.purchaseToken = (parsedJSON \ "purchaseToken").extract[String]
+    this.orderId = tryExtractString(parsedJSON \ "orderId")
+    this.packageName = tryExtractString(parsedJSON \ "packageName")
+    this.productId = tryExtractString(parsedJSON \ "productId")
+    this.purchaseTime = tryExtractString(parsedJSON \ "purchaseTime")
+    this.purchaseState = tryExtractString(parsedJSON \ "purchaseState")
+    this.developerPayload = tryExtractString(parsedJSON \ "developerPayload")
+    this.purchaseToken = tryExtractString(parsedJSON \ "purchaseToken")
 
     this
   }

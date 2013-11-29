@@ -24,11 +24,11 @@ class InAppProductInfo(
   def deserialize( json : String ) = {
     val parsedJSON = parse(json)
 
-    this.productId = (parsedJSON \ "productId").extract[String]
-    this.`type` = (parsedJSON \ "type").extract[String]
-    this.price = (parsedJSON \ "price").extract[String]
-    this.title = (parsedJSON \ "title").extract[String]
-    this.description = (parsedJSON \ "description").extract[String]
+    this.productId = tryExtractString(parsedJSON \ "productId")
+    this.`type` = tryExtractString(parsedJSON \ "type")
+    this.price = tryExtractString(parsedJSON \ "price")
+    this.title = tryExtractString(parsedJSON \ "title")
+    this.description = tryExtractString(parsedJSON \ "description")
 
     this
   }
