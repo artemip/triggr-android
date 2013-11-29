@@ -1,6 +1,6 @@
-package co.fether.triggr.json
+package co.fether.triggrtrial.json
 
-import co.fether.triggr.Preferences
+import co.fether.triggrtrial.Preferences
 import net.liftweb.json._
 import net.liftweb.json.JsonDSL._
 
@@ -31,10 +31,10 @@ class Event(var sender_id : String = Preferences.getDeviceId().toString, var `ty
   def deserialize(json: String) = {
     val parsedJSON = parse(json)
 
-    this.sender_id = (parsedJSON \ "sender_id").extract[String]
-    this.`type` = (parsedJSON \ "type").extract[String]
+    this.sender_id = tryExtract[String](parsedJSON \ "sender_id", "")
+    this.`type` = tryExtract[String](parsedJSON \ "type", "")
     this.notification = new Notification().deserialize(compact(render(parsedJSON \ "notification")))
-    this.handlers = (parsedJSON \ "handlers").extract[List[String]]
+    this.handlers = tryExtract[List[String]](parsedJSON \ "handlers", List())
 
     this
   }

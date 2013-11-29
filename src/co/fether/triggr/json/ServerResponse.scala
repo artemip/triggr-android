@@ -1,4 +1,4 @@
-package co.fether.triggr.json
+package co.fether.triggrtrial.json
 
 import net.liftweb.json._
 import net.liftweb.json.JsonDSL._
@@ -23,9 +23,9 @@ class ServerResponse ( var status : String = "", var message : String = "", var 
   def deserialize( json : String ) = {
     val parsedJSON = parse(json)
 
-    this.status = (parsedJSON \ "status").extract[String]
-    this.message = (parsedJSON \ "message").extract[String]
-    this.paired_device_id = (parsedJSON \ "paired_device_id").extract[String]
+    this.status = tryExtract[String](parsedJSON \ "status", "")
+    this.message = tryExtract[String](parsedJSON \ "message", "")
+    this.paired_device_id = tryExtract[String](parsedJSON \ "paired_device_id", "")
 
     this
   }
