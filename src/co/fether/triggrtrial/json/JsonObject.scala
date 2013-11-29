@@ -10,9 +10,18 @@ abstract class JsonObject {
   def serialize() : String
   def deserialize( json : String ) : JsonObject
 
-  protected def tryExtract[T](value: JValue, default: T): T = {
+  protected def tryExtractString(value: JValue, default: String = ""): String = {
     try {
-      value.extract[T]
+      value.extract[String]
+    } catch {
+      case e: MappingException => default
+      case e: Exception => throw e
+    }
+  }
+
+  protected def tryExtractList(value: JValue, default: List[String] = List[String]()): List[String] = {
+    try {
+      value.extract[List[String]]
     } catch {
       case e: MappingException => default
       case e: Exception => throw e

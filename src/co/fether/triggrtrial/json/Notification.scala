@@ -25,10 +25,10 @@ class Notification( var icon_uri : String = "", var title : String = "", var sub
   def deserialize( json : String ) = {
     val parsedJSON = parse(json)
 
-    this.icon_uri = tryExtract[String](parsedJSON \ "icon_uri", "")
-    this.title = tryExtract[String](parsedJSON \ "title", "")
-    this.subtitle = tryExtract[String](parsedJSON \ "subtitle", "")
-    this.description = tryExtract[String](parsedJSON \ "description", "")
+    this.icon_uri = tryExtractString(parsedJSON \ "icon_uri")
+    this.title = tryExtractString(parsedJSON \ "title")
+    this.subtitle = tryExtractString(parsedJSON \ "subtitle")
+    this.description = tryExtractString(parsedJSON \ "description")
 
     this
   }
