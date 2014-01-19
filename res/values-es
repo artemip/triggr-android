@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- InstructionsView -->
+    <string name="app_name">TRIGGR</string>
+    <string name="welcome_text">bienvenido</string>
+    <string name="download_desktop_app_instructions">Instale la aplicación de escritorio TRIGGR en</string>
+    <string name="website_name">www.triggrapp.com</string>
+    <string name="pairing_desktop_instructions">Mostrar par de claves de su escritorio.</string>
+    <string name="pairing_mobile_instructions">Introduzca el par de claves en la aplicación TRIGGR Android.</string>
+    <string name="pairing_connect_instructions">Haga clic en "Conectar".</string>
+    <string name="thanks_for_using">Gracias por usar TRIGGR!</string>
+    <string name="feedback_instructions">Animamos a sus comentarios.</string>
+    <string name="rate_instructions">Por favor evaluar!</string>
+    <string name="get_started">EMPEZAR</string>
+
+    <!-- PairingView -->
+    <string name="pairing_prompt">Introduzca el par de claves que se muestra en la aplicación de escritorio.</string>
+    <string name="connect_button_text">conectar</string>
+    <string name="disconnect">desconectar</string>
+    <string name="connected">Conectado.</string>
+
+    <!-- Sharing -->
+    <string name="full_website_url">http://www.triggrapp.com</string>
+    <string name="sharing_desc">Echa un vistazo a TRIGGR!</string>
+
+    <!-- Image Descriptions -->
+    <string name="leftArrowContentDesc">Left Nav Arrow</string>
+    <string name="rightArrowContentDesc">Right Nav Arrow</string>
+    <string name="laptopContentDesc">Laptop</string>
+    <string name="desktopAppContentDesc">Desktop App View</string>
+    <string name="mobileAppContentDesc">Mobile App View</string>
+
+
+    <!-- Settings -->
+    <string name="desktop_notifications_title">Escritorio Notificaciones</string>
+
+    <string name="phone_call_notifications_pref_title">llamada telefónica</string>
+    <string name="phone_call_notifications_pref_desc">Las llamadas entrantes y salientes.</string>
+
+    <string name="text_message_notifications_pref_title">Texto del mensaje</string>
+    <string name="text_message_notifications_pref_desc">Los mensajes de texto entrantes.</string>
+
+    <string name="whatsapp_notifications_pref_title">WhatsApp</string>
+    <string name="whatsapp_notifications_pref_desc">Mensajes WhatsApp entrantes.</string>
+
+    <string name="snapchat_notifications_pref_title">SnapChat</string>
+    <string name="snapchat_notifications_pref_desc">Mensajes SnapChat entrantes.</string>
+
+
+    <string name="reactions_title">Reacciones</string>
+
+    <string name="smart_volume_pref_title">Volumen inteligente</string>
+    <string name="smart_volume_pref_desc">El volumen del equipo de forma automática más bajos durante los eventos de llamada.</string>
+
+    <string name="noise_alert_pref_title">Alertas de ruido</string>
+    <string name="noise_alert_pref_desc">Hacer un ruido en el equipo cuando se recibe una notificación.</string>
+
+    <string name="purchase_notification_desc">Compra por sólo</string>
+    <string name="purchase_notification_confirm_whatsapp">Compra notificaciones WhatsApp para</string>
+    <string name="purchase_notification_confirm_snapchat">Compra notificaciones SnapChat para</string>
+
+    <string name="purchase_whatsapp_notifications_desktop_message">Notificaciones WhatsApp comprados</string>
+    <string name="purchase_snapchat_notifications_desktop_message">Notificaciones SnapChat comprados</string>
+
+    <string name="enable_accessibility_service_title">Activar accesibilidad</string>
+    <string name="enable_accessibility_service_message">Para utilizar notificaciones avanzadas, el servicio de accesibilidad TRIGGR debe estar encendido. Pulse \'Ok\' para ir a la configuración de accesibilidad.</string>
+
+    <string name="ok_text">Ok</string>
+    <string name="cancel_text">cancelar</string>
+    <string name="buy_text">Comprar ahora!</string>
+
+    <!-- Notifications -->
+    <string name="unknown_contact">Contacto desconocido</string>
+    <string name="new_message">Nuevo mensaje</string>
+    <string name="connected_notification">conectado</string>
+    <string name="disconnected_notification">desconectado</string>
+    <string name="missed_call_notification">llamada perdida</string>
+    <string name="end_call_notification">Terminó llamada</string>
+    <string name="new_whatsapp_notification">Nuevo mensaje de WhatsApp</string>
+    <string name="new_snapchat_notification">Nuevo mensaje de SnapChat</string>
+
+
+</resources>
