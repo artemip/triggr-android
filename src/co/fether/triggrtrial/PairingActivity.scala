@@ -36,6 +36,8 @@ class PairingActivity extends Activity {
     pairKeyEditText = findViewById(R.id.pairKeyTextBox).asInstanceOf[EditText]
     viewFlipper = findViewById(R.id.pairingViewFlipper).asInstanceOf[ViewFlipper]
 
+    if( Preferences.getConnectedDeviceId.isDefined ) viewFlipper.setDisplayedChild(1)
+
     pairKeyEditText.setHint(Html.fromHtml("<span style=\"text-color: gray; text-align: center; font-size: 10px\">Pair Key</span>"))
   }
 

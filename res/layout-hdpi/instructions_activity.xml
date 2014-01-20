@@ -137,7 +137,7 @@
                             android:textSize="16dp"
                             android:gravity="center"
                             android:textColor="#FFFFFF" />
-                </LinearLayout
+                </LinearLayout>
                 <LinearLayout
                         android:id="@+id/shareView"
                         android:layout_width="fill_parent"
