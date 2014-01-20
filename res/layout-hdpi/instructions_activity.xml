@@ -58,17 +58,17 @@
                 android:layout_marginRight="35dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp">
-                <LinearLayout
+                <!--<LinearLayout
                         android:id="@+id/desktopInstallView"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                     <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
                             android:text="@string/download_desktop_app_instructions"
                             android:textSize="14dp"
-                            android:layout_gravity="center"
+                            android:gravity="center"
                             android:textColor="#FFFFFF" />
                     <TextView
                             android:layout_width="wrap_content"
@@ -94,11 +94,11 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                     <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
                             android:text="@string/pairing_desktop_instructions"
                             android:textSize="14dp"
-                            android:layout_gravity="center"
+                            android:gravity="center"
                             android:textColor="#FFFFFF" />
                     <ImageView
                             android:id="@+id/desktopAppImageView"
@@ -123,10 +123,10 @@
                             android:textColor="#FFFFFF" />
                     <ImageView
                             android:id="@+id/mobileAppImageView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
                             android:layout_marginTop="20dp"
-                            android:layout_gravity="center"
+                            android:gravity="center"
                             android:src="@drawable/instructions_enterkey"
                             android:contentDescription="@string/mobileAppContentDesc"/>
                     <TextView
@@ -137,15 +137,15 @@
                             android:textSize="16dp"
                             android:gravity="center"
                             android:textColor="#FFFFFF" />
-                </LinearLayout>
+                </LinearLayout>-->
                 <LinearLayout
                         android:id="@+id/shareView"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
                         android:text="@string/thanks_for_using"
                         android:textSize="14dp"
                         android:gravity="center"
@@ -167,8 +167,8 @@
                         android:gravity="center"
                         android:textColor="#FFFFFF" />
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
                         android:text="@string/rate_instructions"
                         android:textSize="14dp"
                         android:gravity="center"

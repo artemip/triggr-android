@@ -1,14 +1,14 @@
 <resources>
 
     <!-- InstructionsView -->
-    <string name="app_name">Triggr</string>
+    <string name="app_name">TRIGGR</string>
     <string name="welcome_text">Welcome</string>
-    <string name="download_desktop_app_instructions">Install the Triggr desktop app at</string>
+    <string name="download_desktop_app_instructions">Install the TRIGGR desktop app at</string>
     <string name="website_name">www.triggrapp.com</string>
     <string name="pairing_desktop_instructions">Show your desktop\'s Pair Key.</string>
-    <string name="pairing_mobile_instructions">Enter the Pair Key into the Triggr Android app.</string>
+    <string name="pairing_mobile_instructions">Enter the Pair Key into the TRIGGR Android app.</string>
     <string name="pairing_connect_instructions">Click "Connect".</string>
-    <string name="thanks_for_using">Thanks for using Triggr!</string>
+    <string name="thanks_for_using">Thanks for using TRIGGR!</string>
     <string name="feedback_instructions">We encourage your feedback.</string>
     <string name="rate_instructions">Please rate us!</string>
     <string name="get_started">GET STARTED</string>
@@ -21,7 +21,7 @@
 
     <!-- Sharing -->
     <string name="full_website_url">http://www.triggrapp.com</string>
-    <string name="sharing_desc">Check out Triggr!</string>
+    <string name="sharing_desc">Check out TRIGGR!</string>
 
     <!-- Image Descriptions -->
     <string name="leftArrowContentDesc">Left Nav Arrow</string>
@@ -63,7 +63,7 @@
     <string name="purchase_snapchat_notifications_desktop_message">Snapchat Notifications Purchased</string>
 
     <string name="enable_accessibility_service_title">Enable Accessibility</string>
-    <string name="enable_accessibility_service_message">To use advanced notifications, the Triggr accessibility service must be turned on. Press \'Ok\' to go to the Accessibility Settings.</string>
+    <string name="enable_accessibility_service_message">To use advanced notifications, the TRIGGR accessibility service must be turned on. Press \'Ok\' to go to the Accessibility Settings.</string>
 
     <string name="ok_text">OK</string>
     <string name="cancel_text">Cancel</string>
