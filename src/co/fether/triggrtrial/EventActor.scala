@@ -34,7 +34,7 @@ object EventActor extends Actor {
   }
 
   object EventIcons {
-    val iconURI = "http://www.triggrapp.com/desktop_resources/"
+    val iconURI = "http://www.triggrapp.com/resources/desktop/"
 
     val Connect = iconURI + "icon_connect_10.26.13.png"
     val Disconnect = iconURI + "icon_disconnect_10.26.13.png"
