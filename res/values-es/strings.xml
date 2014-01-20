@@ -3,7 +3,7 @@
 
     <!-- InstructionsView -->
     <string name="app_name">TRIGGR</string>
-    <string name="welcome_text">bienvenido</string>
+    <string name="welcome_text">Bienvenido</string>
     <string name="download_desktop_app_instructions">Instale la aplicación de escritorio TRIGGR en</string>
     <string name="website_name">www.triggrapp.com</string>
     <string name="pairing_desktop_instructions">Mostrar par de claves de su escritorio.</string>
@@ -16,8 +16,8 @@
 
     <!-- PairingView -->
     <string name="pairing_prompt">Introduzca el par de claves que se muestra en la aplicación de escritorio.</string>
-    <string name="connect_button_text">conectar</string>
-    <string name="disconnect">desconectar</string>
+    <string name="connect_button_text">Conectar</string>
+    <string name="disconnect">Desconectar</string>
     <string name="connected">Conectado.</string>
 
     <!-- Sharing -->

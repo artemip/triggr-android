@@ -3,7 +3,7 @@
 
     <!-- InstructionsView -->
     <string name="app_name">TRIGGR</string>
-    <string name="welcome_text">Accueil</string>
+    <string name="welcome_text">Bonjour</string>
     <string name="download_desktop_app_instructions">Installez l\'application informatique TRIGGR à</string>
     <string name="website_name">www.triggrapp.com</string>
     <string name="pairing_desktop_instructions">Afficher paire de clés de votre ordinateur.</string>
