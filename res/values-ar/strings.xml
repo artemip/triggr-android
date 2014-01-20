@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- InstructionsView -->
+    <string name="app_name">TRIGGR</string>
+    <string name="welcome_text">ترحيب</string>
+    <string name="download_desktop_app_instructions">تثبيت التطبيق سطح المكتب في TRIGGR</string>
+    <string name="website_name">www.triggrapp.com</string>
+    <string name="pairing_desktop_instructions">تظهر زوج مفتاح سطح المكتب الخاص بك.</string>
+    <string name="pairing_mobile_instructions">أدخل زوج المفاتيح في التطبيق TRIGGR الروبوت.</string>
+    <string name="pairing_connect_instructions">انقر فوق "الاتصال".</string>
+    <string name="thanks_for_using">شكرا لاستخدام TRIGGR!</string>
+    <string name="feedback_instructions">نحن نشجع ملاحظاتك.</string>
+    <string name="rate_instructions">معدل لنا من فضلك!</string>
+    <string name="get_started">بدأ</string>
+
+    <!-- PairingView -->
+    <string name="pairing_prompt">أدخل زوج المفاتيح المعروضة على سطح المكتب التطبيق.</string>
+    <string name="connect_button_text">ربط</string>
+    <string name="disconnect">قطع</string>
+    <string name="connected">متصلة.</string>
+
+    <!-- Sharing -->
+    <string name="full_website_url">http://www.triggrapp.com</string>
+    <string name="sharing_desc">تحقق من TRIGGR!</string>
+
+    <!-- Image Descriptions -->
+    <string name="leftArrowContentDesc">Left Nav Arrow</string>
+    <string name="rightArrowContentDesc">Right Nav Arrow</string>
+    <string name="laptopContentDesc">Laptop</string>
+    <string name="desktopAppContentDesc">Desktop App View</string>
+    <string name="mobileAppContentDesc">Mobile App View</string>
+
+
+    <!-- Settings -->
+    <string name="desktop_notifications_title">الإخطارات سطح المكتب</string>
+
+    <string name="phone_call_notifications_pref_title">مكالمة هاتفية</string>
+    <string name="phone_call_notifications_pref_desc">المكالمات الهاتفية الواردة والصادرة.</string>
+
+    <string name="text_message_notifications_pref_title">نص رسالة</string>
+    <string name="text_message_notifications_pref_desc">رسائل نصية واردة.</string>
+
+    <string name="whatsapp_notifications_pref_title">WhatsApp</string>
+    <string name="whatsapp_notifications_pref_desc">رسائل ال WhatsApp واردة.</string>
+
+    <string name="snapchat_notifications_pref_title">SnapChat</string>
+    <string name="snapchat_notifications_pref_desc">رسائل SnapChat واردة.</string>
+
+
+    <string name="reactions_title">ردود الفعل</string>
+
+    <string name="smart_volume_pref_title">حجم الذكية</string>
+    <string name="smart_volume_pref_desc">حجم الكمبيوتر أقل تلقائيا أثناء الأحداث المكالمة.</string>
+
+    <string name="noise_alert_pref_title">تنبيهات الضوضاء</string>
+    <string name="noise_alert_pref_desc">جعل الضوضاء على جهاز الكمبيوتر الخاص بك عند تلقي الإخطار.</string>
+
+    <string name="purchase_notification_desc">شراء فقط</string>
+    <string name="purchase_notification_confirm_whatsapp">شراء الإخطارات على ال WhatsApp من ل</string>
+    <string name="purchase_notification_confirm_snapchat">الإخطارات شراء SnapChat ل</string>
+
+    <string name="purchase_whatsapp_notifications_desktop_message">على ال WhatsApp من الإخطارات شراؤها</string>
+    <string name="purchase_snapchat_notifications_desktop_message">Snapchat الإخطارات شراؤها</string>
+
+    <string name="enable_accessibility_service_title">تمكين المعاقين</string>
+    <string name="enable_accessibility_service_message">لاستخدام الإخطارات المتقدمة، يجب تشغيل خدمة الوصول TRIGGR جرا. الصحافة حسنا للذهاب إلى إعدادات الوصول.</string>
+
+    <string name="ok_text">حسنا</string>
+    <string name="cancel_text">إلغاء</string>
+    <string name="buy_text">شراء الآن!</string>
+
+    <!-- Notifications -->
+    <string name="unknown_contact">غير معروف الاتصال</string>
+    <string name="new_message">رسالة جديدة</string>
+    <string name="connected_notification">متصل</string>
+    <string name="disconnected_notification">غير متصل</string>
+    <string name="missed_call_notification">مكالمة لم يرد عليها</string>
+    <string name="end_call_notification">دعوة العضوية</string>
+    <string name="new_whatsapp_notification">رسالة على ال WhatsApp من جديد</string>
+    <string name="new_snapchat_notification">رسالة جديدة SnapChat</string>
+
+
+</resources>
