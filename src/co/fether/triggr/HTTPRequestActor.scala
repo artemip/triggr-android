@@ -6,7 +6,7 @@ import scala.actors.Actor
 import java.io.DataOutputStream
 
 private object HTTPRequestActor {
-  private val routingServer = "http://test.triggrapp.com:8000"
+  private val routingServer = "http://api.triggrapp.com:8000"
 
   case class GETRequest( path : String, responseHandler : Option[String] => Unit = _ => () )
   case class POSTRequest( path : String, params : Map[String, String], responseHandler : Option[String] => Unit = _ => () )
